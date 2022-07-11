@@ -1,0 +1,73 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "**/*.pq": false,
+            "**/*.pbix": false,
+            "**/*.pbit": false,
+            "**/*.zip": true,
+            "**/*.xlsx": true,
+        },
+        "vsicons.associations.files": [
+            // justin grote's config: <https://discord.com/channels/180528040881815552/447476910499299358/801102446209794088>
+            {
+                "extensions": [
+                    "arm.json"
+                ],
+                "format": "svg",
+                "icon": "azure"
+            },
+            {
+                "icon": "text", // or any other icon from vscode-icons
+                "extensions": [
+                    "pq",
+                ],
+                "format": "svg"
+            },
+            {
+                "extensions": [
+                    "parameters.json"
+                ],
+                "format": "svg",
+                "icon": "config"
+            },
+            {
+                "extensions": [
+                    "tests.ps1"
+                ],
+                "format": "svg",
+                "icon": "test"
+            },
+            {
+                "extensions": [
+                    "clixml"
+                ],
+                "format": "svg",
+                "icon": "xml"
+            }
+        ],
+        "vsicons.associations.folders": [
+            {
+                "extends": "dist",
+                "extensions": [
+                    "BuildOutput",
+                    "Output"
+                ],
+                "format": "svg",
+                "icon": "dist"
+            },
+            {
+                "extends": "helper",
+                "extensions": [
+                    "BuildHelpers"
+                ],
+                "format": "svg",
+                "icon": "helper"
+            }
+        ],
+    }
+}
