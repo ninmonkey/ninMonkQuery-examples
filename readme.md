@@ -1,5 +1,6 @@
 ## Web Requests
 
+- [OData Requests](./WebRequests/OData/readme.md)
 - [Web Requests](./WebRequests/readme.md)
 
 ### Catching `Web.Contents` Errors using and `ManualStatusHandling`
