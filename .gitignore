@@ -1,3 +1,11 @@
+*/**/*wip*.pbix
+*/**/*wip*.pbit
+*/**/*sketch*.pbix
+*/**/*sketch*.pbit
 !*/**/*
+*.swp
 !*.pbix
 !*.pbit
+*sketch*.pbix
+*wip*.pbix
+WebRequests/OData/sketch.OData ⁞ Test a list of Queries.pbix
