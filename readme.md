@@ -1,7 +1,12 @@
+![query summary screenshot](Testing/img/Summarize%20⁞%20Queries%20┐main_query.png)
+
+- [Query Summary Listing](./Testing)
+
 ## Web Requests
 
 - [OData Requests](./WebRequests/OData/readme.md)
 - [Web Requests](./WebRequests/readme.md)
+
 
 ### Catching `Web.Contents` Errors using and `ManualStatusHandling`
 
