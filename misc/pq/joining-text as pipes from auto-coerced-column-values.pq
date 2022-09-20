@@ -17,11 +17,24 @@ let
     Text.JoinSpecialValues.Type = type function (
             source as list,
             optional options as nullable [
-                Separator = text,
-                UseSpecialSymbols = logical
+                Separator = (type text meta [
+                    Documentation.SampleValues = { "|", ", " },
+                    // Documentation.AllowedValues = { "|", ", " },
+                    Documentation.FieldCaption = "Separator to join on"
+                ]),
+                UseSpecialSymbols = (type logical meta [
+                    Documentation.AllowedValues = {false, true},
+                    Documentation.FieldCaption = "Set to false to not modify the original values" ])
             ]
             // optional options as nullable record
-        ) as text,
+        ) as text meta [
+            Documentation.Name = "Text.JoinSpecialValues",
+            Documentation.LongDescription = Text.Combine({
+                "Convert a list of values into text, then join them like a Csv.",
+                "",
+                "The <b>default</b> will replace <i>true</i><code>null</code> values with symbols."
+            }, "<br>")
+        ],
     Text.JoinSpecialValues_impl = (source as list, optional options as nullable record) as text =>
         let
             /*
