@@ -13,15 +13,6 @@
 [view](./img/testing-documentation-on-ascribed-type.png)
 
 
-```pq
-try Web.Contents( "https://httpbin.org", [
-    RelativePath =  "/status/codes/418",
-    ManualStatusHandling = {401, 402, 404} & {405..500}
-    ] )
-catch (e) =>
-    "Error, but we caught it" meta e
-```
-
 ## See More: Function Metadta Related Documentation and Examples
 
 Ben Gribaudo
