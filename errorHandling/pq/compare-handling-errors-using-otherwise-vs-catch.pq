@@ -1,4 +1,5 @@
-[
+let
+    main_preserve_errors = [
     // Source = Folder.Contents( "C:\nin_temp\pq" ),
     // #"Filtered Rows" = Table.SelectRows(Source, each ([Extension] = ".csv")),
 
@@ -41,9 +42,9 @@
     json_bad2 = Json.Document( source_bad2 ),
     json_good = Json.Document( source_good ),
 
-    #"Imported CSV" = Json.Document(#"json is_valid"),
-    #"Changed Type" = Table.TransformColumnTypes(#"Imported CSV",{{"Column1", type text}, {"Column2", type text}}),
-    Custom1 = dirListing,
+    // #"Imported CSV" = Json.Document(#"json is_valid"),
+    // #"Changed Type" = Table.TransformColumnTypes(#"Imported CSV",{{"Column1", type text}, {"Column2", type text}}),
+    // Custom1 = dirListing,
     // you lose all the information in the error record using `otherwise`
     lost_it_all1 =
         try json_bad  otherwise json_good,
@@ -64,8 +65,14 @@
 
 
     tableSummary = {
-        [ Name = "Lost It All", Data = lost_it_all1 ],
-        [ Name = "Lost It All2", Data = lost_it_all2 ]
+        [ Name = "Catch",       Actual = "File exists, but Json was an invalid format", Data = final1],
+        [ Name = "Catch2",      Actual = "Key 'file_does_not_exist' #(cr,lf)does not match rows in table", Data = final2 ],
+        [ Name = "Catch3",      Actual = "Actual Good, with no errors", Data = final3 ],
+
+        [ Name = "Lost It All", Actual = "Actual", Data = lost_it_all1 ],
+
+        [ Name = "Lost It All", Actual = "Actual", Data = lost_it_all1 ],
+        [ Name = "Lost It All2",Actual = "Actual", Data = lost_it_all2 ]
     },
 
 
@@ -73,4 +80,9 @@
             tableSummary
     )
 
-]
+],
+    z = main_preserve_errors[z],
+    #"Expanded Data" = Table.ExpandRecordColumn(z, "Data", {"Reason", "Message", "Detail", "Message.Format", "Message.Parameters", "name"}, {"Reason", "Message", "Detail", "Message.Format", "Message.Parameters", "name.1"}),
+    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Data",{{"Reason", type text}, {"Message", type text}, {"Detail", type any}, {"Message.Format", type text}, {"Message.Parameters", type text}, {"name.1", type text}, {"Name", type text}})
+in
+    #"Changed Type"
