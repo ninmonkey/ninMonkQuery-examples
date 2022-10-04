@@ -1,5 +1,9 @@
 [Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./..)
 
+- [Types: Ascribing Extra Metadata to your Functions](#types-ascribing-extra-metadata-to-your-functions)
+- [Multiple Date Formats in one Transform](#multiple-date-formats-in-one-transform)
+- [See More: Function Metadata Related Documentation and Examples](#see-more-function-metadata-related-documentation-and-examples)
+
 ## Types: Ascribing Extra Metadata to your Functions
 
 - [PowerQuery.pq](./pq/joining-text%20as%20pipes%20from%20auto-coerced-column-values.pq)
@@ -12,8 +16,14 @@
 ![thumb-source-code](./img/testing-documentation-on-ascribed-type.png)
 [view](./img/testing-documentation-on-ascribed-type.png)
 
+## Multiple Date Formats in one Transform
 
-## See More: Function Metadta Related Documentation and Examples
+![thumb-table2](./img/Converting-Multiple-DateFormats-In-One-Column.png)
+
+Converting-Multiple-DateFormats-In-One-Column
+- [query.pq](./pq/Converting-Multiple-DateFormats-In-One-Column.pq) or [report.pbix](./Converting-Multiple-DateFormats-In-One-Column.pbix)
+
+## See More: Function Metadata Related Documentation and Examples
 
 Ben Gribaudo
 - [describing-function-record-parameters](https://bengribaudo.com/blog/2021/09/21/6179/describing-function-record-parameters) 2021/09/21 
