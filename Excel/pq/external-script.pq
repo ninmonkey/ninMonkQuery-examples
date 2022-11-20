@@ -1,12 +1,16 @@
 let
     /* this is the script that you are importing */
-    x = {0..20},
-    y = {"a".."e"},
     summary = [
         Activity = Diagnostics.ActivityId(),
-        Now = DateTime.LocalNow()
+        Now = DateTime.LocalNow(),
+        Species = "🐒"
     ],
-    schema = type table [Activity = text, Now = datetime],
+
+    schema = type table [
+        Activity = text,
+        Now = datetime,
+        Species = text
+    ],
     t = Table.FromRecords({summary}, schema, MissingField.Error)
 in
     t

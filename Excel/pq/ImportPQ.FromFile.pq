@@ -6,6 +6,8 @@ let
     usage:
         ImportPq.FromFile("C:\docs\external-script.pq")
 
+    Expression.Evaluate() evaluates arbitrary code -- so do not use it for production.
+
     */
     ImportPq.FromFile = (filepath as text, optional encoding as nullable number) as any =>
         let

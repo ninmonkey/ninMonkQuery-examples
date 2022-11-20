@@ -2,6 +2,13 @@
 
 - [Query Summary Listing](./Testing)
 
+## Editing Queries outside of Excel
+
+
+![save file change then refresh](Excel/img/edit-external-pq-from-excel.gif)
+
+- [Excel and PQ Source](Excel/readme.md)
+
 ## Web Requests
 
 - [OData Requests](./WebRequests/OData/readme.md)
