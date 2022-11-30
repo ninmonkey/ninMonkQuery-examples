@@ -1,0 +1,26 @@
+
+/*
+    Formats Nums[Value] as if the thousands separator was a space
+    23      => 23
+    123456  => 123 456
+    -12345  => -12 345
+    -23     => -23
+*/
+var num = SELECTEDVALUE( Nums[Value] )
+var magnitude = ABS( num ) 
+
+// "###;###",
+var template_str = switch( True(),     
+    magnitude < 1000,         "$###",
+    magnitude < 1000000,      "$### ###",
+    magnitude < 1000000000,   "$### ### ###",
+    magnitude < 1000000000000,   "$### ### ### ###",
+   ""
+)
+var format_str =
+    // you can optionally add a 4th string for blanks 
+    template_str & ";-" & template_str & ";$0" 
+    
+var render =
+    FORMAT( num, format_str, "en-us" )
+return render
