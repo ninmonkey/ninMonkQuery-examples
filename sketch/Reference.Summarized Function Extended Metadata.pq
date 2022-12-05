@@ -16,6 +16,7 @@ in
     RepeatStuff
 ```
 
+
 ### steps Nested Records Type Info
 
 - <https://bengribaudo.com/blog/2021/09/21/6179/describing-function-record-parameters#Specifying%20the%20Shape>
