@@ -1,5 +1,8 @@
 [Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./..)
 
+
+![Using Space for Thousands Separator](./img/using%20spaces%20in%20place%20of%20the%20thousands%20separator.png)
+
 - [Using Space for Thousands Separator.pbix](format%20currency%20-%20using%20spaces%20in%20place%20of%20the%20thousands%20separator.2022-12.pbix) and [Thousands Separator DAX](./dax/using%20spaces%20in%20place%20of%20the%20thousands%20separator.dax)
 
 ## See Also
