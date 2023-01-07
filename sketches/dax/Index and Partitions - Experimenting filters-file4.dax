@@ -1,0 +1,44 @@
+/*
+
+see:
+    https://learn.microsoft.com/en-us/dax/window-function-dax
+    https://learn.microsoft.com/en-us/dax/offset-function-dax
+    https://learn.microsoft.com/en-us/dax/index-function-dax
+
+*/
+DEFINE 
+
+MEASURE n[At 1 All] = INDEX( 1, ALL(Numbers[Amount] ))
+MEASURE n[At -1 All] = INDEX( -1, ALL(Numbers[Amount] ))
+
+// produces blanks for all other groups
+MEASURE n[Tx] = CALCULATE(
+    INDEX(1, VALUES( Numbers[Amount] ) ),
+    Numbers[Group] = "Blue"
+)
+
+MEASURE n[MaxOf] = CALCULATE(
+    INDEX(1, VALUES( Numbers[Amount] ) )
+    
+)
+
+
+EVALUATE ADDCOLUMNS(
+    Numbers,
+    "Index1, All 4",
+    INDEX(4,
+        ALL( Numbers[Amount] )
+    ),
+    "Index 9999",
+    INDEX(
+        9999,
+        ALL( Numbers[Amount] )
+    ),
+    "MaxOfGroup", [MaxOf],
+    "At 1", [At 1 All],
+    "At -1", [At -1 All],
+    "tx", [Tx]
+)
+
+
+EVALUATE Numbers
