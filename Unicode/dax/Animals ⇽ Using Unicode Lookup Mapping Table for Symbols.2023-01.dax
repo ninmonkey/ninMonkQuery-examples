@@ -1,0 +1,10 @@
+Manual Lookup = 
+    // no relations were used.
+    // If there is no mapping found, falls back to the default value
+    // falls back to "Null Symbol U+2400" 
+    
+   var _curSpecies = SELECTEDVALUE( Animal[Species], BLANK() )  
+   var _defaultValue = UNICHAR( 9216 )
+   var _curRune = LOOKUPVALUE( 'Unicode'[Rune], 'Unicode'[Name], _curSpecies, _defaultValue )
+
+return _curRune
