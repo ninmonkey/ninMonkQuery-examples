@@ -1,4 +1,5 @@
-let
+// Text_ReplacePartialMatch
+let   
     Text.ReplacePartialMatches = Value.ReplaceType( Text.ReplacePartialMatches_impl, Text.ReplacePartialMatches.Type ),
     Text.ReplacePartialMatches.Type = type function(
         source as text,
@@ -14,9 +15,9 @@ let
     ],
 
     Text.ReplacePartialMatches_impl = ( source as text, mapping as table ) as text =>
-        // todo: performance, end on very first replacement
         let
             mappingList = Table.ToRecords( mapping ),
+            // future: for performance, add a flag to exit early on the very first match
             result = List.Accumulate(
                 mappingList,
                 source,
@@ -26,5 +27,5 @@ let
             )
         in result
 
-in
+in 
     Text.ReplacePartialMatches
