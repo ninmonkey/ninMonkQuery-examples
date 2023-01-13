@@ -4,10 +4,32 @@
 
 For text that matches a partial string, replace the entire contents
 
+![screenshot](./img/Replacements%20using%20Mapping%20Table.png)
+
+- [Replace Partial Matches with Mapping Table.pbix](./Replacements%20using%20Mapping%20Table.pbix)
+- [Text.ReplacePartialMatch.pq](./pq/Replacements%20using%20Mapping%20Table.function%20-%20Text.ReplacePartialMatches.pq)
+- [main query.pq](./pq/Replacements%20using%20Mapping%20Table.query%20-%20main.pq)
+<!-- - [mapping table.pq](./pq/Replacements%20using%20Mapping%20Table.query%20-%20mapping%20table.pq) -->
+
+### Usage:
+
+```typescript
+let
+    Source = ...,
+    #"Replace With Mapping" = Table.AddColumn(Source, "Clean Name",
+        (row) => Text_ReplacePartialMatch(
+                row[Raw Name], #"Mapping Table"),
+            type text)
+in
+    #"Replace With Mapping"
+```
+
+<!--
 
 - [Text.ReplacePartialMatch.pq](./pq/Text.ReplacePartialMatch.pq)
 - [Report.pbix](https://github.com/ninmonkey/ninMonkQuery-examples/blob/main/misc/Replacements%20using%20Mapping%20Table.pbix?raw=true) 
 - ![Text.ReplacePartialMatch.mp4](./img/Text.ReplacePartialMatch.mp4)
+-->
 
 <!--
 - [Report.pbix](./Replacements%20using%20Mapping%20Table.pbix) -->
