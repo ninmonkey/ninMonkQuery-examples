@@ -5,10 +5,10 @@
 
 ## Ex1 Tables from Mixed Json
 
-
-![screen2](./img/transform%20Json%20-%20extracting%20mixed%20tables.png)
 - Report [Extracting 2 tables.pbix](./Transform%20Json%20-%20Extracting%20Tables%20from%20Mixed%20Json.pbix)
 - Query [Extracting 2 tables.pq](./pq/Transform%20Json%20-%20Extracting%20Tables%20from%20Mixed%20Json.md)
+
+![screen2](./img/transform%20Json%20-%20extracting%20mixed%20tables.png)
 
 ## Ex2 Nested Json
 
