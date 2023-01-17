@@ -1,9 +1,19 @@
-[Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./..)
+[Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./../readme.md)
+
+- [Tables from Mixed Json](#tables-from-mixed-json)
+- [Nested Json](#nested-json)
+
+## Tables from Mixed Json
+
+
+![screen2](./img/transform%20Json%20-%20extracting%20mixed%20tables.png)
+- Report [Extracting 2 tables.pbix](./Transform%20Json%20-%20Extracting%20Tables%20from%20Mixed%20Json.pbix)
+- Query [Extracting 2 tables.pq](./pq/Transform%20Json%20-%20Extracting%20Tables%20from%20Mixed%20Json.md)
 
 ## Nested Json
 
-- [Filtering Nested Json.pq](./pq/filtering-nested-json.md)
-- [Report.pbix](./Filter%20Json%20-%20Filtering%20Nested%20Values%20Without%20Expanding%20values.pbix) 
+- Query [Filtering Nested Json.pq](./pq/filtering-nested-json.md)
+- Report [Filtering Nested Json.pbix](./Filter%20Json%20-%20Filtering%20Nested%20Values%20Without%20Expanding%20values.pbix) 
 
 ![Text.ReplacePartialMatch.mp4](./img/filtering-nested-values-without-expanding-json.png)
 

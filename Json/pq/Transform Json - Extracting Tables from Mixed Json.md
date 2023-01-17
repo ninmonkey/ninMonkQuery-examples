@@ -1,9 +1,22 @@
+[Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./../readme.md)
+
+- [raw\_json](#raw_json)
+- [xray Function](#xray-function)
+- [base: load = disabled](#base-load--disabled)
+- [main\_b : final result](#main_b--final-result)
+- [main\_a : final result](#main_a--final-result)
+- [Original JSON](#original-json)
+
+
 ## raw_json
+
+You can embed and revert values like this using custom commands from [Power Query SDK for Vs Code](https://github.com/microsoft/vscode-powerquery-sdk) or the stand alone [Power Query for VS Code](https://github.com/microsoft/vscode-powerquery). 
 
 ```ts
 "{#(cr,lf)    ""table"": [#(cr,lf)        {#(cr,lf)            ""columns"": [#(cr,lf)                {#(cr,lf)                    ""column_type"": ""Offer"",#(cr,lf)                    ""id"": ""879"",#(cr,lf)                    ""label"": ""Example Offer Name""#(cr,lf)                },#(cr,lf)                {#(cr,lf)                    ""column_type"": ""Advertiser"",#(cr,lf)                    ""id"": ""135"",#(cr,lf)                    ""label"": ""Example Advertiser Name""#(cr,lf)                },#(cr,lf)                {#(cr,lf)                    ""column_type"": ""Partner"",#(cr,lf)                    ""id"": ""20019"",#(cr,lf)                    ""label"": ""Partner Inc.""#(cr,lf)                }#(cr,lf)            ],#(cr,lf)            ""reporting"": {#(cr,lf)                ""DataPointA"": 0,#(cr,lf)                ""DataPointB"": 75,#(cr,lf)                ""DataPointC"": 75#(cr,lf)            }#(cr,lf)        },#(cr,lf)        {#(cr,lf)            ""columns"": [#(cr,lf)                {#(cr,lf)                    ""column_type"": ""Offer"",#(cr,lf)                    ""id"": ""881"",#(cr,lf)                    ""label"": ""Other Example Name""#(cr,lf)                },#(cr,lf)                {#(cr,lf)                    ""column_type"": ""Advertiser"",#(cr,lf)                    ""id"": ""135"",#(cr,lf)                    ""label"": ""Example Advertiser Name""#(cr,lf)                },#(cr,lf)                {#(cr,lf)                    ""column_type"": ""Partner"",#(cr,lf)                    ""id"": ""20017"",#(cr,lf)                    ""label"": ""Other Partner Inc.""#(cr,lf)                }#(cr,lf)            ],#(cr,lf)            ""reporting"": {#(cr,lf)                ""DataPointA"": 100,#(cr,lf)                ""DataPointB"": 200,#(cr,lf)                ""DataPointC"": 300#(cr,lf)            }#(cr,lf)        }#(cr,lf)    ]#(cr,lf)}"
 ```
-## xray
+
+## xray Function
 ```ts
 let 
     Summarize = (source as any, optional verbose as logical) as text => [
@@ -15,7 +28,7 @@ let
 in
     Summarize
 ```
-## base
+## base: load = disabled
 
 ```ts
 let
@@ -33,7 +46,7 @@ let
 in
     table
 ```
-## main_b
+## main_b : final result
 ```ts
 let
     Source = base,
@@ -44,7 +57,7 @@ let
 in
     #"Changed Type"
 ```
-## main_a
+## main_a : final result
 ```ts
 let
     Source = base,
@@ -53,3 +66,64 @@ let
     #"Changed Type1" = Table.TransformColumnTypes(#"Expanded reporting",{{"reporting.DataPointA", Int64.Type}, {"reporting.DataPointB", Int64.Type}, {"reporting.DataPointC", Int64.Type}})
 in
     #"Changed Type1"
+```
+
+## Original JSON
+
+This is the same as the embedded json above 
+
+
+```jsonc
+{
+    "table": [
+        {
+            "columns": [
+                {
+                    "column_type": "Offer",
+                    "id": "879",
+                    "label": "Example Offer Name"
+                },
+                {
+                    "column_type": "Advertiser",
+                    "id": "135",
+                    "label": "Example Advertiser Name"
+                },
+                {
+                    "column_type": "Partner",
+                    "id": "20019",
+                    "label": "Partner Inc."
+                }
+            ],
+            "reporting": {
+                "DataPointA": 0,
+                "DataPointB": 75,
+                "DataPointC": 75
+            }
+        },
+        {
+            "columns": [
+                {
+                    "column_type": "Offer",
+                    "id": "881",
+                    "label": "Other Example Name"
+                },
+                {
+                    "column_type": "Advertiser",
+                    "id": "135",
+                    "label": "Example Advertiser Name"
+                },
+                {
+                    "column_type": "Partner",
+                    "id": "20017",
+                    "label": "Other Partner Inc."
+                }
+            ],
+            "reporting": {
+                "DataPointA": 100,
+                "DataPointB": 200,
+                "DataPointC": 300
+            }
+        }
+    ]
+}
+```
