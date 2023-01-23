@@ -1,5 +1,10 @@
 [Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./../readme.md)
 
+- [Replacing Text](#replacing-text)
+  - [Usage:](#usage)
+- [Add "Is A Valid Record" column](#add-is-a-valid-record-column)
+
+
 ## Replacing Text
 
 For text that matches a partial string, replace the entire contents
