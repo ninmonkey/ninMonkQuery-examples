@@ -1,4 +1,4 @@
-[Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./..)
+[Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./../readme.md)
 
 ## Replacing Text
 
