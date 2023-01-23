@@ -24,6 +24,13 @@ in
     #"Replace With Mapping"
 ```
 
+## Add "Is A Valid Record" column
+
+![screen](./img/Lookup Permissions in a Dimension Table -- PQ Calculated Columns.png)
+
+- Report: [Lookup Permissions in a Dimension Table.pbix](./Lookup%20Permissions%20in%20a%20Dimension%20Table%20--%20PQ%20Calculated%20Columns.pbix)
+- Power Query:[Lookup Permissions in a Dimension Table.pq](./pq/Lookup Permissions%20in%20a%20Dimension%20Table%20--%20PQ%20Calculated%20Columns.pq.md)
+
 <!--
 
 - [Text.ReplacePartialMatch.pq](./pq/Text.ReplacePartialMatch.pq)
