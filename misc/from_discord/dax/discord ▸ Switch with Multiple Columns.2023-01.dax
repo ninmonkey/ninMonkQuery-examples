@@ -1,0 +1,87 @@
+﻿
+
+define 
+/*
+	see examples at: https://dax.guide/switch/
+*/
+
+	measure m[basic] = sum( Numbers[c3] )
+	measure m[Stuff_with_var] = 
+		var result = switch( true(),
+			10 > 6, "a",
+			10 > 2, "b",
+			10 > 3, "c",
+			"fallback"
+			)
+			RETURN result
+	/*	
+	testing multiple conditions in one switch
+	*/
+	measure m[Stuff] = 
+		var Col1 = SELECTEDVALUE( Numbers[C1] )
+		var Col2 = SELECTEDVALUE( Numbers[C2] )
+		var Col3 = SELECTEDVALUE( Numbers[C3] )		
+		
+		var final_result = switch(
+			true(),
+			(Col2 == 1 && Col3 == 1), "B AND C are 1",
+			(Col2 == 1 || Col3 == 1), "B OR C are 1",
+			Col3 == 1, "C is 1",
+			Col2 == 1, "B is 1",
+			Col1 == 1, "A is 1",				
+			"<fallback>"
+		)
+	
+		
+		RETURN final_result
+
+	/*
+	testing multiple conditions in one switch
+	*/
+	measure m[Stuff2] = 
+		var Col1 = SELECTEDVALUE( Numbers[C1] )
+		var Col2 = SELECTEDVALUE( Numbers[C2] )
+		var Col3 = SELECTEDVALUE( Numbers[C3] )		
+		
+		var HasBothAC = Col1 == 2 && Col3 == 2
+		var BisNot2 = Col2 <> 2
+		
+		var final_result = switch(
+			true(),
+			HasBothAC && BisNot2, "BothAC and BisNot2",
+			HasBothAC, "HasBothAC",			
+			"<fallback>"
+		)
+	
+		
+		RETURN final_result
+
+
+// actual 
+EVALUATE
+SUMMARIZECOLUMNS(
+    Numbers[C1],
+    Numbers[C2],
+    Numbers[C3],
+    "Test Stuff", [Stuff],
+    "Test Stuff2", [Stuff2]
+)
+ORDER BY 
+    [Test Stuff2] DESC,
+    Numbers[C1] ASC,
+    Numbers[C2] ASC,
+    Numbers[C3] ASC
+
+
+
+// raw
+EVALUATE
+SUMMARIZECOLUMNS(
+    Numbers[C1],
+    Numbers[C2],
+    Numbers[C3]
+)
+ORDER BY 
+    Numbers[C1] ASC,
+    Numbers[C2] ASC,
+    Numbers[C3] ASC
