@@ -69,5 +69,23 @@
                 "icon": "helper"
             }
         ],
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "🐒build->Pipescript",
+                "type": "PowerShell",
+                "request": "launch",
+                "script": "${workspaceFolder}/pipescript/build.pipescript.ps1",
+                "cwd": "${workspaceFolder}",
+                "presentation": {
+                    "hidden": false,
+                    "group": "aaaa",
+                    "order": 1
+                }
+            }
+        ],
+        "compounds": []
     }
 }

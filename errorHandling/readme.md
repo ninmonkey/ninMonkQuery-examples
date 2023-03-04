@@ -30,3 +30,12 @@ someWhere =
     if true then ...
     else error errMessage
 ```
+
+## Even more links
+
+- <https://bengribaudo.com/blog/2022/05/24/6753/new-m-feature-structured-error-messages>
+- <https://bengribaudo.com/blog/2020/01/15/4883/power-query-m-primer-part-15-error-handling>
+- <https://learn.microsoft.com/en-us/powerquery-m/text-format>
+- <https://bengribaudo.com/blog/2022/02/21/6561/enhancing-an-errors-detail>
+- <https://bengribaudo.com/blog/2020/01/15/4883/power-query-m-primer-part-15-error-handling>
+- <https://learn.microsoft.com/en-us/powerquery-m/diagnostics-trace>
