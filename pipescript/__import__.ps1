@@ -29,15 +29,97 @@ function repo.WriteFileSummary {
         generates markdown urls to files, using relative filepaths, and escaping spaces for github preview
     #>
     param(
-        [string]$RootPath
+        [string]$RootPath,
+
+        # optionally overwrite the regex selector
+        [string]$IncludeExtensionRegex
     )
-    $origPath = get-location
-    pushd $RootPath
+    $origPath = Get-Location
+    Push-Location $RootPath
 
     repo.WriteNavigation
 
 
-    $prefix = [regex]::Escape(( gi . | % FullName )) + '\\'
+    $Regex = @{
+        CwdPrefix        = [regex]::Escape(( Get-Item . | ForEach-Object FullName )) + '\\'
+        IncludeExtension = '\.(pbix|pq|xlsx|png|md|dax)'
+        ExcludeExtension = '\.ps\.(md|pbix|pq|dax)'
+    }
+    if($IncludeExtensionRegex) {
+        $Regex.IncludeExtension = '\.({0})$' -f @( $IncludeExtensionRegex )
+    }
+
+    # Get-ChildItem . -Recurse -File
+    # | Where-Object extension -Match $Regex.IncludeExtension #
+    # | Where-Object Extension -NotMatch $Regex.ExcludeExtension  # ignore pipescript
+    # | Sort-Object BaseName
+    # | ForEach-Object {
+    #     '[{0}]({1})' -f @(
+    #         $_.BaseName
+    #         $_.FullName -replace $prefix, '' | md.Path.escapeSpace
+    #     )
+    # } | join.UL
+
+
+    & {
+        Get-ChildItem . -Recurse -File
+        | Where-Object extension -Match $Regex.IncludeExtension #
+        | Where-Object Extension -NotMatch $Regex.ExcludeExtension  # ignore pipescript
+        | ForEach-Object {
+            [pscustomobject]@{
+                GroupMonth        = $_.LastWriteTime.ToString($fStr.YearMonth)
+                Kind              = fileCategory $_.Name
+                Name              = $_.Name
+                RelativeWorkspace = $_.FullName -replace $Regex.CwdPrefix, ''
+                BaseName          = $_.BaseName
+                FullName          = $_.FullName
+                Extension         = $_.Extension
+                GroupDate         = $_.LastWriteTime.ToString($fStr.YearMonthDay)
+                GroupParentPath   = $_.Directory
+                LastModifiedDt    = $_.LastWriteTime -as 'datetime'
+                SizeKb            = '{0:n} kb' -f @( $_.Length / 1kb )
+
+            }
+        }
+        | Sort-Object RelativeWorkspace
+        | Sort LastModifiedDt -Descending
+        | ForEach-Object {
+            '<small>{4}</small> <b>{0}</b> [{1}]({2}) {3}' -f @(
+                $_.BaseName
+                $_.RelativeWorkspace
+                $_.RelativeWorkspace | md.Path.escapeSpace
+                $_.SizeKb
+                $_.GroupMonth
+                # $_.FullName -replace $prefix, '' | md.Path.escapeSpace
+            )
+        } | join.UL
+        # | CountIt
+
+    }
+
+
+
+
+
+
+    Pop-Location
+    Set-Location $origPath
+}
+function repo.WriteFileSummary-v2 {
+    <#
+    .SYNOPSIS
+        generates markdown urls to files, using relative filepaths, and escaping spaces for github preview
+    #>
+    param(
+        [string]$RootPath
+    )
+    $origPath = Get-Location
+    Push-Location $RootPath
+
+    repo.WriteNavigation
+
+
+    $prefix = [regex]::Escape(( Get-Item . | ForEach-Object FullName )) + '\\'
     $Regex = @{
 
         IncludeExtension = '\.(pbix|pq|xlsx|png|md|dax)'
@@ -53,10 +135,10 @@ function repo.WriteFileSummary {
             $_.BaseName
             $_.FullName -replace $prefix, '' | md.Path.escapeSpace
         )
-    } | Join.UL
+    } | join.UL
 
-    popd
-    set-location $origPath
+    Pop-Location
+    Set-Location $origPath
 }
 
 
