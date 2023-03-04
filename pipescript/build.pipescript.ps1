@@ -2,26 +2,48 @@ Import-Module Pipescript
 # Import-Module ImportExcel
 # Import-Module ExcelAnt
 
-. (Gi (Join-Path $PSScriptRoot '__import__.ps1'))
+. (Get-Item (Join-Path $PSScriptRoot '__import__.ps1'))
 
-pushd 'C:\Users\cppmo_000\SkyDrive\Documents\2022\Power-BI\My_Github\ninMonkQuery-examples\forumQuestions'
+& {
+    Push-Location 'C:\Users\cppmo_000\SkyDrive\Documents\2022\Power-BI\My_Github\ninMonkQuery-examples\forumQuestions'
+    Hr -fg blue
 
-hr -fg blue
+    # $exportPipescriptSplat = @{
+    #     Verbose = $true
+    #     Path = '.\'
+    #     Filter = '*readme.md*'
+    #     OutputPath = '.\'
+    #     OutputFileName = 'readme.md.pipescript.ps1'
+    #     OutputFormat = 'ps1'
+    # }
 
-# $exportPipescriptSplat = @{
-#     Verbose = $true
-#     Path = '.\'
-#     Filter = '*readme.md*'
-#     OutputPath = '.\'
-#     OutputFileName = 'readme.md.pipescript.ps1'
-#     OutputFormat = 'ps1'
-# }
+    Export-Pipescript -Verbose
+    # Export-Pipescript -verbose -Path '.\' # -Filter '*readme.md*' -OutputPath '.\' -OutputFileName 'readme.md.pipescript.ps1' -OutputFormat 'ps1'
+    Hr -fg orange
+    Get-Content *readme.md*
+    Pop-Location
+}
 
-Export-Pipescript -verbose
-# Export-Pipescript -verbose -Path '.\' # -Filter '*readme.md*' -OutputPath '.\' -OutputFileName 'readme.md.pipescript.ps1' -OutputFormat 'ps1'
+& {
+    Push-Location 'C:\Users\cppmo_000\SkyDrive\Documents\2022\Power-BI\My_Github\ninMonkQuery-examples'
+    Hr -fg blue
 
-hr -fg orange
+    # $exportPipescriptSplat = @{
+    #     Verbose = $true
+    #     Path = '.\'
+    #     Filter = '*readme.md*'
+    #     OutputPath = '.\'
+    #     OutputFileName = 'readme.md.pipescript.ps1'
+    #     OutputFormat = 'ps1'
+    # }
 
-gc *readme.md*
+    Export-Pipescript -Verbose -InputPath './' -filter 'toc.md'
+    # Export-Pipescript -verbose -Path '.\' # -Filter '*readme.md*' -OutputPath '.\' -OutputFileName 'readme.md.pipescript.ps1' -OutputFormat 'ps1'
 
-popd
+    Hr -fg orange
+
+    Get-Content toc.md
+
+    Pop-Location
+
+}

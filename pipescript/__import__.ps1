@@ -11,7 +11,7 @@ function md.Path.escapeSpace {
     }
 }
 
-function repo.WriteFileSummary {
+function repo.WriteFileSummary-v1 {
     Get-ChildItem . -Recurse -File
     | Where-Object extension -Match '\.(pbix|pq|xlsx|png|md|dax)'#
     | Where-Object Extension -NotMatch '\.ps\.(md|pbix|pq|dax)'  # ignore pipescript
@@ -23,6 +23,42 @@ function repo.WriteFileSummary {
         )
     }
 }
+function repo.WriteFileSummary {
+    <#
+    .SYNOPSIS
+        generates markdown urls to files, using relative filepaths, and escaping spaces for github preview
+    #>
+    param(
+        [string]$RootPath
+    )
+    $origPath = get-location
+    pushd $RootPath
+
+    repo.WriteNavigation
+
+
+    $prefix = [regex]::Escape(( gi . | % FullName )) + '\\'
+    $Regex = @{
+
+        IncludeExtension = '\.(pbix|pq|xlsx|png|md|dax)'
+        ExcludeExtension = '\.ps\.(md|pbix|pq|dax)'
+    }
+
+    Get-ChildItem . -Recurse -File
+    | Where-Object extension -Match $Regex.IncludeExtension #
+    | Where-Object Extension -NotMatch $Regex.ExcludeExtension  # ignore pipescript
+    | Sort-Object BaseName
+    | ForEach-Object {
+        '[{0}]({1})' -f @(
+            $_.BaseName
+            $_.FullName -replace $prefix, '' | md.Path.escapeSpace
+        )
+    } | Join.UL
+
+    popd
+    set-location $origPath
+}
+
 
 function md.Write.Url {
     param(
@@ -52,6 +88,11 @@ function repo.WriteNavigation {
 [Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./../readme.md)
 '@
 }
+
+
+
+
+
 <#
 
 
