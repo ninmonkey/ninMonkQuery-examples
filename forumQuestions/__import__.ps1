@@ -11,13 +11,26 @@ function md.Path.escapeSpace {
     }
 }
 
+function repo.WriteFileSummary {
+    Get-ChildItem . -Recurse -File
+    | Where-Object extension -Match '\.(pbix|pq|xlsx|png|md|dax)'#
+    | Where-Object Extension -NotMatch '\.ps\.(md|pbix|pq|dax)'  # ignore pipescript
+    | Sort-Object BaseName | ForEach-Object name
+    | ForEach-Object {
+        '[{0}]({1})' -f @(
+            $_
+            $_ | md.Path.escapeSpace
+        )
+    }
+}
+
 function md.Write.Url {
     param(
         # rquired label, and url
-        [Parameter(Mandatory, Position=0)]
+        [Parameter(Mandatory, Position = 0)]
         [string]$Text,
 
-        [Parameter(Mandatory, Position=1)]
+        [Parameter(Mandatory, Position = 1)]
         [string]
         $Url
     )
@@ -34,12 +47,13 @@ function md.Write.Url {
     }
 }
 
-function n.WriteNavigation {
-
+function repo.WriteNavigation {
+    @'
+[Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./../readme.md)
+'@
 }
 <#
 
-[Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./../readme.md)
 
 - [Multiple Nested Conditions with `Switch()`](#multiple-nested-conditions-with-switch) <span style='font-size:0.55em;'>2023-01-24</span>
 - [Finding Distinct Pairs](#finding-distinct-pairs) <span style='font-size:0.55em;'>2023-01-02</span>
