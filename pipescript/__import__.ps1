@@ -10,19 +10,6 @@ function md.Path.escapeSpace {
         $_ -replace ' ', '%20'
     }
 }
-
-function repo.WriteFileSummary-v1 {
-    Get-ChildItem . -Recurse -File
-    | Where-Object extension -Match '\.(pbix|pq|xlsx|png|md|dax)'#
-    | Where-Object Extension -NotMatch '\.ps\.(md|pbix|pq|dax)'  # ignore pipescript
-    | Sort-Object BaseName | ForEach-Object name
-    | ForEach-Object {
-        '[{0}]({1})' -f @(
-            $_
-            $_ | md.Path.escapeSpace
-        )
-    }
-}
 function repo.WriteFileSummary {
     <#
     .SYNOPSIS
@@ -39,7 +26,6 @@ function repo.WriteFileSummary {
 
     repo.WriteNavigation
 
-
     $Regex = @{
         CwdPrefix        = [regex]::Escape(( Get-Item . | ForEach-Object FullName )) + '\\'
         IncludeExtension = '\.(pbix|pq|xlsx|png|md|dax)'
@@ -48,19 +34,6 @@ function repo.WriteFileSummary {
     if($IncludeExtensionRegex) {
         $Regex.IncludeExtension = '\.({0})$' -f @( $IncludeExtensionRegex )
     }
-
-    # Get-ChildItem . -Recurse -File
-    # | Where-Object extension -Match $Regex.IncludeExtension #
-    # | Where-Object Extension -NotMatch $Regex.ExcludeExtension  # ignore pipescript
-    # | Sort-Object BaseName
-    # | ForEach-Object {
-    #     '[{0}]({1})' -f @(
-    #         $_.BaseName
-    #         $_.FullName -replace $prefix, '' | md.Path.escapeSpace
-    #     )
-    # } | join.UL
-
-
     & {
         Get-ChildItem . -Recurse -File
         | Where-Object extension -Match $Regex.IncludeExtension #
@@ -90,57 +63,41 @@ function repo.WriteFileSummary {
                 $_.RelativeWorkspace | md.Path.escapeSpace
                 $_.SizeKb
                 $_.GroupMonth
-                # $_.FullName -replace $prefix, '' | md.Path.escapeSpace
             )
         } | join.UL
         # | CountIt
-
     }
-
-
-
-
-
 
     Pop-Location
     Set-Location $origPath
 }
-function repo.WriteFileSummary-v2 {
-    <#
-    .SYNOPSIS
-        generates markdown urls to files, using relative filepaths, and escaping spaces for github preview
-    #>
+
+function fileCategory {
+    # short filetype categorization by extension
     param(
-        [string]$RootPath
+        [string]$Path
     )
-    $origPath = Get-Location
-    Push-Location $RootPath
+    switch -Regex ($Path) {
+        '\.ps1?\.\w+$' {
+            'pipescript'
+            break
+        }
+        '\.(png|gif|jpe?g|mp4)$' { 'image' }
+        '\.(csx?)$' { 'C#' }
+        '\.dax$' { 'Dax' }
+        '\.(xlsx|csv|tsv)$' { 'Excel' }
+        '\.ps1$' { 'Powershell' }
+        '\.(jsonc?)$' { 'Json' }
+        '\.(ts|js)$' { 'JavaScript' }
+        '\.(t?sql)$' { 'SQL' }
+        '\.(pq|powerquery|m|pqm)$' { 'PowerQuery' }
+        '\.pbi[xt]$' { 'PowerBI Report' }
 
-    repo.WriteNavigation
-
-
-    $prefix = [regex]::Escape(( Get-Item . | ForEach-Object FullName )) + '\\'
-    $Regex = @{
-
-        IncludeExtension = '\.(pbix|pq|xlsx|png|md|dax)'
-        ExcludeExtension = '\.ps\.(md|pbix|pq|dax)'
+        '\.md$' { 'markdown' }
+        default { 'other' }
     }
 
-    Get-ChildItem . -Recurse -File
-    | Where-Object extension -Match $Regex.IncludeExtension #
-    | Where-Object Extension -NotMatch $Regex.ExcludeExtension  # ignore pipescript
-    | Sort-Object BaseName
-    | ForEach-Object {
-        '[{0}]({1})' -f @(
-            $_.BaseName
-            $_.FullName -replace $prefix, '' | md.Path.escapeSpace
-        )
-    } | join.UL
-
-    Pop-Location
-    Set-Location $origPath
 }
-
 
 function md.Write.Url {
     param(
@@ -175,25 +132,3 @@ function repo.WriteNavigation {
 
 
 
-<#
-
-
-- [Multiple Nested Conditions with `Switch()`](#multiple-nested-conditions-with-switch) <span style='font-size:0.55em;'>2023-01-24</span>
-- [Finding Distinct Pairs](#finding-distinct-pairs) <span style='font-size:0.55em;'>2023-01-02</span>
-
-## Multiple Nested Conditions with `Switch()`
-
-- [view Report.pbix](./discord%20%E2%96%B8%20Switch%20with%20Multiple%20Columns.2023-01.pbix)
-- [view Queries.dax](./dax/discord%20%E2%96%B8%20Switch%20with%20Multiple%20Columns.2023-01.dax)
-
-![screenshot of report](./img/discord%20%E2%96%B8%20Switch%20with%20Multiple%20Columns.2023-01.pbix.png)
-
-
-## Finding Distinct Pairs 23
-
-
-- [view Report.pbix](./multiple%20methods%20of%20getting%20Distinct%20Codes%20per%20year%20%E2%94%902022-12.pbix)
-- [view Report.pq](./pq/multiple_distinct_examples.md)
-
-![screenshot of report](./img/multiple%20methods%20of%20getting%20Distinct%20Codes%20per%20year%20%E2%94%902022-12.png)
-#>

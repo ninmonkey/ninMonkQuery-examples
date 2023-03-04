@@ -1,29 +1,4 @@
-function fileCategory {
-    # short filetype categorization by extension
-    param(
-        [string]$Path
-    )
-    switch -Regex ($Path) {
-        '\.ps1?\.\w+$' {
-            'pipescript'
-            break
-        }
-        '\.(png|gif|jpe?g|mp4)$' { 'image' }
-        '\.(csx?)$' { 'C#' }
-        '\.dax$' { 'Dax' }
-        '\.(xlsx|csv|tsv)$' { 'Excel' }
-        '\.ps1$' { 'Powershell' }
-        '\.(jsonc?)$' { 'Json' }
-        '\.(ts|js)$' { 'JavaScript' }
-        '\.(t?sql)$' { 'SQL' }
-        '\.(pq|powerquery|m|pqm)$' { 'PowerQuery' }
-        '\.pbi[xt]$' { 'PowerBI Report' }
 
-        '\.md$' { 'markdown' }
-        default { 'other' }
-    }
-
-}
 & {
     $Regex ??= @{}
     $Regex.CwdPrefix = [regex]::Escape(( Get-Item . | ForEach-Object FullName )) + '\\'
@@ -89,13 +64,9 @@ function fileCategory {
 
     New-ExcelChartDefinition @chart_splat -XRange 'Kind' -YRange 'FullName' -Title 'count kind'
     | Export-Excel -ExcelPackage $Pkg -Worksheet 'files2' -Name 'files_by_kind'
-
-
     # -pack
     # New-ExcelChartDefinition @chart_splat -XRange 'Kind' -yrange 'FullName' -Title 'count kind' # -pack
     # | Add-ExcelChart -ExcelPackage $Pkg
-
-
     # New-ExcelChartDefinition# -Name 'files_by_month' -ChartType ColumnClustered -Title 'files by month' -XRange 'files_table[GroupMonth]' -YRange 'files_table[Count]' -Worksheet 'files' -Position 1, 1 | Add-ExcelChart -ExcelPackage $Pkg
 
     Close-ExcelPackage $Pkg -Show
@@ -110,31 +81,3 @@ function fileCategory {
 '- [ ] (1) - pivot, show counts by month, and kinds per month'
 '- [ ] (2) - show breadlines, mini bars of counts per week'
 '- [ ] (3) - or graphs of numbers over a timelapse'
-
-# function md.WriteTable {
-#     param(
-#         [Parameter(ValueFromPipeline, mandatory)]
-#     )
-# }
-
-# th
-
-
-# | ForEach-Object {
-# [pscustomobject]@{  When = (Get-Date)
-
-
-# | ForEach-Object { $_.FullName -replace $prefix, ''
-# }
-# | countit
-#| % Fullname
-#| group basename
-#| ul
-#    | sort -Unique FullName -Stable
-#    | ForEach-Object {
-#| group BaseName
-
-#      $_.FullName
-
-#    } | CountIt
-#| Join.UL
