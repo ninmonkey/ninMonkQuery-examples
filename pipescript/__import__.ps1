@@ -1,3 +1,6 @@
+# 'Actually, the better template to use is
+#     <https://github.com/ninmonkey/ninMonkQuery-examples/tree/0018978f75cccddf09ff1929fdedc2340efa4d05/Types>'
+
 function md.Path.escapeSpace {
     <#
     .DESCRIPTION
@@ -6,8 +9,15 @@ function md.Path.escapeSpace {
        PS>  'c:\foo bar\fast cat.png'
        c:\foo%20bar\fast%20cat.png
     #>
+    param(
+        [switch]$AndForwardSlash
+    )
     process {
-        $_ -replace ' ', '%20'
+        $accum = $_ -replace ' ', '%20'
+        if($AndForwardSlash) {
+            $accum = $accum -replace '\\', '/'
+        }
+        return $accum
     }
 }
 function repo.WriteFileSummary {
@@ -60,7 +70,7 @@ function repo.WriteFileSummary {
             '<small>{4}</small> <b>{0}</b> [{1}]({2}) {3}' -f @(
                 $_.BaseName
                 $_.RelativeWorkspace
-                $_.RelativeWorkspace | md.Path.escapeSpace
+                $_.RelativeWorkspace | md.Path.escapeSpace -AndForwardSlash
                 $_.SizeKb
                 $_.GroupMonth
             )
@@ -115,7 +125,7 @@ function md.Write.Url {
         @(
             '[{0}]' -f @( $EscapedLabel )
             '({0})' -f @(
-                $Url | md.Path.EscapeSpace
+                $Url | md.Path.EscapeSpace -AndForwardSlash
             )
         )
 
