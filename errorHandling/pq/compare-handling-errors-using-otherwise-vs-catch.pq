@@ -65,14 +65,33 @@ let
 
 
     tableSummary = {
-        [ Name = "Catch",       Actual = "File exists, but Json was an invalid format", Data = final1],
-        [ Name = "Catch2",      Actual = "Key 'file_does_not_exist' #(cr,lf)does not match rows in table", Data = final2 ],
-        [ Name = "Catch3",      Actual = "Actual Good, with no errors", Data = final3 ],
+        [ Name = "Catch",
+        WantErrors = true,
+            DidError = true,
+            Actual = "#(cr,lf)File exists, but Json was an invalid format", Data = final1 ],
 
-        [ Name = "Lost It All", Actual = "Actual", Data = lost_it_all1 ],
+        [ Name = "Catch2",
+        WantErrors = true,
+            DidError = true,
+            Actual = "ShouldError: Yes#(cr,lf)'file_does_not_exist' #(cr,lf)does not match rows in table", Data = final2 ],
 
-        [ Name = "Lost It All", Actual = "Actual", Data = lost_it_all1 ],
-        [ Name = "Lost It All2",Actual = "Actual", Data = lost_it_all2 ]
+        [ Name = "Catch3",
+             WantErrors = false,
+             DidError = true,
+            Actual = "ShouldError: No#(cr,lf)Actual Good, with no errors", Data = final3 ],
+
+
+        [ Name = "Lost It All",
+         WantErrors = true,
+            DidError = true,
+            Actual = "ShouldError: Yes#(cr,lf)Should Be: File exists, Invalid Json", Data = lost_it_all1 ],
+
+
+        [ Name = "Lost It All", WantErrors = true,
+            DidError = true,
+            Actual = "ShouldError: Yes#(cr,lf)Should be: Key does not exist", Data = lost_it_all2 ]
+
+        // [ Name = "Lost It All2",Actual = "Actual", Data = lost_it_all2 ]
     },
 
 
@@ -81,8 +100,18 @@ let
     )
 
 ],
+    abbr_columns = true,
     z = main_preserve_errors[z],
     #"Expanded Data" = Table.ExpandRecordColumn(z, "Data", {"Reason", "Message", "Detail", "Message.Format", "Message.Parameters", "name"}, {"Reason", "Message", "Detail", "Message.Format", "Message.Parameters", "name.1"}),
-    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Data",{{"Reason", type text}, {"Message", type text}, {"Detail", type any}, {"Message.Format", type text}, {"Message.Parameters", type text}, {"name.1", type text}, {"Name", type text}})
+    ColNames = [
+        default ={"a"},
+        short = {"b"}
+    ],
+
+    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Data",{{"Reason", type text}, {"Message", type text}, {"Detail", type any}, {"Message.Format", type text}, {"Message.Parameters", type text}, {"name.1", type text}, {"Name", type text}}),
+
+    cols_all = #"Changed Type",
+    cols_abbr = cols_all,
+    #"Removed Other Columns" = Table.SelectColumns(cols_abbr,{"Name", "Actual", "Reason", "Message"})
 in
-    #"Changed Type"
+    #"Removed Other Columns"

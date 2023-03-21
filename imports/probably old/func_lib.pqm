@@ -1,0 +1,8 @@
+section compareOverlap;
+
+shared hi = (optional message as text) =>
+    let
+        _message = if (message <> null) then message else "(no message)",
+        a = "Hello from compareOverlap: " & _message
+    in
+        a;
