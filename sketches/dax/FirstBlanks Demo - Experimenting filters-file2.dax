@@ -1,0 +1,60 @@
+﻿/* START QUERY BUILDER */
+define
+	var cur_index = SELECTEDVALUE( Metric[Index] )
+	
+	measure Metric[CountRows1] = countrows( Metric )
+	measure Metric[CountRows2] = calculate(
+		COUNTROWS( Metric ),
+		All( Metric )
+	)
+	measure Metric[t1] = calculate(
+		max( Metric[Value] ),
+		all( Metric ),
+		filter( Metric, Metric[Index] < 10)
+		//KEEPFILTERS( Metric[Index] )
+	)
+	
+	measure Metric[t2] = calculate(
+		max( Metric[Value] ),
+		//all( Metric ),
+		CALCULATETABLE(
+			Metric,
+			//KEEPFILTERS( Metric[Index] ),
+			filter( Metric, Metric[Index] < cur_index)
+		)
+		//filter( Metric, Metric[Index] < 10)
+		
+		//filter( Metric, Metric[Index] < 10)
+		//KEEPFILTERS( Metric[Index] )
+	)
+
+	
+	measure Metric[t3] = calculate(
+		max( Metric[Value] ),
+		//all( Metric ),
+		CALCULATETABLE(
+			Metric,
+			//KEEPFILTERS( Metric[Index] ),
+			filter( Metric, Metric[Index] < cur_index)
+		)
+		//KEEPFILTERS( Metric[Index] ),
+		//filter( Metric, Metric[Index] < 10)		
+		//filter( Metric, Metric[Index] < 10)
+		//KEEPFILTERS( Metric[Index] )
+	)
+	
+		
+EVALUATE
+SUMMARIZECOLUMNS(    
+    Metric[Index],    
+    Metric[Value],
+    
+    "t3", [t3],
+	"t1", [t1],
+    "t2", [t2],
+    "Row1", [CountRows1]
+)
+ORDER BY     
+    Metric[Index] ASC,
+    Metric[Value] ASC
+/* END QUERY BUILDER */

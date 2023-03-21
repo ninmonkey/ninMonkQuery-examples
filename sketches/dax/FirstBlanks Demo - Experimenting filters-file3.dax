@@ -1,0 +1,191 @@
+﻿
+/* START QUERY BUILDER */
+define
+	var cur_index = SELECTEDVALUE( Metric[Index] )
+	measure Metric[CountRows1] = countrows( Metric )
+	
+	
+	
+    MEASURE Metric[FakeSales] = max(  Metric[Value] )
+    
+    MEASURE Metric[FakeSales2] = calculate(
+    	max(  Metric[Value] )
+    )
+    
+    MEASURE Metric[t9] = CALCULATETABLE(
+			{ FIRSTNONBLANKVALUE( Metric[Index], 
+                SELECTEDVALUE( Metric[Value] )
+            )},
+            
+            Metric[Index] <= cur_index
+		)
+		
+// table 6
+EVALUATE
+SUMMARIZECOLUMNS(    
+    Metric[Index],    
+    Metric[Value],
+    "fake", CALCULATE(
+    	Metric[FakeSales],
+    	Metric[Index] < cur_index,
+    	all( Metric )
+    	
+    )
+)		
+		
+// table 5
+EVALUATE
+SUMMARIZECOLUMNS(    
+    Metric[Index],    
+    Metric[Value],
+    "fake", CALCULATE(
+    	Metric[FakeSales],
+    	Metric[Index] > cur_index
+    	
+    )
+)
+		
+// table 4
+EVALUATE
+SUMMARIZECOLUMNS(    
+    Metric[Index],    
+    Metric[Value],
+    "fake", CALCULATE(
+    	Metric[FakeSales],
+    	Metric[Index] > cur_index,
+    	ALLSELECTED( Metric )
+    )
+)
+
+// table 3
+
+EVALUATE
+SUMMARIZECOLUMNS(    
+    Metric[Index],    
+    Metric[Value],
+    "fake", CALCULATE(
+    	Metric[FakeSales],
+    	Metric[Index] = 13,
+    	all( Metric ) 
+    )
+)
+//ORDER BY     
+//    Metric[Index] ASC,
+//    Metric[Value] ASC
+//		
+		
+		
+// table 2
+EVALUATE
+SUMMARIZECOLUMNS(    
+    Metric[Index],    
+    Metric[Value],
+    "fake", Metric[FakeSales]
+)
+ORDER BY     
+    Metric[Index] ASC,
+    Metric[Value] ASC
+    
+    
+    
+    
+    
+    // table 2
+   EVALUATE
+SUMMARIZECOLUMNS(    
+    Metric[Index],    
+    Metric[Value],
+    "fake",Metric[FakeSales],
+    
+//    "t9", [t9],
+//    "t3", [t3],
+//	"t1", [t1],
+//    "t2", [t2],
+    "Row1", [CountRows1]
+)
+ORDER BY     
+    Metric[Index] ASC,
+    Metric[Value] ASC
+	/*
+	measure Metric[CountRows1] = countrows( Metric )
+	measure Metric[CountRows2] = calculate(
+		COUNTROWS( Metric ),
+		All( Metric )
+	)
+	measure Metric[t1] = calculate(
+		max( Metric[Value] ),
+		all( Metric ),
+		filter( Metric, Metric[Index] < 10)
+		//KEEPFILTERS( Metric[Index] )
+	)
+	
+	measure Metric[t2] = calculate(
+		max( Metric[Value] ),
+		//all( Metric ),
+		CALCULATETABLE(
+			Metric,
+			//KEEPFILTERS( Metric[Index] ),
+			filter( Metric, Metric[Index] < cur_index)
+		)
+		//filter( Metric, Metric[Index] < 10)
+		
+		//filter( Metric, Metric[Index] < 10)
+		//KEEPFILTERS( Metric[Index] )
+	)
+
+	
+	measure Metric[t3] = calculate(
+		max( Metric[Value] ),
+		//all( Metric ),
+		CALCULATETABLE(
+			Metric,
+			//KEEPFILTERS( Metric[Index] ),
+			filter( Metric, Metric[Index] < cur_index)
+		)
+		//KEEPFILTERS( Metric[Index] ),
+		//filter( Metric, Metric[Index] < 10)		
+		//filter( Metric, Metric[Index] < 10)
+		//KEEPFILTERS( Metric[Index] )
+	)
+    MEASURE Metric[FakeSales] = max(  Metric[Value] )
+    
+    MEASURE Metric[t9] = CALCULATETABLE(
+			{ FIRSTNONBLANKVALUE( Metric[Index], 
+                SELECTEDVALUE( Metric[Value] )
+            )},
+            
+            Metric[Index] <= cur_index
+		)
+EVALUATE
+SUMMARIZECOLUMNS(    
+    Metric[Index],    
+    Metric[Value],    
+    "stuff", [t9]
+    
+)
+ORDER BY     
+    Metric[Index] ASC,
+    Metric[Value] ASC
+        //   MEASURE Metric[t10] = CALCULATETABLE(
+		//	{ FIRSTNONBLANKVALUE( Metric[Value], [FakeSales] )}
+		//	filter( Metric, Metric[Index] < cur_index)0
+		//)
+	
+		
+EVALUATE
+SUMMARIZECOLUMNS(    
+    Metric[Index],    
+    Metric[Value],
+    
+    "t9", [t9],
+    "t3", [t3],
+	"t1", [t1],
+    "t2", [t2],
+    "Row1", [CountRows1]
+)
+ORDER BY     
+    Metric[Index] ASC,
+    Metric[Value] ASC
+    */
+/* END QUERY BUILDER */
+
