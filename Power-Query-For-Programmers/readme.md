@@ -1,3 +1,17 @@
+- [Operators](#operators)
+- [`local variables` or `scoped variables`](#local-variables-or-scoped-variables)
+- [There are no classes](#there-are-no-classes)
+- [Special Qouting Identifiers with `#"` and `"`](#special-qouting-identifiers-with--and-)
+- [`each` is a "regular" function](#each-is-a-regular-function)
+  - [`each` Described](#each-described)
+- [`Table.AddColumn` : Why do columns lose their types?](#tableaddcolumn--why-do-columns-lose-their-types)
+- [`Table.AddColumn` : How to prevent columns from turning into `type any`](#tableaddcolumn--how-to-prevent-columns-from-turning-into-type-any)
+- [Using Try Catch: `try x catch (e) => e`](#using-try-catch-try-x-catch-e--e)
+- [using operator `meta` on `null` values](#using-operator-meta-on-null-values)
+- [too convoluted example](#too-convoluted-example)
+  - [`local variables` or `scoped variables`](#local-variables-or-scoped-variables-1)
+
+
 ## Operators
 
 | Operator                                        | description                                                       |
@@ -19,7 +33,21 @@
 
 `Number.From`, `Number.ToText`, etc are all **flat top level functions**
 
+## Special Qouting Identifiers with `#"` and `"`
 
+Sometimes you have special values in your variable name. 
+The 2nd one surrounds the name with `#"` and `"`
+In this case, they are exactly equivalent. 
+```js
+x = 10
+
+#"x" = 10
+```
+
+If there are spaces in your variable, it requires the quoted syntax. 
+You'll see this in step names a lot, because the UI adds names with spaces like `#"Transformed Columns"`
+
+You can reference query step names like variables, because they *are* regular variables.
         
 ## `each` is a "regular" function
 
@@ -67,7 +95,7 @@ In the docs you can look it up in the lexical grammar.
 It's literally:
     a custom function body, without the header / signature
 
-## `each` Described
+### `each` Described
 
 ```js
 = each [Sales] * 2
