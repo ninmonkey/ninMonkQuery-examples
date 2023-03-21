@@ -1,0 +1,16 @@
+DEFINE
+VAR loggedAccountId = SELECTEDVALUE( 'Transaction Logs'[Logged User Id] )
+VAR loggedUserId =  SELECTEDVALUE( 'Transaction Logs'[Logged User Id] )
+    
+MEASURE m[ShouldBe] = COUNT( Permissions[Owned Account Id] )
+
+//EVALUATE
+
+EVALUATE SUMMARIZECOLUMNS(
+    'Transaction Logs'[Transaction Id],
+    "[log].[User]", MAX( 'Transaction Logs'[Logged User Id] ),
+    "[log].[Account]", MAX( 'Transaction Logs'[Logged User Id] ),
+    "user", loggedAccountId,
+    "ShouldBe", [ShouldBe],
+    "rows", COUNTROWS( 'Transaction Logs' )
+)

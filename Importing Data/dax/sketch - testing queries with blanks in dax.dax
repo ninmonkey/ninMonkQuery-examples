@@ -1,0 +1,34 @@
+DEFINE 
+
+//MEASURE Facts[a] = COUNTROWS()
+MEASURE Facts[NumVals] = COUNTROWS( VALUES( Facts[value] ) )
+MEASURE Facts[NumDist] = COUNTROWS( DISTINCT( Facts[value] ) )
+
+TABLE t99 = {
+    
+}
+
+TABLE t0 = {
+    BLANK() = BLANK(),
+    BLANK() = 0,
+    BLANK() = ""
+}
+TABLE t1 = {
+    900, BLANK(), BLANK(), 234, 0
+}
+
+EVALUATE {
+    2
+}
+
+
+eVALUATE t1 
+EVALUATE t0
+//    BLANK() = BLANK(),
+//    
+//} 
+//
+//EVALUATE t0
+
+
+

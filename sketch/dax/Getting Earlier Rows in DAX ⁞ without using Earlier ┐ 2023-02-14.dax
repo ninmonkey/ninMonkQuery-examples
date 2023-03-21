@@ -1,0 +1,58 @@
+﻿/* 
+https://dax.guide/index/
+*/
+
+define 
+//	var CurChar_ = SELECTEDVALUE( Alpha[Letter] )
+	measure m[Cur Char] = selectedValue( Alpha[Letter] )
+	measure m[Prev Char] = CALCULATE(
+		--m[Cur Char],
+		SelectedValue( Alpha[Letter] ),
+		OFFSET(
+		   -1, orderby ( Alpha[Index], asc)
+		   )
+    )
+
+
+    --measure m[OldRank] =
+
+
+EVALUATE
+SUMMARIZECOLUMNS(
+    Alpha[Index],
+    Alpha[Letter],
+    "cur Char", m[Cur Char],
+    "Prev Char",m[Prev Char],
+    ".","."
+)
+
+
+EVALUATE
+SUMMARIZECOLUMNS(
+    Alpha[Index],
+    Alpha[Letter]
+)
+ORDER BY 
+    Alpha[Index] ASC,
+    Alpha[Letter] ASC
+/* END QUERY BUILDER 
+from the docs:
+
+	DEFINE
+	    MEASURE Sales[Prev Year Sales] =
+	        CALCULATE (
+	            [Sales Amount],
+	            OFFSET (
+	                -1,
+	                ORDERBY ( 'Date'[Year], ASC )
+	            )
+	        )
+	EVALUATE
+	SUMMARIZECOLUMNS (
+	    'Date'[Year],
+	    TREATAS ( { 2019, 2020 }, 'Date'[Year] ),
+	    "Sales Amount", [Sales Amount],
+	    "Prev Year Sales", [Prev Year Sales]
+	)
+*/
+

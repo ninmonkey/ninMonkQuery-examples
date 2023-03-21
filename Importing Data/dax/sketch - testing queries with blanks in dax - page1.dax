@@ -1,0 +1,30 @@
+//DEFINE 
+//TABLE t0 = {
+//    { "a", "b" },
+//    { "ds", "df"}
+//}
+// 
+//
+//EVALUATE t0 
+//
+//EVALUATE { 10 , 30 }
+EVALUATE {
+    "Blank = Blank(), 0, ''",
+    " ",
+    BLANK() = BLANK(),
+    BLANK() = 0,
+    BLANK() = "",
+    
+    " ", "Blank == Blank(), 0, ''",
+    " ",
+    
+    BLANK() == BLANK(),
+    BLANK() == 0,
+    BLANK() == ""
+}
+//    BLANK() = BLANK(),
+//    
+//} 
+//
+//EVALUATE t0
+
