@@ -1,0 +1,28 @@
+    // TwoLoops
+    let
+        // sample data
+        Source = #table(
+            type table[Year = Int64.Type],
+            List.Transform({ 2000..2020 },
+            each { _ })
+        ),
+
+        // add a list to every row
+        #"Added Custom" = Table.AddColumn(
+            Source, "Team",
+            each {"red", "blue", "green"},
+            type {text}
+        ),
+
+        // expand combinations
+        #"Expanded Team" = Table.ExpandListColumn(#"Added Custom", "Team"),
+
+        // fake web request, using multiple variables / columns
+        #"Added Custom1" = Table.AddColumn(
+            #"Expanded Team",
+            "WebRequest",
+            (row) =>
+                { row[Year], row[Team] },
+        List.Type )
+    in
+        #"Added Custom1"

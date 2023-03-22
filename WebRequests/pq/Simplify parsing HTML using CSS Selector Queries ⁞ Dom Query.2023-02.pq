@@ -1,3 +1,4 @@
+// Fetch Web Address
 let
     /* answering this thread:
     Using CSS Selector Queries lets you extract data from a webpage in a cleaner way than manually parsing it.
@@ -19,8 +20,9 @@ let
         source as text
     ) as record meta [
         Documentation.Name = "Text.ParseAddress",
+        // Documentation.LongDescription = "Parses an address string into a record with the following fields: Original, Lines, Segments, Part1, Part2, State, Zip",
         Documentation.LongDescription = Text.Combine({
-            "Parses an address string into a record with the following fields: Original, Lines, Segments, Part1, Part2, State, Zips"
+            "Converts an address from raw text to Segments"
             },"<br>"),
         Documentation.Examples = {
             [
@@ -58,3 +60,21 @@ let
     Addr = Text.ParseAddress( RawText )
 in
     Addr
+
+// Xkcd Comic
+let
+    Html.QueryComic = (url as text) =>
+        let
+            response = Web.BrowserContents(url),
+            query = Html.Table(response, {{"Comic", "div#comic img", each _ } })
+        in
+            query,
+
+    Comic = Html.QueryComic("https://xkcd.com"),
+
+    #"Expanded Comic" = Table.ExpandRecordColumn(
+            Comic, "Comic",
+            {"TagName", "TextContent", "Attributes"}, {"TagName", "TextContent", "Attributes"}
+        )[Attributes]{0}
+in
+    #"Expanded Comic"
