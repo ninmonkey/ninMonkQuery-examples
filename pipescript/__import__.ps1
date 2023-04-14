@@ -10,7 +10,7 @@ function md.Path.escapeSpace {
        c:\foo%20bar\fast%20cat.png
     #>
     param(
-        [switch]$AndForwardSlash
+        [switch]$AndForwardSlash = $true
     )
     process {
         $accum = $_ -replace ' ', '%20'
