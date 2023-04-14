@@ -44,7 +44,7 @@ function repo.WriteFileSummary {
     if($IncludeExtensionRegex) {
         $Regex.IncludeExtension = '\.({0})$' -f @( $IncludeExtensionRegex )
     }
-    & {
+    . {
         Get-ChildItem . -Recurse -File
         | Where-Object extension -Match $Regex.IncludeExtension #
         | Where-Object Extension -NotMatch $Regex.ExcludeExtension  # ignore pipescript
