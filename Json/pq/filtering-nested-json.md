@@ -34,7 +34,7 @@ let
     //toggle an alternate json doc, to test error handling
     SourceGood = Json.Document( DocJson , TextEncoding.Utf8 ),
     SourceBad = Json.Document( BrokenJson , TextEncoding.Utf8 ),
-    Source  = if #"Use Broken Json" then SourceBad else SourceGood,
+    Source  = if false then SourceBad else SourceGood,
 
     /*
         schema type is not mandatory to run
