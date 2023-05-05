@@ -1,4 +1,8 @@
 let
+    /*
+    There's a simplified version of this function, that removes all the fancy-pants-fluff
+        named: <2023-05-04 - Dates with Times as Ranges.Simplified.pq>
+    */
     Source = #table(
         type table[DateText = text],
         {
@@ -76,11 +80,11 @@ let
                     config ?? []
                 }),
                 date_str  = Text.BeforeDelimiter( source, " ", Occurrence.First ),
-                times_str = Text.AfterDelimiter( source, " ", Occurrence.First ),
+                times_str = Text.AfterDelimiter(  source, " ", Occurrence.First ),
                 pair_str  = Text.Split( times_str, " - " ),
                 start     = Time.FromText( pair_str{0}, [ Culture = config[Culture] ] ),
                 end       = Time.FromText( pair_str{1}, [ Culture = config[Culture] ] ),
-                Date      = Date.FromText( date_str, [ Format = config[Format], Culture = config[Culture] ]),
+                Date      = Date.FromText( date_str, [ Format  = config[Format], Culture = config[Culture] ] ),
                 return    = [
                     Date  = Date,
                     StartTime = start,
@@ -94,8 +98,8 @@ let
         test = DateTimeRange.FromText( target ),
         expected = [
             Date        = #date(2022, 11, 9),
-            StartTime   = Time.FromText("9:00 AM",  [Culture = "en-us"] ),
-            EndTime     = Time.FromText("12:00 PM", [Culture = "en-us"] )
+            StartTime   = Time.FromText("9:00 AM",  [ Culture = "en-us" ] ),
+            EndTime     = Time.FromText("12:00 PM", [ Culture = "en-us" ] )
         ],
         DateTimeRange.FromText = DateTimeRange.FromText,
         #"Conversion Is Correct?" = expected = test,
