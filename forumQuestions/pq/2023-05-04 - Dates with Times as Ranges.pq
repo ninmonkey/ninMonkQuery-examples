@@ -27,9 +27,8 @@ let
             "- Splitter functions: <https://learn.microsoft.com/en-us/powerquery-m/splitter-functions>",
             "- See sections on extraction and transformation: <https://learn.microsoft.com/en-us/powerquery-m/text-functions#extraction>",
             "- <https://github.com/ninmonkey/ninMonkQuery-examples> has more examples.",
-            "- If you want easy to generate metrics on your git repos, I started <https://gitlogger.com>",
+            "- If you want easy to generate metrics on your git repos, I started <https://gitlogger.com>. It'd be cool if you check it out.",
             "",
-
             "<b>## This function was written to demonstratates a few concepts:</b>",
             "",
             "• Using custom <b>format string</b>s for Date.FromText and Time.FromText",
@@ -46,14 +45,22 @@ let
         }, "<br>"),
             Documentation.Examples = {
                 // [Description = "Inspecting strings", Code = "Text.Inspect(""SomeString"")", Result = "..."],
-                [Description = "Inspecting table columns",
-
-                Code = Text.Combine({
-                    "let",
-                    "   sample = ""13/11/2022 10:00 AM - 6:00 PM""",
-                    "   in sample"
+                [
+                    Description = "Inspecting table columns",
+                    Code = Text.Combine({
+                        "let",
+                        "   sample = DateTimeRange.FromText( ""13/11/2022 10:00 AM - 6:00 PM"" ) ",
+                        "in",
+                        "   sample"
                     }, "#(cr,lf)"),
-                Result = "..."]
+                    Result = "[
+                        Date        = #(#)date(2022, 11, 9),
+                        StartTime   = Time.FromText(""9:00 AM"",  [Culture = ""en-us""] ),
+                        EndTime     = Time.FromText(""12:00 PM"", [Culture = ""en-us""] )
+                    ]"
+
+
+                ]
             }
 
     ],
@@ -86,9 +93,9 @@ let
         target = Source{1}[DateText],
         test = DateTimeRange.FromText( target ),
         expected = [
-            Date = #date(2022, 11, 9),
-            StartTime = Time.FromText("9:00 AM", [Culture = "en-us"]),
-            EndTime = Time.FromText("12:00 PM", [Culture = "en-us"])
+            Date        = #date(2022, 11, 9),
+            StartTime   = Time.FromText("9:00 AM",  [Culture = "en-us"] ),
+            EndTime     = Time.FromText("12:00 PM", [Culture = "en-us"] )
         ],
         DateTimeRange.FromText = DateTimeRange.FromText,
         #"Conversion Is Correct?" = expected = test,
