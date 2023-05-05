@@ -24,15 +24,6 @@ let
             "Transforms text that contains a Date and Time range into a date and time data-types",
             "",
             "Supports ranges like: ""13/11/2022 10:00 AM - 6:00 PM""",
-            "",
-            "<b>## Docs, References, or Tutorials:</b>",
-            "",
-            "- UI on splitting: <https://learn.microsoft.com/en-us/power-query/split-columns-delimiter>",
-            "- Splitter functions: <https://learn.microsoft.com/en-us/powerquery-m/splitter-functions>",
-            "- See sections on extraction and transformation: <https://learn.microsoft.com/en-us/powerquery-m/text-functions#extraction>",
-            "- <https://github.com/ninmonkey/ninMonkQuery-examples> has more examples.",
-            "- If you want easy to generate metrics on your git repos, I started <https://gitlogger.com>. It'd be cool if you check it out.",
-            "",
             "<b>## This function was written to demonstratates a few concepts:</b>",
             "",
             "• Using custom <b>format string</b>s for Date.FromText and Time.FromText",
@@ -44,7 +35,15 @@ let
             "• Totally <b>optional</b> parameter",
             "• How to <b>shadow</b> variables in the local scope, overriding the outer scope",
             "• Using a Record for Default Values",
-            "• Combining the default Record allowing you to overwrite some of the defaults, basically opt-in to changing some without losing all the defaults"
+            "• Combining the default Record allowing you to overwrite some of the defaults, basically opt-in to changing some without losing all the defaults",
+            "",
+            "<b>## Docs, References, or Tutorials:</b>",
+            "",
+            "- UI on splitting: <https://learn.microsoft.com/en-us/power-query/split-columns-delimiter>",
+            "- Splitter functions: <https://learn.microsoft.com/en-us/powerquery-m/splitter-functions>",
+            "- See sections on extraction and transformation: <https://learn.microsoft.com/en-us/powerquery-m/text-functions#extraction>",
+            "- <https://github.com/ninmonkey/ninMonkQuery-examples> has more examples.",
+            "- If you want easy to generate metrics on your git repos, I started <https://gitlogger.com>. It'd be cool if you check it out."
 
         }, "<br>"),
             Documentation.Examples = {
@@ -62,8 +61,6 @@ let
                         StartTime   = Time.FromText(""9:00 AM"",  [Culture = ""en-us""] ),
                         EndTime     = Time.FromText(""12:00 PM"", [Culture = ""en-us""] )
                     ]"
-
-
                 ]
             }
 
@@ -84,7 +81,7 @@ let
                 pair_str  = Text.Split( times_str, " - " ),
                 start     = Time.FromText( pair_str{0}, [ Culture = config[Culture] ] ),
                 end       = Time.FromText( pair_str{1}, [ Culture = config[Culture] ] ),
-                Date      = Date.FromText( date_str, [ Format  = config[Format], Culture = config[Culture] ] ),
+                Date      = Date.FromText( date_str, [ Format = config[Format], Culture = config[Culture] ] ),
                 return    = [
                     Date  = Date,
                     StartTime = start,
