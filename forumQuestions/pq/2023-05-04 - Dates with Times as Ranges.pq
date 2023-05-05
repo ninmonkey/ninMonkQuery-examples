@@ -12,15 +12,24 @@ let
         optional options as nullable record
     ) as record meta [
         Documentation.Name = "DateTimeRange.FromText",
+        Documentation.Author = "Jake Bolton <jake.bolton.314@gmail.com>",
+        Documentation.Author.Github = "https://github.com/ninmonkey",
+        Documentation.Author.Blog = "https://ninmonkeys.com/blog/",
+        Documentation.Author.SourceUrl = "https://github.com/ninmonkey/ninMonkQuery-examples",
         Documentation.LongDescription = Text.Combine({
             "Transforms text that contains a Date and Time range into a date and time data-types",
             "",
-            "<h2>References:</h2>",
-            "- UI splitting, https://learn.microsoft.com/en-us/power-query/split-columns-delimiter",
-            "- <a href='https://learn.microsoft.com/en-us/powerquery-m/splitter-functions'>Splitter functions</a>",
-            "- <a href='https://learn.microsoft.com/en-us/powerquery-m/text-functions#extraction'>Text extraction and transformation</a>",
+            "Supports ranges like: ""13/11/2022 10:00 AM - 6:00 PM""",
             "",
-            "<h1>This demonstratates a few concepts:</h1>",
+            "<b>## Docs, References, or Tutorials:</b>",
+            "",
+            "- UI on splitting: <https://learn.microsoft.com/en-us/power-query/split-columns-delimiter>",
+            "- Splitter functions: <https://learn.microsoft.com/en-us/powerquery-m/splitter-functions>",
+            "- See sections on extraction and transformation: <https://learn.microsoft.com/en-us/powerquery-m/text-functions#extraction>",
+            "- <https://github.com/ninmonkey/ninMonkQuery-examples> has more examples.",
+            "",
+
+            "<b>## This function was written to demonstratates a few concepts:</b>",
             "",
             "• Using custom <b>format string</b>s for Date.FromText and Time.FromText",
             "• Parsing text is simpler if you break it into two steps. Then you can use really simple delimiters that you split around.",
@@ -71,7 +80,7 @@ let
                 ]
             in return,
 
-    summary = [
+    Summary = [
         Source = Source,
         target = Source{1}[DateText],
         test = DateTimeRange.FromText( target ),
@@ -80,7 +89,9 @@ let
             StartTime = Time.FromText("9:00 AM", [Culture = "en-us"]),
             EndTime = Time.FromText("12:00 PM", [Culture = "en-us"])
         ],
-        #"Conversion Is Correct?" = expected = test
+        DateTimeRange.FromText = DateTimeRange.FromText,
+        #"Conversion Is Correct?" = expected = test,
+        #"Inspect Custom Function Metadata" = Value.Metadata( Value.Type( DateTimeRange.FromText ) )
     ]
 in
-    summary
+    Summary
