@@ -27,6 +27,7 @@ let
             "- Splitter functions: <https://learn.microsoft.com/en-us/powerquery-m/splitter-functions>",
             "- See sections on extraction and transformation: <https://learn.microsoft.com/en-us/powerquery-m/text-functions#extraction>",
             "- <https://github.com/ninmonkey/ninMonkQuery-examples> has more examples.",
+            "- If you want easy to generate metrics on your git repos, I started <https://gitlogger.com>",
             "",
 
             "<b>## This function was written to demonstratates a few concepts:</b>",
