@@ -1,0 +1,12 @@
+- title: 'daxpatterns'
+- url: https://www.daxpatterns.com/
+- items:
+  - title: Cumulative total | Daxpatterns.com
+    desc: The cumulative total pattern allows you to perform calculations such as running totals. You can use it to implement warehouse stock and balance sheet calculations using the original transactions instead of using snapshots of data over time.
+    url: https://www.daxpatterns.com/cumulative-total/
+    keywords: [ 'running total', 'cululative total' ]
+  - title: Computing runninng totals in DAX - SQL BI
+    desc: The cumulative total pattern allows you to perform calculations such as running totals. You can use it to implement warehouse stock and balance sheet calculations using the original transactions instead of using snapshots of data over time.
+    url: https://www.sqlbi.com/articles/computing-running-totals-in-dax/
+    keywords: [ 'running total', 'cululative total' ]
+''
