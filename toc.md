@@ -1,6 +1,8 @@
 # File Listing
 
-Last updated: 2023-04-17 17:55:24Z 
+Dynamically built using [PipeScript](https://github.com/StartAutomating/PipeScript/)
+
+Last updated: 2023-05-27 15:09:37Z 
 
 ## Images Only
 
@@ -33,10 +35,21 @@ Last updated: 2023-04-17 17:55:24Z
 ## All Files 
 
 [Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./../readme.md) 
+ - <small>5/14/2023 9:22:07 AM</small> <b>2023_04-24 - group Id  - find newest kittens</b> [forumQuestions\pq\2023_04-24 - group Id  - find newest kittens.pq](forumQuestions/pq/2023_04-24%20-%20group%20Id%20%20-%20find%20newest%20kittens.pq) 2.47 kb
+ - <small>5/14/2023 9:19:50 AM</small> <b>2023-05-04 - Dates with Times as Ranges</b> [forumQuestions\pq\2023-05-04 - Dates with Times as Ranges.pq](forumQuestions/pq/2023-05-04%20-%20Dates%20with%20Times%20as%20Ranges.pq) 5.55 kb
+ - <small>5/14/2023 9:19:33 AM</small> <b>2023-05-04 - Dates with Times as Ranges.Simplified</b> [forumQuestions\pq\2023-05-04 - Dates with Times as Ranges.Simplified.pq](forumQuestions/pq/2023-05-04%20-%20Dates%20with%20Times%20as%20Ranges.Simplified.pq) 1.61 kb
+ - <small>5/12/2023 3:23:10 PM</small> <b>2023-05-10 - Slice and Dice - Using Optional Parameters and Null coalesce operators</b> [forumQuestions\2023-05-10 - Slice and Dice - Using Optional Parameters and Null coalesce operators.pbix](forumQuestions/2023-05-10%20-%20Slice%20and%20Dice%20-%20Using%20Optional%20Parameters%20and%20Null%20coalesce%20operators.pbix) 31.24 kb
+ - <small>5/12/2023 12:35:27 PM</small> <b>2023-05-04 - Dates with Times as Ranges</b> [forumQuestions\2023-05-04 - Dates with Times as Ranges.pbix](forumQuestions/2023-05-04%20-%20Dates%20with%20Times%20as%20Ranges.pbix) 28.05 kb
+ - <small>5/12/2023 12:33:07 PM</small> <b>readme</b> [forumQuestions\readme.md](forumQuestions/readme.md) 2.68 kb
+ - <small>5/12/2023 12:31:09 PM</small> <b>toc.ps</b> [toc.ps.md](toc.ps.md) 0.34 kb
+ - <small>5/9/2023 10:09:32 PM</small> <b>2023-05-10 - Slice and Dice - Using Optional Parameters and Null coalesce operators.post</b> [forumQuestions\pq\2023-05-10 - Slice and Dice - Using Optional Parameters and Null coalesce operators.post.md](forumQuestions/pq/2023-05-10%20-%20Slice%20and%20Dice%20-%20Using%20Optional%20Parameters%20and%20Null%20coalesce%20operators.post.md) 2.32 kb
+ - <small>5/9/2023 9:56:54 PM</small> <b>2023-05-10 - Slice and Dice - Using Optional Parameters and Null coalesce operators</b> [forumQuestions\pq\2023-05-10 - Slice and Dice - Using Optional Parameters and Null coalesce operators.pq](forumQuestions/pq/2023-05-10%20-%20Slice%20and%20Dice%20-%20Using%20Optional%20Parameters%20and%20Null%20coalesce%20operators.pq) 1.40 kb
+ - <small>5/6/2023 4:24:25 PM</small> <b>2023-05-06 - Unpivoted Student Grades</b> [forumQuestions\2023-05-06 - Unpivoted Student Grades.pbix](forumQuestions/2023-05-06%20-%20Unpivoted%20Student%20Grades.pbix) 33.19 kb
+ - <small>4/25/2023 4:40:57 PM</small> <b>2021_06-27 - Group by Id - Find Most Recently Modified Kitten</b> [forumQuestions\2021_06-27 - Group by Id - Find Most Recently Modified Kitten.pbix](forumQuestions/2021_06-27%20-%20Group%20by%20Id%20-%20Find%20Most%20Recently%20Modified%20Kitten.pbix) 32.95 kb
+ - <small>4/25/2023 3:45:41 PM</small> <b>filtering-nested-json</b> [Json\pq\filtering-nested-json.md](Json/pq/filtering-nested-json.md) 3.34 kb
+ - <small>4/17/2023 5:55:24 PM</small> <b>toc</b> [toc.md](toc.md) 46.15 kb
  - <small>4/15/2023 9:46:52 PM</small> <b>verify is duplicate --- SecurityCategory ⇢ unpivot and legends.2023.04</b> [forumQuestions\verify is duplicate --- SecurityCategory ⇢ unpivot and legends.2023.04.pbix](forumQuestions/verify%20is%20duplicate%20---%20SecurityCategory%20⇢%20unpivot%20and%20legends.2023.04.pbix) 27.39 kb
  - <small>4/13/2023 11:25:55 PM</small> <b>SecurityCategory ⇢ unpivot and legends.2023.04</b> [forumQuestions\SecurityCategory ⇢ unpivot and legends.2023.04.pbix](forumQuestions/SecurityCategory%20⇢%20unpivot%20and%20legends.2023.04.pbix) 27.41 kb
- - <small>4/13/2023 11:10:59 PM</small> <b>readme</b> [forumQuestions\readme.md](forumQuestions/readme.md) 1.19 kb
- - <small>4/13/2023 11:01:11 PM</small> <b>toc</b> [toc.md](toc.md) 45.82 kb
  - <small>4/13/2023 10:54:53 PM</small> <b>SecurityCategory ⇢ unpivot and legends.2023.04</b> [forumQuestions\pq\SecurityCategory ⇢ unpivot and legends.2023.04.pq](forumQuestions/pq/SecurityCategory%20⇢%20unpivot%20and%20legends.2023.04.pq) 1.18 kb
  - <small>4/13/2023 10:52:12 PM</small> <b>SecurityCategory ⇢ unpivot and legends.2023.04</b> [forumQuestions\img\SecurityCategory ⇢ unpivot and legends.2023.04.png](forumQuestions/img/SecurityCategory%20⇢%20unpivot%20and%20legends.2023.04.png) 80.96 kb
  - <small>4/9/2023 7:00:40 PM</small> <b>Dynamically Detect Current Folder of Workbook.2022.🎨</b> [Excel\Dynamically Detect Current Folder of Workbook.2022.🎨.xlsx](Excel/Dynamically%20Detect%20Current%20Folder%20of%20Workbook.2022.🎨.xlsx) 23.82 kb
@@ -55,8 +68,8 @@ Last updated: 2023-04-17 17:55:24Z
  - <small>3/20/2023 7:55:13 PM</small> <b>FirstBlanks Demo - Experimenting filters</b> [sketches\dax\FirstBlanks Demo - Experimenting filters.dax](sketches/dax/FirstBlanks%20Demo%20-%20Experimenting%20filters.dax) 2.00 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>FirstBlanks Demo - Experimenting filters-file3</b> [sketches\dax\FirstBlanks Demo - Experimenting filters-file3.dax](sketches/dax/FirstBlanks%20Demo%20-%20Experimenting%20filters-file3.dax) 3.70 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>FirstBlanks Demo - Experimenting filters-file2</b> [sketches\dax\FirstBlanks Demo - Experimenting filters-file2.dax](sketches/dax/FirstBlanks%20Demo%20-%20Experimenting%20filters-file2.dax) 1.29 kb
- - <small>3/20/2023 7:55:13 PM</small> <b>answering reddit -- generating path ids.2022-11</b> [sketches\answering reddit -- generating path ids.2022-11.pbix](sketches/answering%20reddit%20--%20generating%20path%20ids.2022-11.pbix) 28.43 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>answering discord -- format strings using spaces.2022-11</b> [sketches\answering discord -- format strings using spaces.2022-11.pbix](sketches/answering%20discord%20--%20format%20strings%20using%20spaces.2022-11.pbix) 18.86 kb
+ - <small>3/20/2023 7:55:13 PM</small> <b>answering reddit -- generating path ids.2022-11</b> [sketches\answering reddit -- generating path ids.2022-11.pbix](sketches/answering%20reddit%20--%20generating%20path%20ids.2022-11.pbix) 28.43 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>grab for named unistr emojis --  utils ⁞ InspectBinary bytes and text encoding 🔍🔎  ┐ 2021-02-14</b> [sketch\grab for named unistr emojis --  utils ⁞ InspectBinary bytes and text encoding 🔍🔎  ┐ 2021-02-14.pbix](sketch/grab%20for%20named%20unistr%20emojis%20--%20%20utils%20⁞%20InspectBinary%20bytes%20and%20text%20encoding%20🔍🔎%20%20┐%202021-02-14.pbix) 45.44 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>Getting Earlier Rows in DAX ⁞ without using Earlier ┐ 2023-02-14</b> [sketch\dax\Getting Earlier Rows in DAX ⁞ without using Earlier ┐ 2023-02-14.dax](sketch/dax/Getting%20Earlier%20Rows%20in%20DAX%20⁞%20without%20using%20Earlier%20┐%202023-02-14.dax) 1.05 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>codepoints-of-words-📌2022-02-iter0</b> [sketch\codepoints-of-words-📌2022-02-iter0.pbix](sketch/codepoints-of-words-📌2022-02-iter0.pbix) 44.70 kb
@@ -82,8 +95,8 @@ Last updated: 2023-04-17 17:55:24Z
  - <small>3/20/2023 7:55:13 PM</small> <b>ForEach - Looping over two lists -- cartesian join</b> [misc\ForEach - Looping over two lists -- cartesian join.pbix](misc/ForEach%20-%20Looping%20over%20two%20lists%20--%20cartesian%20join.pbix) 16.16 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>compare-handling-errors-using-otherwise-vs-catch</b> [errorHandling\compare-handling-errors-using-otherwise-vs-catch.pbix](errorHandling/compare-handling-errors-using-otherwise-vs-catch.pbix) 16.00 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>basic.web.contents.invoke.pattern</b> [WebRequests\pq\basic.web.contents.invoke.pattern.pq](WebRequests/pq/basic.web.contents.invoke.pattern.pq) 0.61 kb
- - <small>3/20/2023 7:55:13 PM</small> <b>Simplify parsing HTML using CSS Selector Queries ⁞ Dom Query.2023-02</b> [WebRequests\pq\Simplify parsing HTML using CSS Selector Queries ⁞ Dom Query.2023-02.pq](WebRequests/pq/Simplify%20parsing%20HTML%20using%20CSS%20Selector%20Queries%20⁞%20Dom%20Query.2023-02.pq) 3.10 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>Using Table Columns ⁞ For WebRequest Query Strings.2023.02</b> [WebRequests\Using Table Columns ⁞ For WebRequest Query Strings.2023.02.pbix](WebRequests/Using%20Table%20Columns%20⁞%20For%20WebRequest%20Query%20Strings.2023.02.pbix) 15.83 kb
+ - <small>3/20/2023 7:55:13 PM</small> <b>Simplify parsing HTML using CSS Selector Queries ⁞ Dom Query.2023-02</b> [WebRequests\pq\Simplify parsing HTML using CSS Selector Queries ⁞ Dom Query.2023-02.pq](WebRequests/pq/Simplify%20parsing%20HTML%20using%20CSS%20Selector%20Queries%20⁞%20Dom%20Query.2023-02.pq) 3.10 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>Simplify parsing HTML using CSS Selector Queries ⁞ Dom Query.2023-02</b> [WebRequests\Simplify parsing HTML using CSS Selector Queries ⁞ Dom Query.2023-02.pbix](WebRequests/Simplify%20parsing%20HTML%20using%20CSS%20Selector%20Queries%20⁞%20Dom%20Query.2023-02.pbix) 20.28 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>Detecting SSL Errors with WebContents ⁞ Sample SSL Errors.2023-01</b> [WebRequests\Detecting SSL Errors with WebContents ⁞ Sample SSL Errors.2023-01.pbix](WebRequests/Detecting%20SSL%20Errors%20with%20WebContents%20⁞%20Sample%20SSL%20Errors.2023-01.pbix) 39.28 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>del me</b> [Unicode\del me.pbix](Unicode/del%20me.pbix) 9,471.79 kb
@@ -94,17 +107,16 @@ Last updated: 2023-04-17 17:55:24Z
  - <small>3/20/2023 7:55:13 PM</small> <b>Transform Json - Extracting Tables from Mixed Json</b> [Json\Transform Json - Extracting Tables from Mixed Json.pbix](Json/Transform%20Json%20-%20Extracting%20Tables%20from%20Mixed%20Json.pbix) 34.08 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>game log - 2022.12</b> [Importing Data\game log - 2022.12.pbix](Importing%20Data/game%20log%20-%202022.12.pbix) 20.95 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>game log - 2022.12 - iter2</b> [Importing Data\game log - 2022.12 - iter2.pbix](Importing%20Data/game%20log%20-%202022.12%20-%20iter2.pbix) 26.89 kb
- - <small>3/20/2023 7:55:13 PM</small> <b>sketch - testing queries with blanks in dax - page1</b> [Importing Data\dax\sketch - testing queries with blanks in dax - page1.dax](Importing%20Data/dax/sketch%20-%20testing%20queries%20with%20blanks%20in%20dax%20-%20page1.dax) 0.42 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>sketch - testing queries with blanks in dax</b> [Importing Data\dax\sketch - testing queries with blanks in dax.dax](Importing%20Data/dax/sketch%20-%20testing%20queries%20with%20blanks%20in%20dax.dax) 0.44 kb
+ - <small>3/20/2023 7:55:13 PM</small> <b>sketch - testing queries with blanks in dax - page1</b> [Importing Data\dax\sketch - testing queries with blanks in dax - page1.dax](Importing%20Data/dax/sketch%20-%20testing%20queries%20with%20blanks%20in%20dax%20-%20page1.dax) 0.42 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>Importing Date Time Zones - Round Trip</b> [Importing Data\Importing Date Time Zones - Round Trip.pbix](Importing%20Data/Importing%20Date%20Time%20Zones%20-%20Round%20Trip.pbix) 26.82 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>2022-04 - How to Import Numbers Safely Without Errors</b> [Importing Data\2022-04 - How to Import Numbers Safely Without Errors.pbix](Importing%20Data/2022-04%20-%20How%20to%20Import%20Numbers%20Safely%20Without%20Errors.pbix) 13.80 kb
  - <small>3/20/2023 7:55:13 PM</small> <b>Blanks - Potentially Unexpected Implicit Coercsions.2022.12 - iter2</b> [Importing Data\Blanks - Potentially Unexpected Implicit Coercsions.2022.12 - iter2.pbix](Importing%20Data/Blanks%20-%20Potentially%20Unexpected%20Implicit%20Coercsions.2022.12%20-%20iter2.pbix) 18.63 kb
  - <small>3/20/2023 7:52:39 PM</small> <b>compare-handling-errors-using-otherwise-vs-catch</b> [errorHandling\pq\compare-handling-errors-using-otherwise-vs-catch.pq](errorHandling/pq/compare-handling-errors-using-otherwise-vs-catch.pq) 3.10 kb
  - <small>3/20/2023 7:52:39 PM</small> <b>OData ⁞ Test a list of Queries</b> [WebRequests\OData\OData ⁞ Test a list of Queries.pbix](WebRequests/OData/OData%20⁞%20Test%20a%20list%20of%20Queries.pbix) 109.12 kb
- - <small>3/20/2023 7:51:27 PM</small> <b>readme</b> [Power-Query-For-Programmers\readme.md](Power-Query-For-Programmers/readme.md) 7.71 kb
  - <small>3/20/2023 7:51:27 PM</small> <b>About_LocalVariables.md</b> [Power-Query-For-Programmers\About_LocalVariables.md.pq](Power-Query-For-Programmers/About_LocalVariables.md.pq) 0.81 kb
+ - <small>3/20/2023 7:51:27 PM</small> <b>readme</b> [Power-Query-For-Programmers\readme.md](Power-Query-For-Programmers/readme.md) 7.71 kb
  - <small>3/3/2023 11:44:25 PM</small> <b>Filtering Multiple Conditions Using Custom Functions</b> [misc\from_discord\pq\Filtering Multiple Conditions Using Custom Functions.pq](misc/from_discord/pq/Filtering%20Multiple%20Conditions%20Using%20Custom%20Functions.pq) 1.14 kb
- - <small>3/3/2023 11:34:22 PM</small> <b>toc.ps</b> [toc.ps.md](toc.ps.md) 0.26 kb
  - <small>3/3/2023 9:27:30 PM</small> <b>index</b> [index.md](index.md) 0.00 kb
  - <small>3/3/2023 9:05:37 PM</small> <b>readme.ps</b> [forumQuestions\readme.ps.md](forumQuestions/readme.ps.md) 0.59 kb
  - <small>3/3/2023 8:19:56 PM</small> <b>2023-03 - Import Shifted Columns</b> [forumQuestions\2023-03 - Import Shifted Columns.pbix](forumQuestions/2023-03%20-%20Import%20Shifted%20Columns.pbix) 33.17 kb
@@ -165,7 +177,6 @@ Last updated: 2023-04-17 17:55:24Z
  - <small>12/12/2022 2:03:23 PM</small> <b>todo</b> [Excel\todo.md](Excel/todo.md) 1.28 kb
  - <small>12/10/2022 10:43:52 PM</small> <b>readme</b> [FormatStrings\readme.md](FormatStrings/readme.md) 0.87 kb
  - <small>12/10/2022 10:37:38 PM</small> <b>Filter Json - Filtering Nested Values Without Expanding values</b> [Json\Filter Json - Filtering Nested Values Without Expanding values.pbix](Json/Filter%20Json%20-%20Filtering%20Nested%20Values%20Without%20Expanding%20values.pbix) 27.51 kb
- - <small>12/10/2022 10:34:25 PM</small> <b>filtering-nested-json</b> [Json\pq\filtering-nested-json.md](Json/pq/filtering-nested-json.md) 3.35 kb
  - <small>12/10/2022 9:57:19 PM</small> <b>filtering-nested-values-without-expanding-json</b> [Json\img\filtering-nested-values-without-expanding-json.png](Json/img/filtering-nested-values-without-expanding-json.png) 25.43 kb
  - <small>12/7/2022 6:24:43 PM</small> <b>2022-12 - grouping words as categories</b> [sketch\2022-12 - grouping words as categories.pq](sketch/2022-12%20-%20grouping%20words%20as%20categories.pq) 5.74 kb
  - <small>11/29/2022 9:17:00 PM</small> <b>format currency - using spaces in place of the thousands separator.2022-12</b> [FormatStrings\format currency - using spaces in place of the thousands separator.2022-12.pbix](FormatStrings/format%20currency%20-%20using%20spaces%20in%20place%20of%20the%20thousands%20separator.2022-12.pbix) 19.04 kb
