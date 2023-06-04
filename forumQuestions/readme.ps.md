@@ -1,13 +1,18 @@
----
-Last updated: 2023-06-04 11:20:07Z 
----
+~~~pipescript{
+    # build metadata yaml-header
+    function Template.WriteHeader { 
+        @{ 
+        PipeScriptVersion = Get-Module pipescript | Join-String Version
+        Pwsh = $PSVersionTable.PSVersion -join ''
+        LastGenerated = Get-Date | % toString u
+        } | ConvertTo-Yaml
+        | Join-String -op  "---`n" -os "---"
+    }
 
+Template.WriteHeader
+}~~~
 
-# Questions from the internet
-
-Last updated: ```.<{ Get-date | % tostring u }>.``` 
-
-## Questions from the Internet
+## Answering Questions from the Internet
 
 [Automatically Generated Index](readme.ps.md) of `pq`, `pbix` and `png` files, sorted by `lastWriteTime`
 
@@ -39,7 +44,7 @@ Last updated: ```.<{ Get-date | % tostring u }>.```
 }
 ~~~
 
-### Images only
+## Images only
 
 ~~~PipeScript{
     import-module ninmonkey.console -Scope Global *>$null
