@@ -1,4 +1,6 @@
 let
+    // to post: 2023-05-08
+    // to post: 2023-05-08
     // This is a simplified version of the fancy pants version at: "2023-05-04 - Dates with Times as Ranges.pq"
     DateTimeRange.FromText = (source as text, optional config as nullable record)
         as record => let

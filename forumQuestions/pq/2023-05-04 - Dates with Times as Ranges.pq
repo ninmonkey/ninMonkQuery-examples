@@ -1,6 +1,9 @@
 let
     /*
-    There's a simplified version of this function, that removes all the fancy-pants-fluff
+
+
+
+    post todo: 2023-05-14 ; There's a simplified version of this function, that removes all the fancy-pants-fluff
         named: <2023-05-04 - Dates with Times as Ranges.Simplified.pq>
     */
     Source = #table(
