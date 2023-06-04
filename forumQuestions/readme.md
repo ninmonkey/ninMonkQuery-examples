@@ -5,15 +5,15 @@ Last updated: 2023-06-04 11:20:07Z
 
 # Questions from the internet
 
-Last updated: 2023-06-04 11:25:35Z 
+Last updated: 2023-06-04 11:26:13Z 
 
 ## Questions from the Internet
 
 [Automatically Generated Index](readme.ps.md) of `pq`, `pbix` and `png` files, sorted by `lastWriteTime`
 
 
- - [readme.ps.md](readme.ps.md)
  - [readme.md](readme.md)
+ - [readme.ps.md](readme.ps.md)
  - [img/2023-03-Dax_Explicitly_Format_Culture.pbix.png](img/2023-03-Dax_Explicitly_Format_Culture.pbix.png)
  - [2023-03 - Dax Explicitly Format Culture.pbix](2023-03%20-%20Dax%20Explicitly%20Format%20Culture.pbix)
  - [pq/2023_04-24 - group Id  - find newest kittens.pq](pq/2023_04-24%20-%20group%20Id%20%20-%20find%20newest%20kittens.pq)
