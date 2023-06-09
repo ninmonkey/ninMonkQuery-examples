@@ -1,7 +1,7 @@
 ---
 PipeScriptVersion: 0.2.5
 Pwsh: 7.3.4
-LastGenerated: 2023-06-04 11:35:04Z
+LastGenerated: 2023-06-09 18:25:22Z
 ---
 
 ## Answering Questions from the Internet
@@ -9,10 +9,14 @@ LastGenerated: 2023-06-04 11:35:04Z
 [Automatically Generated Index](readme.ps.md) of `pq`, `pbix` and `png` files, sorted by `lastWriteTime`
 
 
- - [readme.ps.md](readme.ps.md)
- - [readme.md](readme.md)
- - [img/2023-03-Dax_Explicitly_Format_Culture.pbix.png](img/2023-03-Dax_Explicitly_Format_Culture.pbix.png)
+ - [dax/2023-06-06 - Dynamically Generating Urls.dax](dax/2023-06-06%20-%20Dynamically%20Generating%20Urls.dax)
+ - [img/2023-06-06 - Dynamically Generating Urls.png](img/2023-06-06%20-%20Dynamically%20Generating%20Urls.png)
+ - [2023-06-06 - Dynamically Generating Urls.pbix](2023-06-06%20-%20Dynamically%20Generating%20Urls.pbix)
+ - [2023-06-05 - Infraction Pie.pbix](2023-06-05%20-%20Infraction%20Pie.pbix)
  - [2023-03 - Dax Explicitly Format Culture.pbix](2023-03%20-%20Dax%20Explicitly%20Format%20Culture.pbix)
+ - [readme.md](readme.md)
+ - [readme.ps.md](readme.ps.md)
+ - [img/2023-03-Dax_Explicitly_Format_Culture.pbix.png](img/2023-03-Dax_Explicitly_Format_Culture.pbix.png)
  - [pq/2023_04-24 - group Id  - find newest kittens.pq](pq/2023_04-24%20-%20group%20Id%20%20-%20find%20newest%20kittens.pq)
  - [pq/2023-05-04 - Dates with Times as Ranges.pq](pq/2023-05-04%20-%20Dates%20with%20Times%20as%20Ranges.pq)
  - [pq/2023-05-04 - Dates with Times as Ranges.Simplified.pq](pq/2023-05-04%20-%20Dates%20with%20Times%20as%20Ranges.Simplified.pq)
@@ -38,6 +42,7 @@ LastGenerated: 2023-06-04 11:35:04Z
 ## Images only
 
 
+ - [img/2023-06-06 - Dynamically Generating Urls.png](img/2023-06-06%20-%20Dynamically%20Generating%20Urls.png)
  - [img/2023-03-Dax_Explicitly_Format_Culture.pbix.png](img/2023-03-Dax_Explicitly_Format_Culture.pbix.png)
  - [img/SecurityCategory ⇢ unpivot and legends.2023.04.png](img/SecurityCategory%20⇢%20unpivot%20and%20legends.2023.04.png)
  - [img/Finding-duplicates-using-groupby-or-table-distinct.png](img/Finding-duplicates-using-groupby-or-table-distinct.png)
