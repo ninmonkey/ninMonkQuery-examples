@@ -1,0 +1,11 @@
+Dynamic Url = 
+     transforming in dax, because the question was creating a url dynamically
+     step1 output a url in plain text
+     step2 set the measure's Data Category to Web URL
+     support may vary depending on the visual
+    var urlRoot = httpslearn.microsoft.comen-uspowerquery-m
+    var funcName = SelectedValue( List[Name] )
+    var funcUrl =  Substitute( Lower( funcName ), ., - )
+    var finalUrl = urlRoot & funcUrl
+
+return finalUrl
