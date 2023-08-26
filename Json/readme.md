@@ -1,7 +1,16 @@
 [Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./../readme.md)
 
+- [Ex3 Parse Json for dsnDiag values](#ex3-parse-json-for-dsndiag-values)
 - [Ex1 Tables from Mixed Json](#ex1-tables-from-mixed-json)
 - [Ex2 Nested Json](#ex2-nested-json)
+
+## Ex3 Parse Json for dsnDiag values
+
+- Report [Parse Json for dsnDiag values.pbix](./Parse%20Json%20for%20dsnDiag.pbix)
+- Query [Parse Json for dsnDiag values.pbix](./pq/Parse%20Json%20for%20dsnDiag.pq)
+  
+![Parse Json for dsnDiag values](./img/Parse%20Json%20for%20dsnDiag.png)
+
 
 ## Ex1 Tables from Mixed Json
 
