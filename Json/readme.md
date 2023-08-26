@@ -7,7 +7,7 @@
 ## Ex3 Parse Json for dsnDiag values
 
 - Report [Parse Json for dsnDiag values.pbix](./Parse%20Json%20for%20dsnDiag.pbix)
-- Query [Parse Json for dsnDiag values.pbix](./pq/Parse%20Json%20for%20dsnDiag.pq)
+- Query [Parse Json for dsnDiag values.pq](./pq/Parse%20Json%20for%20dsnDiag.pq)
   
 ![Parse Json for dsnDiag values](./img/Parse%20Json%20for%20dsnDiag.png)
 
