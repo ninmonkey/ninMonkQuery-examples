@@ -22,10 +22,39 @@ let
         Splitter.SplitTextByCharacterTransition(
         {"0".."9"}, (c) => not List.Contains({"0".."9"}, c) ),
 
-
     // sugar to make it easier to embed powerquery as a string literal
     DocExpand = (source as text) =>
         Text.Replace( source, "␞", "#(0022)" ),
+
+    Duration.FromCustom.Type = type function (
+        source as duration
+    ) as duration meta [
+        Documentation.Name = "Duration.FromCustom",
+        Documentation.LongDescription = Text.Combine({
+            "Call <code>Splitter.SplitDigitWithSuffix()</code>.","",
+            "Pick out pairs of 'd', 'h', 'm', 's' and 'd' using <code>List.SelectBySuffix()</code>",
+            "returns type <code>duration</code>"
+        }, "<br>")
+    ],
+    Duration.FromCustom.Func = (source as text) as duration => [
+        clean = Text.Trim( Text.Lower( source, Culture.Current ) ),
+        s_segs = Text.Split(clean, " "),
+        s_pairs = List.Transform( s_segs, (pair) => Splitter.SplitDigitWithSuffix( pair )),
+
+        Days =
+            Number.From( List.SelectBySuffix( s_pairs, "d" ) ) ?? 0,
+        Hours =
+            Number.From( List.SelectBySuffix( s_pairs, "h" ) ) ?? 0,
+        Minutes =
+            Number.From( List.SelectBySuffix( s_pairs, "m" ) ) ?? 0,
+        Seconds =
+            Number.From( List.SelectBySuffix( s_pairs, "s" ) ) ?? 0,
+
+        inst =
+             #duration( Days, Hours, Minutes, Seconds )
+    ][inst],
+    Duration.FromCustom = Value.ReplaceType( Duration.FromCustom.Func, Duration.FromCustom.Type),
+
 
    // expects a list of pairs of 2 elements, first is the digit, 2nd is the unit
     List.SelectBySuffix.Func = ( items as list, unit as text ) as any =>
@@ -55,34 +84,6 @@ let
         }
     ],
     List.SelectBySuffix = Value.ReplaceType( List.SelectBySuffix.Func, List.SelectBySuffix.Type ),
-
-    Duration.FromCustom.Type = type function (
-        source as duration
-    ) as duration meta [
-        Documentation.Name = "Duration.FromCustom",
-        Documentation.LongDescription = Text.Combine({
-            "Call <code>Splitter.SplitDigitWithSuffix()</code>.","",
-            "Pick out pairs of 'd', 'h', 'm', 's' and 'd' using <code>List.SelectBySuffix()</code>",
-            "returns type <code>duration</code>"
-        }, "<br>")
-    ],
-    Duration.FromCustom.Func = (source as text) as duration => [
-        s_segs = Text.Split(source, " "),
-        s_pairs = List.Transform( s_segs, (pair) => Splitter.SplitDigitWithSuffix( pair )),
-
-        Days =
-            Number.From( List.SelectBySuffix( s_pairs, "d" ) ) ?? 0,
-        Hours =
-            Number.From( List.SelectBySuffix( s_pairs, "h" ) ) ?? 0,
-        Minutes =
-            Number.From( List.SelectBySuffix( s_pairs, "m" ) ) ?? 0,
-        Seconds =
-            Number.From( List.SelectBySuffix( s_pairs, "s" ) ) ?? 0,
-
-        inst =
-             #duration( Days, Hours, Minutes, Seconds )
-    ][inst],
-    Duration.FromCustom = Value.ReplaceType( Duration.FromCustom.Func, Duration.FromCustom.Type),
 
     x1 = Xray( Source ) ,
     #"Changed Type" = Table.TransformColumnTypes(Source,{{"RawText", type text}}),
