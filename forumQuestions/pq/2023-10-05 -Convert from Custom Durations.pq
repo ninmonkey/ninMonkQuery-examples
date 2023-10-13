@@ -68,7 +68,27 @@ let
     ],
     List.SelectBySuffix = Value.ReplaceType( List.SelectBySuffix.Func, List.SelectBySuffix.Type ),
 
+    NumberOrZero = (source as any, optional options as nullable record) =>
+        try Number.From( source, (options ?? []) )
+        catch (e) => null meta [
+            Message = e[Message], Input = source ],
+
+    Duration.FromCustom = (source as text) as any => [
+        s_segs = Text.Split(source, " "),
+        s_pairs = List.Transform( s_segs, (pair) => Splitter.SplitDigitWithSuffix( pair )),
+        Days =
+            Number.From( List.SelectBySuffix( s_pairs, "d" ) ) ?? 0,
+        Hours =
+            Number.From( List.SelectBySuffix( s_pairs, "h" ) ) ?? 0,
+        Minutes =
+            Number.From( List.SelectBySuffix( s_pairs, "m" ) ) ?? 0,
+        Seconds =
+            Number.From( List.SelectBySuffix( s_pairs, "s" ) ) ?? 0,
+        inst =
+             #duration( 0, Hours, Minutes, Seconds )
+    ][inst],
     summary = [
+        dc = Duration.FromCustom(sample),
         x  = Xray,
         sample = "1d 3z 3m 5s",
         s_segs = Text.Split(sample, " "),
@@ -83,14 +103,18 @@ let
         ray_pairs = Xray(s_pairs),
 
        Days =
-            List.SelectBySuffix( s_pairs, "d" ) ?? 0,
+            //  Value.Metadata( NumberOrZero( List.SelectBySuffix( s_pairs, "d") ) ),
+            Number.From( List.SelectBySuffix( s_pairs, "d" ) ) ?? 0,
         Hours =
-            List.SelectBySuffix( s_pairs, "h" ) ?? 0,
+            Number.From( List.SelectBySuffix( s_pairs, "h" ) ) ?? 0,
+            // NumberOrZero( List.SelectBySuffix( s_pairs, "h") ),
         Minutes =
-            List.SelectBySuffix( s_pairs, "m" ) ?? 0,
+            Number.From( List.SelectBySuffix( s_pairs, "m" ) ) ?? 0,
+            // NumberOrZero( List.SelectBySuffix( s_pairs, "h") ),
             // x(List.SelectBySuffix( s_pairs, "m" )) ?? 0,
         Seconds =
-            List.SelectBySuffix( s_pairs, "s" ) ?? 0,
+            Number.From( List.SelectBySuffix( s_pairs, "s" ) ) ?? 0,
+            // List.SelectBySuffix( s_pairs, "s" ) ?? 0,
 
         inst =
              #duration( 0, Hours, Minutes, Seconds ),
@@ -107,7 +131,7 @@ let
     ],
 
 
-    Duration.FromCustom = (input as text) as any => [
+    Duration.FromCustom2 = (input as text) as any => [
         source = Text.Lower( Text.Trim( input ) ),
         segments = Text.Split(source, " "),
         splitSegs = List.Transform( segments, (item) => Splitter.SplitDigitWithSuffix( item  )  ),
