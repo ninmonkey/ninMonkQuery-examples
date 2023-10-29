@@ -33,29 +33,38 @@ let
         
         keyValPairCols = 
             {
-                Table.SelectColumns(
-                    dropExtraCols,
-                    List.Range(
-                        firstFew, 0, 2 ) ),
+                Table.RenameColumns(
+                    Table.SelectColumns(
+                        dropExtraCols,
+                        List.Range( firstFew, 0, 2 ) ),                                 
+                    { {"Column1", "Key"},  {"Column2", "Value"} } 
+                ),
+                Table.RenameColumns(
+                    Table.SelectColumns(
+                        dropExtraCols,
+                        List.Range( firstFew, 3, 2 ) ),                                 
+                    { {"Column4", "Key"},  {"Column5", "Value"} } 
+                )                
 
-                Table.SelectColumns(
-                    dropExtraCols,                    
-                    List.Range(
-                        firstFew , 2, 2 ) )                                
             },
 
-            renamedColsAsPairs = Table.RenameColumns(
-                Table.Combine(keyValPairCols), {
-                    {"Column1", "Key"},
-                    {"Column2", "Value"} 
-                } ),
+                // Table.SelectColumns(
+                //     dropExtraCols,                    
+                //     List.Range(
+                //         firstFew , 2, 2 ) )                                
+            // },
+        pg1 = keyValPairCols{0},
+        pg2 = keyValPairCols{1},
+        renamedColsAsPairs = Table.Combine(keyValPairCols),
+            // renamedColsAsPairs = Table.RenameColumns(
+                // Table.Combine(keyValPairCols), { {"Column1", "Key"}, {"Column2", "Value"}  } ),
                
         withPageName = 
             Table.AddColumn( renamedColsAsPairs, "Group", (row) => PageTitle, Text.Type ),
 
         withPartial =
             Table.TransformColumnTypes( withPageName, {"Key", type text}, GlobalCulture ),            
-
+        
         withFillDown =
             Table.FillDown( withPartial, {"Key"} ),
 
@@ -74,6 +83,6 @@ let
     // return = collected[return],
     collected = return[collected],
     // return = collected[return],
-    keyValPairCols = collected[keyValPairCols]
+    return1 = collected[return]
 in
-    keyValPairCols
+    return1
