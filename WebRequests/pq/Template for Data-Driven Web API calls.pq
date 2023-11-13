@@ -40,6 +40,32 @@ let
             Query = [
                 page = "2"
             ]
+        ],
+        [
+            Label = "Summary Page: Krastorio",
+            ModName = "Krastorio2",
+            RequestOptions = [ Query = Query, RelativePath = RelativePath ],
+            RelativePath =
+                Text.Format(
+                    "/api/mods/#[name]",
+                    [
+                        name = ModName
+                    ]
+                ),
+            Query = null
+        ],
+        [
+            Label = "Full Page: Krastorio",
+            ModName = "Krastorio2",
+            RequestOptions = [ Query = Query, RelativePath = RelativePath ],
+            RelativePath =
+                Text.Format(
+                    "/api/mods/#[name]/full",
+                    [
+                        name = ModName
+                    ]
+                ),
+            Query = null
         ]
     },
 
@@ -58,13 +84,14 @@ let
         "ParamInfo",
         (row) as record => [
             ActivityId = Diagnostics.ActivityId(),
+
             Label   = row[Label],
-            // Query_  = xray( row[Query], [Verbose = true] ),
             Query   = row[Query]?,
             Query_  = xray( Query ),
+
             RequestOptions = row[RequestOptions],
             RequestOptions_ = xray( RequestOptions )
-        ], // ][[Query],[Query_]],
+        ],
         type record
     ),
     // sugar
@@ -123,7 +150,13 @@ let
         "NestedData",
         (row) => [
             Rows =
-                Table.FromRecords( row[Response][Json][results], null, MissingField.Error ),
+                try
+                    Table.FromRecords( row[Response][Json][results], null, MissingField.Error )
+                catch (e) =>
+                    e[Message] meta [
+                        ActivityId = Diagnostics.ActivityId()
+                    ],
+
             RowCount =
                 try Table.RowCount( Rows )
                 catch (e) => null,
