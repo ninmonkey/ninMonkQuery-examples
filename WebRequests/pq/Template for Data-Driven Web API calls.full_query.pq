@@ -1,3 +1,7 @@
+// UrlRoot
+"https://mods.factorio.com" meta [IsParameterQuery=true, List={"https://mods.factorio.com", "http://127.0.0.1:7077"}, DefaultValue="https://mods.factorio.com", Type="Text", IsParameterQueryRequired=true]
+
+// BaseQueriesList
 let
     BaseQueriesList = let
     /*
@@ -152,7 +156,8 @@ let
             Rows =
                 try
                     // Table.FromRecords( row[Response][Json][results], null, MissingField.Error )
-                    Table.FromRecords( row[Response][Json][results], null, MissingField.Error )
+                    Table.FromRecords(
+                        row[Response][Json][results], null, MissingField.Error )
                 catch (e) =>
                     e[Message] meta [
                         ActivityId = Diagnostics.ActivityId()
@@ -173,7 +178,6 @@ let
                 Text.Format(
                     "#[icon] #[status]: #[kind] ⇒ #[rowCount] rows ⁞ #[renderByteCount]", [
                         rowCount = RowCount,
-                        // BytesCountKb = BytesCount / 1024,
                         renderByteCount =
                             Text.Format(
                                 "#[Value] #[Unit]",
@@ -186,9 +190,8 @@ let
                                             // (BytesCount / 1024),
                                             "n0", Culture.Current )
                                 ] ),
-
                         icon =
-                            if HadErr // this icon isn't working
+                            if HadErr // wip: this icon isn't working
                             then "❌"
                             else "✔️",
                         status =
@@ -231,7 +234,6 @@ let
         else
             t_nestedData,
 
-    // Table.ExpandRecordColumn(BaseQueriesList, "NestedData", {"Rows", "Status", "Url"}, {"NestedData.Rows", "NestedData.Status", "NestedData.Url"})
     t_orderCols =
         if
             not FinalConfig[AutoOrderCols]? ?? true
@@ -253,8 +255,6 @@ let
                     "Url"
                 }
             ),
-
-
 
     FinalConfig = [
         ShowSummaryStep = false, // one step before
@@ -297,3 +297,15 @@ in
     Response1 = Response
 in
     Response1
+
+// ModsList
+let
+    // append the full mod listing responses
+    tables = Table.FirstN( BaseQueriesList, 2 ),
+    drillDown = Table.TransformRows(
+        tables,
+        (row) => row[Rows]
+    ),
+    mergeTables =     Table.Combine(drillDown)
+in
+    mergeTables
