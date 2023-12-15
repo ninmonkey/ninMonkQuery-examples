@@ -11,7 +11,7 @@ let
 
     Json     = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMkxMSjZSitWJViooLDIuLim1KCuvAPMTDZOMko1TTFJN08D8kqLUJPPS5IzUEqXYWAA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Text = _t]),
     Source0  = Table.TransformColumnTypes(Json,{{"Text", type text}}),
-    Source1  = Day1_Input1,
+    Source1  = Day01_Input1,
     digits   = List.Transform({ 0..9 }, Number.ToText ),
 
     // returns first+last merged, as one number
@@ -26,7 +26,13 @@ let
         (row) => Text.FindFirstLastDigits( row[Text] ),
         Number.Type
     ),
-    finalSum = List.Sum( t[FirstLast] )
+    finalSum = List.Sum( t[FirstLast] ),
+    Summary = [
+        Input_Part1 = Source1,
+        Input_Part0 = Source0,
+        Output_Table_Part1 = t,
+        Answer_Part1 = finalSum
+    ]
 
 in
-    finalSum
+    Summary
