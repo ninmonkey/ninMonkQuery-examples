@@ -40,12 +40,13 @@ let
                     Position = Text.PositionOf( source, currentWord, Occurrence.First, Comparer.OrdinalIgnoreCase )
                 ]
         ),
-        dropNonMatches = List.Select( query, [Position] = -1 ),
+        dropNonMatches = List.Select( query, each [Position] <> -1 ),
+        sorted = List.Sort( dropNonMatches, each [Position] ),
         // querySchema = type [ word = Text.Type, position = Int64.Type ],
         // querySchema = null,
         // return = Value.ReplaceType( query, querySchema ) meta [
         //     Description = "A table of the first index of matching text. Negative 1 means never found"
-        return = dropNonMatches
+        return = sorted
     ][return],
 
     // returns first+last merged, as one number
@@ -62,7 +63,7 @@ let
     // ),
     ReplaceWords = Table.AddColumn(
         Source, "NumberWord",
-        (row) => Text.TransformWordNumbers( row[Text]  ),
+        (row) => Text.TransformWordNumbers_0( row[Text]  ),
         Text.Type
     ),
     FirstLast = Table.AddColumn(
@@ -77,19 +78,33 @@ let
         ReplaceWords = ReplaceWords,
         FirstLast = FirstLast,
         SampleT = Source,
-        SampleText = Source{0}[Text],
-        tryFind =
-            Text.FindEachPotentialMatch( SampleText ),
+        SampleText2 = Source{0}[Text],
+
+
+        step1_start        = "o eightwothree",
+        step1_TryFind      = Text.FindEachPotentialMatch( step1_start ),
+        step1_TryFind_t    = Table.FromRecords( step1_TryFind ),
+        step1_ReplaceToken = step1_TryFind{0}[Word],                                              //{0}[Word],
+        step1_ReplaceStr   = "8",
+        step1_End          = Text.Replace( step1_start, step1_ReplaceToken, step1_ReplaceStr ),
+
+        step2_start        = step1_End,
+        step2_TryFind      = Text.FindEachPotentialMatch( step2_start  ),
+        step2_TryFind_t    = Table.FromRecords( step2_TryFind ),
+        step2_ReplaceToken = step2_TryFind{0}[Word],                                             //{0}[Word],
+        step2_ReplaceStr   = "8",
+        step2_End          = Text.Replace( step2_start, step2_ReplaceToken, step2_ReplaceStr ),
+
+
+
         tryFind_T =
-            Table.FromRecords( tryFind )
+            Table.FromRecords( step1_TryFind )
         // Input_Part1 = Source1,
         // Input_Part0 = Source0,
         // Output_Table_Part1 = t,
         // s = sample,
         // Answer_Part1 = finalSum
-    ],
-    // sample = "one four one",
-    // finalSum = List.Sum( t[FirstLast] ),
-    tryFind_T = Summary[tryFind_T]
+    ]
+
 in
-    tryFind_T
+    Summary
