@@ -31,7 +31,7 @@ let
 
 
     wordNames = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"},
-    Text.FindEachPotentialMatch = (source as text) as any => [
+    Text.FindEachPotentialMatch_0 = (source as text) as any => [
         query = List.Transform(
             wordNames,
             (currentWord) =>
@@ -48,6 +48,18 @@ let
         //     Description = "A table of the first index of matching text. Negative 1 means never found"
         return = sorted
     ][return],
+
+    // Search a subset of words, skipping any that can't match again
+    Text.FindNextPotentialMatchList = (source as text, words as list ) as any => [
+        return = source
+    ][return],
+
+    Summary = [
+        acc0 = "oeighttwofiveight",
+        word0 = wordNames,
+        query0 = Text.FindNextPotentialMatchList( acc0, word0 )
+    ],
+
 
     // returns first+last merged, as one number
     Text.FindFirstLastDigits = ( source as text ) as number => [
@@ -74,7 +86,7 @@ let
 
     // sample = "one four one",
     // finalSum = List.Sum( t[FirstLast] ),
-    Summary = [
+    SummaryLong = [
         ReplaceWords = ReplaceWords,
         FirstLast = FirstLast,
         SampleT = Source,
@@ -82,14 +94,14 @@ let
 
 
         step1_start        = "o eightwothree",
-        step1_TryFind      = Text.FindEachPotentialMatch( step1_start ),
+        step1_TryFind      = Text.FindEachPotentialMatch_0( step1_start ),
         step1_TryFind_t    = Table.FromRecords( step1_TryFind ),
         step1_ReplaceToken = step1_TryFind{0}[Word],                                              //{0}[Word],
         step1_ReplaceStr   = "8",
         step1_End          = Text.Replace( step1_start, step1_ReplaceToken, step1_ReplaceStr ),
 
         step2_start        = step1_End,
-        step2_TryFind      = Text.FindEachPotentialMatch( step2_start  ),
+        step2_TryFind      = Text.FindEachPotentialMatch_0( step2_start  ),
         step2_TryFind_t    = Table.FromRecords( step2_TryFind ),
         step2_ReplaceToken = step2_TryFind{0}[Word],                                             //{0}[Word],
         step2_ReplaceStr   = "8",

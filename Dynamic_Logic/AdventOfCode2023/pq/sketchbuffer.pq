@@ -1,0 +1,3 @@
+[
+    about = "live reload"
+]
