@@ -72,21 +72,16 @@ let
     ][return],
 
     // replaces one single instance of a word, then ends
-
-    Text.ReplaceFirstOnly = (source as text, oldValue as text, newValue as text) as text => [
+    // Like Text.Replace except that this replaces at most one single occurrence of oldValue
+    Text.ReplaceFirstOnly = (source as nullable text, oldValue as text, newValue as text) as nullable text => [
         found = Text.PositionOf( source, oldValue, Occurrence.First, Comparer.OrdinalIgnoreCase ),
         replaced = Text.ReplaceRange( source, found, Text.Length( oldValue ), newValue ),
         return =
-            if found = -1 then source
+            if source = null then null
+            else if found = -1 then source
             else replaced
     ][return],
-    Text.PositionOf.CI = (source as text, substring as text,
-        optional occurrence as nullable number,
-        optional comparer as nullable function) as any => [
-            occurrence = options[Occurrence]? ?? Occurrence.First,
-            comparer = options[Comparer]? ?? Comparer.OrdinalIgnoreCase,
-            ret = Text.PositionOf( source, substring, occurrence, comparer )
-        ][ret],
+
 
 
     Text.ReplaceLastOnly = (source as text, oldValue as text, newValue as text) as text => [
@@ -97,8 +92,91 @@ let
             else replaced
     ][return],
 
+    // fn = (source as text) as any => [
+    fl1 = [
+        str = "one two three two one one",
+        a = List.Generate(
+            () => [
+                state = str, index = 0 ],
+            each [index] < List.Count( wordNames ),
+            each [
+                state = Text.ReplaceFirstOnly( [state], wordNames{[index]}, [index] ),
+                index = [index] + 1
+            ],
+            each [state]
+        )
+    ],
+    fl = [
+        str = "one four two two one one",
+        a = List.Generate(
+            () => [
+                state = str,
+                remainingWords = wordNames
+            ],
+            each List.Count( [remainingWords] ) > 0,
+            each [
+                // nextState =
+                query = Text.FindNextPotentialMatchList( [state], [remainingWords] ),
+                // firstWord = try query{0}[Word] catch (e) => null,
+                wordsLeft = query[Word],
+                firstWord = query{0}[Word],
+                newName = Record.FieldOrDefault( wordMap, firstWord, ""),
+                newState = Text.ReplaceFirstOnly( [state], firstWord, newName ),
+
+                // state = Text.ReplaceFirstOnly( [state], wordNames{[index]}, [index] ),
+                // index = [index] + 1,
+                return = [
+                    // firstWord = firstWord,
+                    state =
+                        // try newState catch (e) => newState,
+                        try newState catch (e) => [state],
+                    remainingWords =
+                        [remainingWords]
+                        // wordsLeft
+                        // { firstWord }
+                        // List.RemoveFirstN( [remainingWords] )
+                        // try query[Word] catch (e) => [] // ?? []
+
+                ]
+            ][return],
+            each _
+            // each _[newState]
+        )
+    ],
+    fl0 = [
+        str = "one two three two one one",
+        a = List.Generate(
+            () => [
+                state = str, remainingWords = wordNames
+            ],
+            each List.Count( [remainingWords] ) > 0,
+            each [
+                // nextState =
+                query = Text.FindNextPotentialMatchList( [state], [remainingWords] ),
+                firstWord =  query{0}[Word],
+                newName = Record.FieldOrDefault( wordMap, firstWord, ""),
+                newState = Text.ReplaceFirstOnly( [state], firstWord, newName ),
+
+                // state = Text.ReplaceFirstOnly( [state], wordNames{[index]}, [index] ),
+                // index = [index] + 1,
+                return = [
+                    state =
+                        newState,
+                    remainingWords =
+                        List.RemoveFirstN( [remainingWords] )
+                        // [remaningWords]
+                ]
+            ][return],
+            each _
+        )
+    ],
+
 
     Summary = [
+        fl = fl,
+        str = "one two three two one one",
+        q0000 = Text.FindNextPotentialMatchList( str, wordNames ),
+
         newVal = Record.FieldOrDefault( wordMap, "one", ""),
         af = List.First( List.Select( wordMappingPair, each _{0} = "one" ) ),
         s00 = "one two three two one one",
