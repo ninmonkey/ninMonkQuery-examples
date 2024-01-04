@@ -21,16 +21,12 @@ let
         expand = Table.ExpandRecordColumn( source, columnName, IterKeys( source, columnName))
     ][expand],
 
-
     Source = ExpandImages,
     remove_other = Table.SelectColumns(Source,{"Name", "DataSource.Kind", "Publish"}),
     t3 = Table.TransformColumnTypes(remove_other,{{"DataSource.Kind", type text}}),
     /*
     #"Removed Other Columns" = Table.RenameColumns( remove_other, { {"Publish", "Pub"}, {"Name", "N"} }),
     #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Publish", "Pub"}}),
-
-
-
     Custom1 = List.Transform( #"Renamed Columns"[Pub], (i) => try if i = null then {} else Record.FieldNames( i ) catch (e) => e[Message] ),
     Custom2 = List.Sort( List.Distinct( List.Combine( Custom1 ) ) ),
     tryNew = IterKeys( #"Renamed Columns", "Pub" ),
