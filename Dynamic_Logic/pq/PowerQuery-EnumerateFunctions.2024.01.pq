@@ -1,27 +1,45 @@
 let
-    BaseList = Record.RemoveFields( #shared, {"lib", "Query1"}, MissingField.UseNull),
+    ToRemove = {"lib", "Query1", "BaseListing", "ByTypeMinimalInfo"},
+    // future, *maybe* I can remove key names that exist in sections1[Section1], generating a dynamic exclude list
+    // but that sounds fragile and not worth it
+    BaseList = Record.RemoveFields( #shared, ToRemove, MissingField.UseNull),
     InspectField = (name as text, source as any) as record => [
         Name = name,
         Type = Value.Type( source ),
-        ShortName = NameOf( Type ),
+        // ShortName = NameOf( Type ),
         Typedef.String = LongType( Type ),
         Obj.Meta = Value.Metadata( source ),
         Doc.Meta = Value.Metadata( Value.Type( source ) )
         // TinMdata = Value.Type( Value.Metadata( source ) ), // never useful?
     ],
-    Dive = a,
-    Fact = lib[Fact],
+     // enumerate all possible key names, for a depth of 1.
+        IterKeys = (sourceTable as table, columnName as text) as list => [
+            record_list = Table.Column( sourceTable, columnName ),
+            nested_keys_list = List.Transform( record_list,
+                (item) =>
+                    try
+                        if item = null then {}
+                        else Record.FieldNames( item )
+                    catch (e) =>
+                        error e[Message]
+            ),
+            flatten_names = List.Combine( nested_keys_list ),
+            unique_names = List.Distinct( flatten_names ),
+            return = List.Sort( unique_names )
+        ][return],
+    // Dive = a,
+    // Fact = lib[Fact],
+    // final = [
+    //     lib = lib,
+    //     a = Value.Type( LongType ),
+    //     Dive = Dive
+    // ],
+    // last = final[Dive],
+
+
+
+
     LongType = lib[ValueToText],
-    final = [
-        lib = lib,
-        a = Value.Type( LongType ),
-        Dive = Dive
-    ],
-    last = final[Dive],
-
-
-
-
     NameOf = (x, optional funtype as logical) =>
             // Optional parameter: Is this being used as part of a function signature?
             let
@@ -34,14 +52,16 @@ let
                 isListType = (x as type) => try if Type.ListItem(x) is type then true else false otherwise false
             in
                 if funtype = null and isTableType(x) then
-                    "nyi: _serialize_table_type(x)"
+                    "table" // "nyi: _serialize_table_type(x)"
                 else if funtype = null and isListType(x) then
-                    "{ " & @NameOf(Type.ListItem(x)) & " }"
+                    "table"
+                    // "{ " & @NameOf(Type.ListItem(x)) & " }"
                 else if funtype = null and isFunctionType(x) then
                     // "function " & _serialize_function_type(x)
-                    "function " & "nyi: _serialize_function_type(x)"
+                    // "function " & "nyi: _serialize_function_type(x)"
+                    "function"
                 else if funtype = null and isRecordType(x) then
-                    "nyi: _serialize_record_type(x)"
+                    "record"
                 else if x = type any then
                     "any"
                 else
@@ -92,8 +112,12 @@ let
 
     t0 = Record.ToTable( BaseList ),
     t1 = Table.AddColumn( t0, "Info", (row) => InspectField( row[Name], row[Value] ) as record, Record.Type ),
-    Info = t1{10}[Info],
-    MdataTin = t1
+
+    Final = [
+        t0 = t0, t1 = t1
+        // , t2 = t2
+]
+
 
 in
-    MdataTin
+    Final
