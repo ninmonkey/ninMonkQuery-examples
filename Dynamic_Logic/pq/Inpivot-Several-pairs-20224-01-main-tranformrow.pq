@@ -13,15 +13,38 @@ let
     Text.ContainsCI = (source as text, substring as text) as logical =>
         Text.Contains(source, substring, Comparer.OrdinalIgnoreCase ),
 
+    Assert.ColumnsExist = (source as table, requiredNames as list) as any => [ // as logical => [
+        config = [
+            DetailedOutput = true,
+            CaseSensitiveCompare = true
+            // CultureComparer = null
+        ],
+        details = [
+
+        ],
+        return =
+            if config[DetailedOutput] then details
+            else error "NYI, successfull stand alone bool"
+        // Table.SelectColumns( Source, ExpectCols, MissingField.Error ),
+        // finalCondCondition =
+        //     try a catch (e) =>
+        //     error e
+    ][return],
+
     AssertConditions = () => [
+        Source = Source,
         ExpectCols = {
             "Hat Inv Date",
-            "Hat Sale Date",
+            // "Hat Sale Date",
+            "Hat Sell Date",
             "Shoe Inv Date",
-            "Shoe Sale Date"
+            "Shoe Sell Date"
+            // "Shoe Sale Date"
         },
-        a =  Table.SelectColumns( ),
-        finalCondCondition = false
+        a = Table.SelectColumns( Source, ExpectCols, MissingField.Error ),
+        finalCondCondition =
+            try a catch (e) =>
+            error e
     ],
 
     Source = RawSource[Final],
@@ -50,7 +73,7 @@ let
     schema_fromRecords = null,
     fromRecords = Table.FromRecords( asOne, schema_fromRecords, MissingField.Error),
     fin_prev = asOne,
-    fin = AssertConditions()
-
+    fin = AssertConditions(),
+    Source1 = fin[Source]
 in
-    fin
+    Source1
