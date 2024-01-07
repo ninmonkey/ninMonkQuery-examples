@@ -49,8 +49,9 @@ let
     ),
     ll2 = List.Generate(
         () => [
-            str = "cat dog",
-            words = {"dog", "cat"},
+            str = "4 one two one five dog",
+            // words = List.Transform( wordMappingPair, each _{0} ),
+            words = {"zero", "one", "two" },
             found = null,
             firstWord = ""
         ],
@@ -58,7 +59,7 @@ let
         each [
             // str = List.Count( [words] ),
             str =
-                Text.ReplaceFirst( [str], [words]{0}, "_" ),
+                // Text.ReplaceFirst( [str], [words]{0}, "_" ),
                 // [str],
 
             words = [words] & {str},
