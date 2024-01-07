@@ -10,10 +10,15 @@ let
     - [ ] Table.Group - to grab tables in chunks, after one unpiviot?
 
     */
+    Text.ContainsCI = (source as text, substring as text) as logical =>
+        Text.Contains(source, substring, Comparer.OrdinalIgnoreCase ),
+
+
     Source = RawSource,
     final = Source[final],
     processRow = (row as record) as record => [
         All = row,
+        
         return = [
             #"Inv Date" = DateTime.FixedLocalNow(),
             #"Sale Date" = DateTime.FixedLocalNow(),
