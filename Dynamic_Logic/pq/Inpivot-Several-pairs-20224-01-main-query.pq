@@ -13,23 +13,34 @@ let
     Text.ContainsCI = (source as text, substring as text) as logical =>
         Text.Contains(source, substring, Comparer.OrdinalIgnoreCase ),
 
-
-    Source = RawSource,
-    final = Source[final],
-    processRow = (row as record) as record => [
+    Source = RawSource[Final],
+    manualProcessRow = (row as record) as any => [
         All = row,
-        
-        return = [
-            #"Inv Date" = DateTime.FixedLocalNow(),
-            #"Sale Date" = DateTime.FixedLocalNow(),
-            #"Item Type" = text,
-            #"Item Name" = text
-        ]
+        rec_hat  = [ ItemKind = "hat" ],
+        rec_shoe = [ ItemKind = "shoe" ],
+
+        pair_hat = [
+            #"Item Kind" = "hat",
+            #"Inv Date" = row[Hat Inv Date]?,
+            #"Sale Date" = row[Hat Sale Date]?
+        ],
+
+        pair_shoe = [
+            #"Item Kind" = "shoe",
+            #"Inv Date" = row[Shoe Inv Date]?,
+            #"Sale Date" = row[Shoe Sale Date]?
+        ],
+
+        merged = Record.Combine(
+            // rec_hat,
+        ),
+
+        return = List.Combine({ pair_hat, pair_shoe } )
     ][return],
     schema = type table [
-        #"Inv Date" = datetime,
-        #"Sale Date" = datetime
+        // #"Inv Date" = datetime,
+        // #"Sale Date" = datetime
     ],
-    #"Added Custom" = Table.AddColumn(final, "Data", (row) => processRow(row) as record, Record.Type)
+    #"Added Custom" = Table.AddColumn(processRow, "Data", (row) => manualProcessRow(row) as record, Record.Type)
 in
     #"Added Custom"
