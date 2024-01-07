@@ -41,8 +41,25 @@ let
         // #"Inv Date" = datetime,
         // #"Sale Date" = datetime
     ],
-    #"Added Custom" = Table.AddColumn(Source, "Data",
-        (row) => manualProcessRow(row) as any, List.Type),
-    #"Expanded Data" = Table.ExpandListColumn(#"Added Custom", "Data")
+    tr = Table.TransformRows(
+        Source, manualProcessRow
+    ),
+    // off = Table.AddColumn(Source, "Data",
+    //     (row) => [
+    //             raw = row,
+
+    //             data = [
+    //                 Kind = "shoe",
+    //                 Invoice_Dt = row[Shoe Inv Date],
+    //                 Sale_Dt = row[Shoe Sell Date]
+    //             ],
+    //             return = data
+    //         ][return]
+    //     , Record.Type),
+    asOne = List.Combine( tr ),
+    schema_fromRecords = null,
+    fromRecords = Table.FromRecords( asOne, schema_fromRecords, MissingField.Error),
+    fin = asOne
+
 in
-    #"Expanded Data"
+    fin
