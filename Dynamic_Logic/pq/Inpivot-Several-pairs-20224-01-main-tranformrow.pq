@@ -13,6 +13,17 @@ let
     Text.ContainsCI = (source as text, substring as text) as logical =>
         Text.Contains(source, substring, Comparer.OrdinalIgnoreCase ),
 
+    AssertConditions = () => [
+        ExpectCols = {
+            "Hat Inv Date",
+            "Hat Sale Date",
+            "Shoe Inv Date",
+            "Shoe Sale Date"
+        },
+        a =  Table.SelectColumns( ),
+        finalCondCondition = false
+    ],
+
     Source = RawSource[Final],
     manualProcessRow = (row as record) as any => [
         All = row,
@@ -30,36 +41,16 @@ let
             #"Inv Date"  =  row[Shoe Inv Date]?,
             #"Sale Date" = row[Shoe Sale Date]?
         ],
-
-        merged = Record.Combine(
-            // rec_hat,
-        ),
-
         return = { pair_hat, pair_shoe }
     ][return],
-    schema = type table [
-        // #"Inv Date" = datetime,
-        // #"Sale Date" = datetime
-    ],
-    tr = Table.TransformRows(
-        Source, manualProcessRow
-    ),
-    // off = Table.AddColumn(Source, "Data",
-    //     (row) => [
-    //             raw = row,
+    // schema = type table [],
 
-    //             data = [
-    //                 Kind = "shoe",
-    //                 Invoice_Dt = row[Shoe Inv Date],
-    //                 Sale_Dt = row[Shoe Sell Date]
-    //             ],
-    //             return = data
-    //         ][return]
-    //     , Record.Type),
+    tr = Table.TransformRows( Source, manualProcessRow ),
     asOne = List.Combine( tr ),
     schema_fromRecords = null,
     fromRecords = Table.FromRecords( asOne, schema_fromRecords, MissingField.Error),
-    fin = asOne
+    fin_prev = asOne,
+    fin = AssertConditions()
 
 in
     fin
