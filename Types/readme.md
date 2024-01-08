@@ -1,9 +1,17 @@
 [Root](https://github.com/ninmonkey/ninMonkQuery-examples) | [Up ⭡](./..)
 
+- [Nested `list` types: Correct and Incorrect ways to use nested list types](#nested-list-types-correct-and-incorrect-ways-to-use-nested-list-types)
 - [Safer Import: using the Culture Parameter to ensure Format](#safer-import-using-the-culture-parameter-to-ensure-format)
 - [Types: Ascribing Extra Metadata to your Functions](#types-ascribing-extra-metadata-to-your-functions)
 - [Multiple Date Formats in one Transform](#multiple-date-formats-in-one-transform)
 - [See More: Function Metadata Related Documentation and Examples](#see-more-function-metadata-related-documentation-and-examples)
+
+## Nested `list` types: Correct and Incorrect ways to use nested list types
+
+![screen-nested](./img/DeclaringNestedTypes-ListsAsIntegers.png)
+
+- [PowerQuery.pq](./pq/DeclaringNestedTypes-ListsAsIntegers.pq)
+- [DeclaringNestedTypes-ListsAsIntegers.pbix](./DeclaringNestedTypes-ListsAsIntegers.pbix)
 
 ## Safer Import: using the Culture Parameter to ensure Format
 
