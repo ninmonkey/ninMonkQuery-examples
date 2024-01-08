@@ -1,12 +1,23 @@
 let
-    /* here's a comparison of
-        correct and incorrect types. If you fully apply this query
-        then go to the model / DAX view
+    /*
+    original: <https://github.com/ninmonkey/ninMonkQuery-examples/blob/ce4979d0c21af3cbc27d5c36d10c502a256bdc49/Types/pq/DeclaringNestedTypes-ListsAsIntegers.pq#L0-L1>
+    About:
+        showing correct and incorrect types
 
-    notice that
-        1. [NotReallyInt] loaded as an integer [Whole number]
-        2. some values were completely dropped, they loaded as a bunch of null values (in the model)
+    Apply this query, and go to the model view.
 
+things to notice:
+    - It might pop up saying there are were errors, but it'll let you apply the query to your model
+    - In PowerQuery
+        - there are no visible errors in your cells (or rows)
+        - the column-type icon shows [NotReallyInt] is an [Int64.Type]
+
+    - Once you apply the model
+        - [NotReallyInt] loaded as an integer [Whole number]
+        - a bunch of values were dropped. anything not an integeter loaded as nulls
+        - so now you have a bunch of blanks in your data
+
+    - compare that with [EnforcedInt] which imports all values correctly
 
     */
 
