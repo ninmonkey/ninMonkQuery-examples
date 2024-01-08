@@ -32,15 +32,20 @@ let
     ][return],
 
     AssertConditions = () => [
-        Source = Source,
-        ExpectCols = {
+        source = Source,
+        ExpectCols = List.Sort( {
             "Hat Inv Date",
             // "Hat Sale Date",
             "Hat Sell Date",
             "Shoe Inv Date",
             "Shoe Sell Date"
             // "Shoe Sale Date"
-        },
+        }),
+        // see also: List.RemoveMatchingItems(l1, l2, predicate)
+        actualCols = List.Sort( Table.ColumnNames(source) ),
+        missingCols = List.RemoveItems( ExpectedCols, actalCols ),
+        extraCols   = List.RemoveItems( actualCols, ExpectCols ),
+
         a = Table.SelectColumns( Source, ExpectCols, MissingField.Error ),
         finalCondCondition =
             try a catch (e) =>
@@ -68,12 +73,33 @@ let
     ][return],
     // schema = type table [],
 
+
+
+
+
+
+        // export values as json, for copy-pasting as text
+    i = ToJson, eye = ToJson, In = ToJson,
+    ToJson = (source as any, optional options as nullable record ) as text => [
+        defaults = [
+            Encoding = TextEncoding.Utf8,
+            Expand = true
+        ],
+        config = Record.Combine({
+            options ?? [],
+            defaults
+        }),
+        json = Text.FromBinary( Json.FromValue( source, config[Encoding] ) , config[Encoding] ),
+        json_expanded = Text.Replace( json, "},{", "},#(cr,lf){"),
+        return = if config[Expand] then json_expanded else json
+    ][return],
+
     tr = Table.TransformRows( Source, manualProcessRow ),
     asOne = List.Combine( tr ),
     schema_fromRecords = null,
     fromRecords = Table.FromRecords( asOne, schema_fromRecords, MissingField.Error),
     fin_prev = asOne,
     fin = AssertConditions(),
-    Source1 = fin[Source]
+    Source1 = fin
 in
     Source1
