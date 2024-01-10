@@ -21,11 +21,16 @@ let
             expand1 = Table.ExpandRecordColumn( baseTable , "teamCommonName", {"default"}, {"teamCommonName"}),
             expand2 = Table.ExpandRecordColumn( expand1, "teamName", {"default"}, {"teamName"}),
             expand3 = Table.ExpandRecordColumn( expand2, "teamAbbrev", {"default"}, {"teamAbbrev"}),
-            finalTransform = Table.TransformColumnTypes( expand3, standingSchema, "en-us" )
+            expand4 = Table.ExpandRecordColumn( expand3, "placeName", {"default"}, {"placeName"}),
+            finalTransform = Table.TransformColumnTypes( expand4, standingSchema, "en-us" )
         in
             finalTransform,
 
     standingSchema = {
+        // I grabbed just the default teamnames. there were extra translations for a few.
+        // some percentages columns go outside the range of [0, 1], so I left them as decimal
+        {"teamName", type text}, {"teamCommonName", type text}, {"teamAbbrev", type text},
+        {"regulationWinPctg", Percentage.Type}, {"placeName", type text},
         {"conferenceAbbrev", type text}, {"conferenceHomeSequence", Int64.Type}, {"conferenceL10Sequence", Int64.Type}, {"conferenceName", type text},
         {"conferenceRoadSequence", Int64.Type}, {"conferenceSequence", Int64.Type}, {"date", type date}, {"divisionAbbrev", type text},
         {"divisionHomeSequence", Int64.Type}, {"divisionL10Sequence", Int64.Type}, {"divisionName", type text}, {"divisionRoadSequence", Int64.Type},
