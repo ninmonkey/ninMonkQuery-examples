@@ -1,12 +1,12 @@
 let
-    // Path = "H:\data\2023\BI\git\ninMonkQuery-examples\Dynamic_Logic\AdventOfCode2023\pq\Day-01-Part2-FirstAndLastoccurrence-AsWords-OfNumber.pq",
+    Path = "H:\data\2023\BI\git\ninMonkQuery-examples\Dynamic_Logic\AdventOfCode2023\pq\Day-01-Part2-FirstAndLastoccurrence-AsWords-OfNumber.pq",
     EvalQuery = (filePath as text, optional options as nullable record) as any => [
         encoding = options[Encoding]? ?? TextEncoding.Utf8,
         environment = options[Environment]? ?? #shared,
         bytes = File.Contents(filePath),
         lines = Text.FromBinary( bytes, encoding ),
         return = Expression.Evaluate( lines, environment )
-    ],
+    ][return],
     Convert.ScriptExtent.FromError = (err as any) => [
             Split.ScriptExtent = Splitter.SplitTextByEachDelimiter({"[", ",", "-", ",", "]"}, QuoteStyle.None),
             lineData = Split.ScriptExtent( err[Message] ),
@@ -60,6 +60,21 @@ let
 //     // bytes = File.Contents(Path),
 //     // a = Text.FromBinary(bytes, TextEncoding.Utf8 ),
 //     // eval = Expression.Evaluate( a, #shared )
-    FinalEval = if true then EvalQuery else EvalQuery
+    asEval = EvalQuery( SharedUtils_Path ),
+    FinalEval =
+        try asEval
+        catch (e) =>
+            File.ShowError( SharedUtils_Path, Convert.ScriptExtent.FromError( e ) )
+            // Convert.ScriptExtent.FromError( e ),
+    // showFinal = File.ShowError( FinalEval[?])
 in
-    EvalQuery
+    FinalEval
+
+
+
+//     let
+//     Source =
+//     // er = try Source catch (e) => e
+// in
+//     // er
+//     Source
