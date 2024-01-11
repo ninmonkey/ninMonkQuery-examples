@@ -1,5 +1,5 @@
 {
-    //2023-05-21
+    //2023-05-21 // 2023-08-29
     "folders": [
         {
             "path": "."
@@ -70,6 +70,71 @@
                 "icon": "helper"
             }
         ],
+        "powerquery.benchmark.enable": false,
+        "powerquery.diagnostics.isWorkspaceCacheAllowed": true,
+        "powerquery.editor.transformTarget": "inPlace",
+        "powerquery.diagnostics.typeStrategy": "Extended",
+        "powerquery.general.experimental": false,
+        "powerquery.general.locale": "en-US",
+        "powerquery.general.mode": "SDK",
+        // "powerquery.sdk.defaultExtension": ".pqm",
+        "powerquery.sdk.defaultQueryFile": "debug_harness.pq",
+        // "powerquery.sdk.externals.msbuildPath": ""
+        "powerquery.sdk.features.autoDetection": true,
+        "powerquery.sdk.externals.nugetFeed": "",
+        // // Recommended always off. Enables benchmark traces to be generated for the extension.
+        // "powerquery.benchmark.enable": false,
+        // // Recommended always on. Toggles internal caching causing performance degregation when off. Used to find hot paths in the extension.
+        // "powerquery.diagnostics.isWorkspaceCacheAllowed": true,
+        // // Sets what strategy is used by the type analysis. Extended is useful for small scripts but can hang on larger, complicated files. If performance isn't acceptable then fallback to Primitive.
+        // "powerquery.diagnostics.typeStrategy": "Primitive",
+        // // Default target for text transformation operations - allows the choice of in place (replacing the currently selected text) or storing the results on the clipboard.
+        // "powerquery.editor.transformTarget": "inPlace",
+        // // Specifies whether to enable experimental features.
+        // "powerquery.general.experimental": false,
+        // // Locale to use for errors and other messages returned by the language parser.
+        // "powerquery.general.locale": "en-US",
+        // // Changes what library functions are available.
+        // "powerquery.general.mode": "Power Query",
+        // // Symbol provider timeout in milliseconds.
+        // "powerquery.timeout.symbolTimeoutInMs": 2000,
+        // // Traces the communication between VS Code and the language server.
+        // "powerquery.trace.server": "off",
+        // // Specify connector extension source modules (.mez/.pqm).<br>This option can be specified more than once.
+        // "powerquery.sdk.defaultExtension": "",
+        // // Query file containing section document or M expression (.m/.pq).
+        // "powerquery.sdk.defaultQueryFile": "",
+        // // Local path to msbuild.exe installation folder.
+        // "powerquery.sdk.externals.msbuildPath": "",
+        // // Suggested nuget feed URL.
+        // "powerquery.sdk.externals.nugetFeed": "",
+        // // Local path to nuget.exe installation folder.
+        // "powerquery.sdk.externals.nugetPath": "",
+        // // The version tag of the PQ SDK tools to be downloaded.
+        // //  - Recommended: The stable version
+        // //  - Latest: The latest version
+        // //  - Custom: Use a user provided version value
+        // "powerquery.sdk.externals.versionTag": "Recommended",
+        // // When set to false, the SDK does not try to automatically detect connector workspaces and prompt to create a settings file.
+        // "powerquery.sdk.features.autoDetection": true,
+        // // Try the new feature using a reusable engine service host other than the command lines
+        // "powerquery.sdk.features.useServiceHost": false,
+        // // Deprecated: Please use powerquery.sdk.defaultExtension instead.
+        // // Specify connector extension source modules (.mez/.pqm).<br>This option can be specified more than once.
+        // "powerquery.sdk.pqtest.extension": "",
+        // // Deprecated: Please use powerquery.sdk.tools.location instead.
+        // // Local path to PQTest installation folder.
+        // "powerquery.sdk.pqtest.location": "",
+        // // Deprecated: Please use powerquery.sdk.defaultQueryFile instead.
+        // // Query file containing section document or M expression (.m/.pq).
+        // "powerquery.sdk.pqtest.queryFile": "",
+        // // **Deprecated**: Please use `powerquery.sdk.features.autoDetection` instead.
+        // // When set to false, the SDK does not try to automatically detect connector workspaces and prompt to create a settings file.
+        // "powerquery.sdk.project.autoDetection": true,
+        // // Local path to PQTest installation folder.
+        // "powerquery.sdk.tools.location": "",
+        // // The local PQ SDK tools version.
+        // "powerquery.sdk.tools.version": "",
     },
     "launch": {
         "version": "0.2.0",

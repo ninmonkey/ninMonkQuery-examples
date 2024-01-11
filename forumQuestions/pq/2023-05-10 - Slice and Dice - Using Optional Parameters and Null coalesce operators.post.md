@@ -2,7 +2,7 @@ You can simplify some of the indexing using `Text.Range`
 
 - there is no error going 'out of bounds' with the count
 - you can explicitly pass null to the count as your default
-- anddefault to passing 0 and null
+- and default to passing 0 and null
 - if user arg is not null
 
 Something like
