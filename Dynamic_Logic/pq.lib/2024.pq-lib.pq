@@ -2,7 +2,8 @@
     About = "ninlib 2024.01 | helper functions",
     ToCollect = {
         [ What = "Assert.ColumnsExist" ],
-        [ What = "AssertConditions" ]
+        [ What = "AssertConditions" ],
+        [ What = "WebRequest.Wrapper", File = "H:\data\2023\BI\git\ninMonkQuery-examples\forumQuestions\pq\2023-11 - quick gitlogger test.pq" ]
         /*
         [1]
         / returns first+last merged, as one number
@@ -60,18 +61,35 @@
 
         */
     },
-    Text.ContainsCI = (source as text, substring as text) as logical =>
-        Text.Contains( source, substring, Comparer.OrdinalIgnoreCase ),
+
 
     Csv = (source as list) as text => [
         segments = List.Transform( source, each Text.From(_) ),
         return = Text.Combine( segments, ", " )
     ][return],
 
+    ray = XRay,
     XRay = (source as any) as text => [
+        // see also: Xray, ToJson, Csv
         bytes = Json.FromValue( source, TextEncoding.Utf8 ),
         json = Text.FromBinary( bytes, TextEncoding.Utf8 )
     ][json],
+
+    ToJson = (source as any, optional options as nullable record ) as text => [
+
+        // see also: Xray, ToJson, Csv
+        defaults = [
+            Encoding = TextEncoding.Utf8,
+            Expand = true
+        ],
+        config = Record.Combine({
+            options ?? [],
+            defaults
+        }),
+        json = Text.FromBinary( Json.FromValue( source, config[Encoding] ) , config[Encoding] ),
+        json_expanded = Text.Replace( json, "},{", "},#(cr,lf){"),
+        return = if config[Expand] then json_expanded else json
+    ][return],
 
     // Like Text.Replace except that this replaces at most one single occurrence of oldValue
     Text.ReplaceFirstOnly = (source as nullable text, oldValue as text, newValue as text) as nullable text => [
@@ -83,17 +101,24 @@
             else replaced
     ][return],
 
+    Text.Contains.CI = (source as text, substring as text) as logical =>
+        // see also: Text.Contains.CI, Text.PositionOf.CI, Text.MatchesAnyOf.CI
+        Text.Contains( source, substring, Comparer.OrdinalIgnoreCase ),
+
     Text.PositionOf.CI = (source as text, substring as text, optional options as nullable record) as any => [
+        // see also: Text.Contains.CI, Text.PositionOf.CI, Text.MatchesAnyOf.CI
             occurrence = options[Occurrence]? ?? Occurrence.First,
             comparer = options[Comparer]? ?? Comparer.OrdinalIgnoreCase,
             ret = Text.PositionOf( source, substring, occurrence, comparer )
         ][ret],
 
     Text.MatchesAnyOf.CI = (sourceList as text, patternList as list) as logical => [
+        // see also: Text.Contains.CI, Text.PositionOf.CI, Text.MatchesAnyOf.CI
+        // todo: validate, add tests
         ret = List.Select(
             sourceList,
             (source) => List.AnyTrue(
-                List.Transform( patternList, (pattern) => Text.ContainsCI( source, pattern ) )
+                List.Transform( patternList, (pattern) => Text.Contains.CI( source, pattern ) )
             )
         )
             // List.Contains( patternList, item, Comparer.OrdinalIgnoreCase ))
@@ -108,47 +133,125 @@
             //                 (pattern) => Text.Contains( item, pattern, Comparer.OrdinalIgnoreCase ) ) ) ).AnyTrue( List.Transform( patternList, )
 
     ][ret],
+
+    Table.UntypedColumns = (source as table) as any => [ //  table => [
+        Source = source,
+        ColumnsFromTableSchema = Table.Schema(source),
+        ret = error "NYI"
+    ][ret],
+
+
+    Assert.ColumnsExist = (source as table, requiredNames as list) as any => [ // as logical => [
+        // refacot and export this func to shared
+        config = [
+            // DetailedOutput = true,
+            // CaseSensitiveCompare = true
+            // CultureComparer = null
+        ],
+        // details = [
+
+        // ],
+        actualCols  = List.Buffer( Table.ColumnNames( source ) ),
+        missingCols = List.RemoveItems( requiredNames, actualCols ),
+        extraCols   = List.RemoveItems( actualCols, requiredNames ),
+
+        conditionsUsingSchema = [
+                Source = Table.Schema( source ),
+                #"Sorted Rows" = Table.Sort(Source,{{"TypeName", Order.Ascending}}),
+                #"Filtered Rows" = Table.SelectRows(#"Sorted Rows", each ([Kind] = "any"))
+            ],
+
+
+        shouldThrow = List.Count( missingCols ) > 0, // todo: future: make names case insensitive using config
+        FinalAssertStatement =
+            if not shouldThrow then true else error [
+                Message.Format = Text.Combine({
+                    "Assert: ColumnsExist failed! Target: #[Source], To find: #[ToFind]",
+                    "ActualCols: #[ActualCols]",
+                    "MissingCols: #[MissingCols]",
+                    "ExtraCols: #[ExtraCols]"
+                }, "#(cr,lf)"),
+                Message.Parameters = [
+                    ToFind = requiredNames,
+                    Source = source,
+                    ActualCols = actualCols,
+                    MissingCols = missingCols,
+                    ExtraCols = extraCols
+                ] ],
+        // return = FinalAssertStatement,
+        return = error "WIP"
+            // if config[DetailedOutput] then details
+            // else FinalAssertStatement
+            // error "NYI, successfull stand alone bool"
+        // Table.SelectColumns( Source, ExpectCols, MissingField.Error ),
+        // finalCondCondition =
+        //     try a catch (e) =>
+        //     error e
+        ][return],
+
+    Assert.ColumnsHaveTypes = (source as table) as any => [
+        /*
+        three potential test kinds
+            [3] primitveType == any
+            [3] longType == any
+            [3] Value.Type( data ) is type any
+        */
+        ret = error "NYI"
+        // .IsNotTypeAny
+    ][ret],
 //     let
 //     Source = List.Select( Record.FieldNames( #shared ), (item) => List.AnyTrue( List.Transform( {"Path", "Folder", "Dir", "File"}, (pattern) => Text.Contains( item, pattern, Comparer.OrdinalIgnoreCase ) ) ) )
 // in
 //     Source
-  Convert.ScriptExtent = (err as any) => [
-    /* todo:example
-        /// import
-        Source = EvalQuery( SharedUtils_Path ),
-        ext = convertScriptExtent( (try err catch (e) => e) ),
+    Convert.ScriptExtent = (err as any) => [
+        /* todo:example
+            /// import
+            Source = EvalQuery( SharedUtils_Path ),
+            ext = convertScriptExtent( (try err catch (e) => e) ),
 
-        converts an error from:
-            [117,5-117,17] Token ',' expected.
+            converts an error from:
+                [117,5-117,17] Token ',' expected.
 
-        to line numbers as a record
-    */
-        Split.ScriptExtent = Splitter.SplitTextByEachDelimiter({"[", ",", "-", ",", "]"}, QuoteStyle.None),
-        lineData = Split.ScriptExtent( err[Message] ),
-        ret = [
-            StartLineNumber   = Number.FromText( lineData{1}? ),
-            StartColumnNumber = Number.FromText( lineData{2}? ),
-            EndLineNumber     = Number.FromText( lineData{3}? ),
-            EndColumnNumber   = Number.FromText( lineData{4}? ),
-            RemainingMessage  = lineData{5}?,                      // shouldn't be more than 1 index?
-            Reason = err[Reason],
-            Message = err[Message],
-            ErrorRecord = err,
-            RawText           = err[Message]
+            to line numbers as a record
+        */
+            Split.ScriptExtent = Splitter.SplitTextByEachDelimiter({"[", ",", "-", ",", "]"}, QuoteStyle.None),
+            lineData = Split.ScriptExtent( err[Message] ),
+            ret = [
+                StartLineNumber   = Number.FromText( lineData{1}? ),
+                StartColumnNumber = Number.FromText( lineData{2}? ),
+                EndLineNumber     = Number.FromText( lineData{3}? ),
+                EndColumnNumber   = Number.FromText( lineData{4}? ),
+                RemainingMessage  = lineData{5}?,                      // shouldn't be more than 1 index?
+                Reason            = err[Reason],
+                Message           = err[Message],
+                ErrorRecord       = err,
+                RawText           = err[Message]
+            ] meta [ NinTypeName = "ScriptExtent"]
         ],
 
+    File.ShowError = ( path as text, extent as record) => [
+        // display lines involved in the error
+        path = path ?? "H:\data\2023\BI\git\ninMonkQuery-examples\Dynamic_Logic\pq.lib\2024.pq-lib.pq",
+        contents = Lines.FromBinary( File.Contents( path ), QuoteStyle.None, false, TextEncoding.Utf8 ),
+        linesCount =  extent[EndLineNumber] - extent[StartLineNumber],
+        selectedLines = List.Range( contents, extent[StartLineNumber] - 2, linesCount + 2 ),
+        prefix =  {
+            "Reason: #[Reason]#",
+            "#Message: #[Message]#",
+            "..."
+        },
+        merged = Text.Combine( prefix & selectedLines, "#(cr,lf)" ),
+        ret = Text.Format( merged, [
+            Reason = extent[Reason],
+            Message = extent[Message]
+        ] )
+    ][ret],
 
-    Template.Nin = ( optional basePath as nullable text) as any => [
+
+    Template.Nin = ( optional basePath as nullable text, optional options as nullable record) as any => [
+        // links to files as an easy import
         root = basePath ?? "H:\datasource\nin.🐒.template",
-        ret = [
-            Funcs = {
-                // Folder.Files,
-                // File.Contents,
-                // File
-            }
-            // Dir.Ls = Folder.Contents,
-            // Dir.Files  = Folder.Files
-            // Files.Ls = Files.
-        ]
-    ]
+        allFiles = Folder.Contents( root ),
+        ret = if options[PathOnly]? ?? false then root else allFiles
+    ][ret]
 ]

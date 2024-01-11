@@ -1,3 +1,18 @@
+/* basic version
+let
+    // evaluates a .pq text file that's editable outside of power bi, without pasting updates. just refresh.
+    EvalQueryFunc = (filePath as text, optional options as nullable record) as any => [
+        encoding = options[Encoding]? ?? TextEncoding.Utf8,
+        environment = options[Environment]? ?? #shared,
+        bytes = File.Contents(filePath),
+        lines = Text.FromBinary( bytes, encoding ),
+        return = Expression.Evaluate( lines, environment )
+    ][return]
+in
+    EvalQueryFunc
+*/
+
+// with extra
 let
     Path = "H:\data\2023\BI\git\ninMonkQuery-examples\Dynamic_Logic\AdventOfCode2023\pq\Day-01-Part2-FirstAndLastoccurrence-AsWords-OfNumber.pq",
     EvalQuery = (filePath as text, optional options as nullable record) as any => [
@@ -48,33 +63,12 @@ let
             ] )
         ][ret],
 
-    // a = Lines.FromBinary( File.Contents("H:\data\2023\BI\git\ninMonkQuery-examples\Dynamic_Logic\pq.lib\2024.pq-lib.pq" )),
-    // rend = Text.Combine(
-    //     { err[Reason], err[Message], "#(cr,lf) // ..... #(cr,lf)" } & lines
-    //     , "#(cr,lf)"),
-    // extent = convertScriptExtent( err ),
-//     ext = convertScriptExtent( (try err catch (e) => e) ),
-//     inv = File.ShowError( null, convertScriptExtent( err ) )
-// in
-//     inv
-//     // bytes = File.Contents(Path),
-//     // a = Text.FromBinary(bytes, TextEncoding.Utf8 ),
-//     // eval = Expression.Evaluate( a, #shared )
     asEval = EvalQuery( SharedUtils_Path ),
     FinalEval =
         try asEval
         catch (e) =>
             File.ShowError( SharedUtils_Path, Convert.ScriptExtent.FromError( e ) )
             // Convert.ScriptExtent.FromError( e ),
-    // showFinal = File.ShowError( FinalEval[?])
+            // showFinal = File.ShowError( FinalEval[?])
 in
     FinalEval
-
-
-
-//     let
-//     Source =
-//     // er = try Source catch (e) => e
-// in
-//     // er
-//     Source
