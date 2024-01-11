@@ -87,5 +87,68 @@
             occurrence = options[Occurrence]? ?? Occurrence.First,
             comparer = options[Comparer]? ?? Comparer.OrdinalIgnoreCase,
             ret = Text.PositionOf( source, substring, occurrence, comparer )
-        ][ret]
+        ][ret],
+
+    Text.MatchesAnyOf.CI = (sourceList as text, patternList as list) as logical => [
+        ret = List.Select(
+            sourceList,
+            (source) => List.AnyTrue(
+                List.Transform( patternList, (pattern) => Text.ContainsCI( source, pattern ) )
+            )
+        )
+            // List.Contains( patternList, item, Comparer.OrdinalIgnoreCase ))
+
+
+        // ret = List.Select( sourceList, (item) =>
+            // List.Select(
+            //     sourceList, (item) =>
+            //         List.AnyTrue(
+            //             List.Transform(
+            //                 patternList,
+            //                 (pattern) => Text.Contains( item, pattern, Comparer.OrdinalIgnoreCase ) ) ) ).AnyTrue( List.Transform( patternList, )
+
+    ][ret],
+//     let
+//     Source = List.Select( Record.FieldNames( #shared ), (item) => List.AnyTrue( List.Transform( {"Path", "Folder", "Dir", "File"}, (pattern) => Text.Contains( item, pattern, Comparer.OrdinalIgnoreCase ) ) ) )
+// in
+//     Source
+  Convert.ScriptExtent = (err as any) => [
+    /* todo:example
+        /// import
+        Source = EvalQuery( SharedUtils_Path ),
+        ext = convertScriptExtent( (try err catch (e) => e) ),
+
+        converts an error from:
+            [117,5-117,17] Token ',' expected.
+
+        to line numbers as a record
+    */
+        Split.ScriptExtent = Splitter.SplitTextByEachDelimiter({"[", ",", "-", ",", "]"}, QuoteStyle.None),
+        lineData = Split.ScriptExtent( err[Message] ),
+        ret = [
+            StartLineNumber   = Number.FromText( lineData{1}? ),
+            StartColumnNumber = Number.FromText( lineData{2}? ),
+            EndLineNumber     = Number.FromText( lineData{3}? ),
+            EndColumnNumber   = Number.FromText( lineData{4}? ),
+            RemainingMessage  = lineData{5}?,                      // shouldn't be more than 1 index?
+            Reason = err[Reason],
+            Message = err[Message],
+            ErrorRecord = err,
+            RawText           = err[Message]
+        ],
+
+
+    Template.Nin = ( optional basePath as nullable text) as any => [
+        root = basePath ?? "H:\datasource\nin.🐒.template",
+        ret = [
+            Funcs = {
+                // Folder.Files,
+                // File.Contents,
+                // File
+            }
+            // Dir.Ls = Folder.Contents,
+            // Dir.Files  = Folder.Files
+            // Files.Ls = Files.
+        ]
+    ]
 ]
