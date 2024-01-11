@@ -1,4 +1,8 @@
 let
+    UrlRoot = {
+        "http://127.0.0.1:7077",
+        "https://gitloggerfunction.azurewebsites.net"
+    }{1},
     /*
     report parameters:
      UrlRoot = {
