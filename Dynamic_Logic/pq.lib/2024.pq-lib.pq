@@ -99,27 +99,44 @@
     AsTextList = (source as any, optional culture as nullable text) as list => [
         ret = List.Transform( source, each Text.From(_, culture ?? null ))
     ][ret],
+    /*
+        in:  { "a", "b" }
+        out: "a#(cr,lf)b"
+    */
     FmtNL = (source as list) as text => [
         ret = Text.Combine( AsTextList( source ), Uni[CrLf] )
-        // Text.Combine( source, )
-    ]
+    ][ret],
 
-
-    /* new error message */
-    Err.InvalidColumns = (sourceOrName as any, columnNames as list, optional options as nullable record) as record => [
+   /* new error message */
+    Err.InvalidColumns = Err.InvalidColumnNames, // this alias will probably be too general that it will collide or change
+    Err.InvalidColumnNames = (source as any, columnNames as list, optional options as nullable record) as record => [
         // or table source could be name,
+        // assert = if sourceOrName is table then
+        //     Columns.ThatExist( sourceOrName, columnNames )
+        // else
+        //     true,
+        // assertAllowedKeys = {"Reason", "Detail", "Message.Parameters", "Message.Format" },
         err = [
             Reason = options[Reason]? ?? options[ExceptionName]? ??
                 "InvalidColumnsException",
             Detail = options[Detail]? ??
                 "Exact column names did not match. Verify capitalization and whitespace",
+            Message.Parameters = {
+                source, // AsText?
+                FmtList( columnNames ),
+                FmtList( Table.ColumnNames(source) )
+            },
             Message.Format = options[Message.Format]? ??
-                "RequiredParameterMissingValues ColumnNames: #(cr,lf)Wanted: #(cr,lf)    #{0}, #(cr,lf)Found: #(cr,lf)    #{1}",
-
-        ]
-    ][err],
-
-
+                FmtNL({ "",
+                        "RequiredParameterMissingValues ColumnNames: ",
+                        "Table: #{0}",
+                        "Wanted: ",
+                        "    #{1}",
+                        "Found: ",
+                        "    #{2}"
+                    })
+            ]
+        ][err],
     /*
     Asserts if columns are valid, return their names as a list
     otherwise throw
