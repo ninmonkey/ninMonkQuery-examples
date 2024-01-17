@@ -153,46 +153,46 @@
             error Exception for missing columns
     */
     Columns.ThatExist = (source as table, columnNames as list) as any => [
-        // assert list of type
         src_colNames = Table.ColumnNames(source),
         all_exist = List.ContainsAll( src_colNames, columnNames, Comparer.Ordinal ),
         assert = all_exist,
-        error_missingMandatory = [
-            Reason = "BadColumnNames",
-            Detail = "Exact match for columns was not found. Check if capitalization or whitespace is different",
-            Message.Format = "RequiredParameterMissingValues ColumnNames: #(cr,lf)Wanted: #(cr,lf)    #{0}, #(cr,lf)Found: #(cr,lf)    #{1}",
-            Message.Parameters = { FmtList(columnNames), FmtList(src_colNames) }
-        ] meta [ NinAssertName = "Columns.ThatExist", Activity = Diagnostics.ActivityId() ],
-        final_data = columnNames,
-        ret = if assert then final_data else error error_missingMandatory
+        error_missingMandatory =
+            Err.InvalidColumnNames( source, columnNames )
+            meta [ NinAssertName = "Columns.ThatExist", Activity = Diagnostics.ActivityId() ],
+
+        valid_data = columnNames,
+        ret = if assert then valid_data else error error_missingMandatory
     ][ret],
 
+    //   distinct_per_pair = Table.Group(Source, {"Species", "Region"}, {{"Distinct", each Table.RowCount(Table.Distinct(_, {"Species", "Region"})), Int64.Type}, {"Count", each Table.RowCount(_), Int64.Type}})
 
-    GroupBy.ShowCounts = (source as table, columnNames as list) as record => [
-        columnsThatExist = [
-            src_colNames = Table.ColumnNames(source),
-            all_exist = List.ContainsAll( src_colNames, columnNames, Comparer.Ordinal ),
-            assert = all_exist,
-            // error_missingMandatory = error "Stuff",
-            error_missingMandatory = error [
-                Reason = "MissingColumns",
-                Details = "dsf",
-                Detail = "Exact match for columns was not found. Check if capitalization or whitespace is different",
-                Message.Format = "RequiredParameterMissingValues ColumnNames: #(cr,lf)Wanted: #(cr,lf)    #{0}, #(cr,lf)Found: #(cr,lf)    #{1}",
-                // Message.Parameters = [ want = "a", act = "b" ]
-                // Message.Parameters = { "a", "b" }
-                Message.Parameters = { FmtList(columnNames), FmtList(src_colNames) }
-                // Message.Parameters = [ WantedColumns = Text.Combine(columnNames, ", "), FoundColumns = Text.Combine(src_colNames, ", ") ]
-            ],
-            final_data = columnNames,
-            ret = if assert then final_data else error error_missingMandatory
-        ][ret],
-
-        // grp = Table.Group( source, columnNames ),
-        ret = columnsThatExist
-
+    GroupBy.ShowCounts = (source as table, columnNames as list) as table => [
+        columnNames = Columns.ThatExist(source, columnNames ),
+        grouped = Table.Group( source, columnNames, {
+            { "Distinct", each Table.RowCount( Table.Distinct( _, columnNames ) ), Int64.Type },
+            { "Count", each Table.RowCount(_), Int64.Type }
+        }),
+        ret = grouped
     ][ret],
 
+        // columnsThatExist = [
+        //     src_colNames = Table.ColumnNames(source),
+        //     all_exist = List.ContainsAll( src_colNames, columnNames, Comparer.Ordinal ),
+        //     assert = all_exist,
+        //     // error_missingMandatory = error "Stuff",
+        //     error_missingMandatory = error [
+        //         Reason = "MissingColumns",
+        //         Details = "dsf",
+        //         Detail = "Exact match for columns was not found. Check if capitalization or whitespace is different",
+        //         Message.Format = "RequiredParameterMissingValues ColumnNames: #(cr,lf)Wanted: #(cr,lf)    #{0}, #(cr,lf)Found: #(cr,lf)    #{1}",
+        //         // Message.Parameters = [ want = "a", act = "b" ]
+        //         // Message.Parameters = { "a", "b" }
+        //         Message.Parameters = { FmtList(columnNames), FmtList(src_colNames) }
+        //         // Message.Parameters = [ WantedColumns = Text.Combine(columnNames, ", "), FoundColumns = Text.Combine(src_colNames, ", ") ]
+        //     ],
+        //     final_data = columnNames,
+        //     ret = if assert then final_data else error error_missingMandatory
+        // ][ret],
     // converts a nulls and empty strings to printable values
     /*
         in:  { "a", "", null, 4 }
