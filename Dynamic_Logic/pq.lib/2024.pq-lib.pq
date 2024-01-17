@@ -68,6 +68,85 @@
         return = Text.Combine( segments, ", " )
     ][return],
 
+    Uni = [
+        CrLf = "#(cr,lf)",
+        Indent = "    ",
+        LineEnding = CrLf,
+        NL = "#(lf)",
+        Null = "#(2400)",
+        Monkey = "#(0001F412)",
+        SpaceSymbol = "#(2420)"
+    ],
+    /*
+        in:  { "a", 2, #date(2023,1,4) },
+        out: "{ a, 2, 2023-01-04 }"
+    */
+    Text.FormatList = (source as list) as text => [
+        Config = [
+            BracePrefix = "{ ",
+            BraceSuffix = " }",
+            Separator = ", ",
+            OuterSeparator = ""
+        ],
+        str_list = List.Transform( source, each Text.From(_) ),
+        ret = Text.Combine( {
+            Config[BracePrefix],
+            Text.Combine( str_list, Config[Separator] ),
+            Config[BraceSuffix]
+        }, Config[OuterSeparator] )
+    ][ret],
+    FmtList = Text.FormatList,
+    AsTextList = (source as any, optional culture as nullable text) as list => [
+        ret = List.Transform( source, each Text.From(_, culture ?? null ))
+    ][ret],
+    FmtNL = (source as list) as text => [
+        ret = Text.Combine( AsTextList( source ), Uni[CrLf] )
+        // Text.Combine( source, )
+    ]
+
+
+    /* new error message */
+    Err.InvalidColumns = (sourceOrName as any, columnNames as list, optional options as nullable record) as record => [
+        // or table source could be name,
+        err = [
+            Reason = options[Reason]? ?? options[ExceptionName]? ??
+                "InvalidColumnsException",
+            Detail = options[Detail]? ??
+                "Exact column names did not match. Verify capitalization and whitespace",
+            Message.Format = options[Message.Format]? ??
+                "RequiredParameterMissingValues ColumnNames: #(cr,lf)Wanted: #(cr,lf)    #{0}, #(cr,lf)Found: #(cr,lf)    #{1}",
+
+        ]
+    ][err],
+
+
+    /*
+    Asserts if columns are valid, return their names as a list
+    otherwise throw
+
+        in:  { "Name", "Id" }
+        out: good
+            { "Name", "Id"}
+        out: bad
+            error Exception for missing columns
+    */
+    Columns.ThatExist = (source as table, columnNames as list) as any => [
+        // assert list of type
+        src_colNames = Table.ColumnNames(source),
+        all_exist = List.ContainsAll( src_colNames, columnNames, Comparer.Ordinal ),
+        assert = all_exist,
+        error_missingMandatory = [
+            Reason = "BadColumnNames",
+            Detail = "Exact match for columns was not found. Check if capitalization or whitespace is different",
+            Message.Format = "RequiredParameterMissingValues ColumnNames: #(cr,lf)Wanted: #(cr,lf)    #{0}, #(cr,lf)Found: #(cr,lf)    #{1}",
+            Message.Parameters = { FmtList(columnNames), FmtList(src_colNames) }
+        ] meta [ NinAssertName = "Columns.ThatExist", Activity = Diagnostics.ActivityId() ],
+        final_data = columnNames,
+        ret = if assert then final_data else error error_missingMandatory
+    ][ret],
+
+
+
     ray = XRay,
     XRay = (source as any) as text => [
         // see also: Xray, ToJson, Csv
