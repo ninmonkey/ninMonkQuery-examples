@@ -109,13 +109,15 @@
 
    /* new error message */
     Err.InvalidColumns = Err.InvalidColumnNames, // this alias will probably be too general that it will collide or change
-    Err.InvalidColumnNames = (source as any, columnNames as list, optional options as nullable record) as record => [
+    Err.InvalidColumnNames = (source as table, columnNames as list, optional options as nullable record) as record => [
         // or table source could be name,
         // assert = if sourceOrName is table then
         //     Columns.ThatExist( sourceOrName, columnNames )
         // else
         //     true,
         // assertAllowedKeys = {"Reason", "Detail", "Message.Parameters", "Message.Format" },
+        // tableName = if source is text then source else Expression.Identifier(source),
+        MissingColumns = List.RemoveItems( columnNames, Table.ColumnNames(source) ),
         err = [
             Reason = options[Reason]? ?? options[ExceptionName]? ??
                 "InvalidColumnsException",
@@ -124,7 +126,8 @@
             Message.Parameters = {
                 source, // AsText?
                 FmtList( columnNames ),
-                FmtList( Table.ColumnNames(source) )
+                FmtList( Table.ColumnNames(source) ),
+                FmtList( MissingColumns )
             },
             Message.Format = options[Message.Format]? ??
                 FmtNL({ "",
@@ -133,7 +136,9 @@
                         "Wanted: ",
                         "    #{1}",
                         "Found: ",
-                        "    #{2}"
+                        "    #{2}",
+                        "Missing: ",
+                        "    #{3}"
                     })
             ]
         ][err],
@@ -163,6 +168,42 @@
     ][ret],
 
 
+    GroupBy.ShowCounts = (source as table, columnNames as list) as record => [
+        columnsThatExist = [
+            src_colNames = Table.ColumnNames(source),
+            all_exist = List.ContainsAll( src_colNames, columnNames, Comparer.Ordinal ),
+            assert = all_exist,
+            // error_missingMandatory = error "Stuff",
+            error_missingMandatory = error [
+                Reason = "MissingColumns",
+                Details = "dsf",
+                Detail = "Exact match for columns was not found. Check if capitalization or whitespace is different",
+                Message.Format = "RequiredParameterMissingValues ColumnNames: #(cr,lf)Wanted: #(cr,lf)    #{0}, #(cr,lf)Found: #(cr,lf)    #{1}",
+                // Message.Parameters = [ want = "a", act = "b" ]
+                // Message.Parameters = { "a", "b" }
+                Message.Parameters = { FmtList(columnNames), FmtList(src_colNames) }
+                // Message.Parameters = [ WantedColumns = Text.Combine(columnNames, ", "), FoundColumns = Text.Combine(src_colNames, ", ") ]
+            ],
+            final_data = columnNames,
+            ret = if assert then final_data else error error_missingMandatory
+        ][ret],
+
+        // grp = Table.Group( source, columnNames ),
+        ret = columnsThatExist
+
+    ][ret],
+
+    // converts a nulls and empty strings to printable values
+    /*
+        in:  { "a", "", null, 4 }
+        out: { "a", "<EmptyStr>", "␀", 4 }
+    */
+    FmtShowEmpty = (source as list) as list => [
+        ret = List.ReplaceMatchingItems( source,
+            {   { "", "<EmptyStr>" },
+                { null, Uni[Null]  } }
+        )
+    ][ret],
 
     ray = XRay,
     XRay = (source as any) as text => [
