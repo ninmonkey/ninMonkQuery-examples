@@ -70,18 +70,23 @@
                 "icon": "helper"
             }
         ],
-        "powerquery.benchmark.enable": false,
+        // "powerquery.benchmark.enable": false,
         "powerquery.diagnostics.isWorkspaceCacheAllowed": true,
         "powerquery.editor.transformTarget": "inPlace",
         "powerquery.diagnostics.typeStrategy": "Extended",
-        "powerquery.general.experimental": false,
         "powerquery.general.locale": "en-US",
         "powerquery.general.mode": "SDK",
+        "powerquery.general.experimental": true,
+        "powerquery.sdk.features.useServiceHost": true,
         // "powerquery.sdk.defaultExtension": ".pqm",
         "powerquery.sdk.defaultQueryFile": "debug_harness.pq",
         // "powerquery.sdk.externals.msbuildPath": ""
         "powerquery.sdk.features.autoDetection": true,
-        "powerquery.sdk.externals.nugetFeed": "",
+        "[powerquery]": {
+            "editor.fontSize": 16,
+            "editor.fontFamily": "'cascadia code', monospace"
+        }
+        // "powerquery.sdk.externals.nugetFeed": "",
         // // Recommended always off. Enables benchmark traces to be generated for the extension.
         // "powerquery.benchmark.enable": false,
         // // Recommended always on. Toggles internal caching causing performance degregation when off. Used to find hot paths in the extension.

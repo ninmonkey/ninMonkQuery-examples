@@ -1,5 +1,10 @@
 let
-    Source = Animal,
+    Source = ..., Animal = ...,
+
+    // values like "10s" or "3m"
+    Splitter.SplitDigitWithSuffix = // Splitter.SplitTextByDigitWithSuffixTransition =
+        Splitter.SplitTextByCharacterTransition(
+        {"0".."9"}, (c) => not List.Contains({"0".."9"}, c) ),
 
     GroupBy.ShowCounts = (source as table, columnNames as list) as record => [
         columnsThatExist = [
@@ -18,6 +23,7 @@ let
 
     ][[final_data]],
     //   distinct_per_pair = Table.Group(Source, {"Species", "Region"}, {{"Distinct", each Table.RowCount(Table.Distinct(_, {"Species", "Region"})), Int64.Type}, {"Count", each Table.RowCount(_), Int64.Type}})
+
 
     tryIt_err = GroupBy.ShowCounts( Animal, {"Species", "Region", "Cat" }),
     tryIt_ok  = GroupBy.ShowCounts( Animal, {"Species", "Region"}),

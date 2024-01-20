@@ -62,8 +62,12 @@
         */
     },
 
+    // aggressive aliases?
+    Csv = Text.FormatCsv,
+        Format.Csv = Csv,
+        Fmt.Csv = Csv,
 
-    Csv = (source as list) as text => [
+    Text.FormatCsv = (source as list) as text => [
         segments = List.Transform( source, each Text.From(_) ),
         return = Text.Combine( segments, ", " )
     ][return],
@@ -81,6 +85,7 @@
         in:  { "a", 2, #date(2023,1,4) },
         out: "{ a, 2, 2023-01-04 }"
     */
+    FmtList = Text.FormatList,
     Text.FormatList = (source as list) as text => [
         Config = [
             BracePrefix = "{ ",
@@ -93,19 +98,82 @@
             Config[BracePrefix],
             Text.Combine( str_list, Config[Separator] ),
             Config[BraceSuffix]
-        }, Config[OuterSeparator] )
+        },  Config[OuterSeparator] )
     ][ret],
-    FmtList = Text.FormatList,
-    AsTextList = (source as any, optional culture as nullable text) as list => [
+
+    /*
+        AsList.Text = AsTextList,
+        AsList.OfText = TextList = AsTextList,
+        To.TextList = Transform.TextList,
+        AsTextList = As.TextList,
+        To.TextList = As.TextList,
+    */
+
+    // # attributes could auto-strip these out based on a config value, that reads metadata
+    ListOf.Text        = TransformTo.TextList,
+        As.TextList        = ListOf.Text,
+        // AsTextList         = ListOf.Text,
+        // To.TextList        = ListOf.Text,
+        // ToList.OfText      = ListOf.Text,
+        AsList.OfText      = ListOf.Text,
+        TextList           = ListOf.Text,
+        Transform.TextList = ListOf.Text,
+        // AsList.Text        = ListOf.Text,
+
+    TransformTo.TextList = (source as any, optional culture as nullable text) as list => [
         ret = List.Transform( source, each Text.From(_, culture ?? null ))
     ][ret],
     /*
         in:  { "a", "b" }
         out: "a#(cr,lf)b"
     */
-    FmtNL = (source as list) as text => [
-        ret = Text.Combine( AsTextList( source ), Uni[CrLf] )
+    Join.NewLine = Format.JoinNewLine,
+        Join.NL = Join.NewLine,
+        FmtNL   = Join.NewLine,
+
+    Format.JoinNewLine = (source as list) as text => [
+        ret = Text.Combine( As.TextList( source ), Uni[CrLf] )
     ][ret],
+
+    // Input : list of all values.
+    // Output: true emptyString, and nulls are replaced with control char symbols
+    // roughly the first 0x1b codepoints, just add 0x2400 for safe to print
+    /*
+        in:  { "a", "b" }
+        out: "a#(cr,lf)b"
+    */
+    Format.ControlChar = Format.ShowBlank,
+        Fcc            = Format.ShowBlank,
+        Format.Newline = Format.ShowBlank,
+        Format.Blank = Format.ShowBlank,
+
+    Format.ShowBlank = (source as list) as list => [
+        ret = List.ReplaceMatchingItems( source,
+            {   { "", "<EmptyStr>" },
+                { null, Uni[Null]  } }
+        )
+    ][ret],
+
+    ray = XRay,
+    XRay = (source as any) as text => [
+        // see also: Xray, ToJson, Csv
+        bytes = Json.FromValue( source, TextEncoding.Utf8 ),
+        json = Text.FromBinary( bytes, TextEncoding.Utf8 )
+    ][json],
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
    /* new error message */
     Err.InvalidColumns = Err.InvalidColumnNames, // this alias will probably be too general that it will collide or change
@@ -151,6 +219,8 @@
             { "Name", "Id"}
         out: bad
             error Exception for missing columns
+
+        ninassert
     */
     Columns.ThatExist = (source as table, columnNames as list) as any => [
         src_colNames = Table.ColumnNames(source),
@@ -198,19 +268,7 @@
         in:  { "a", "", null, 4 }
         out: { "a", "<EmptyStr>", "␀", 4 }
     */
-    FmtShowEmpty = (source as list) as list => [
-        ret = List.ReplaceMatchingItems( source,
-            {   { "", "<EmptyStr>" },
-                { null, Uni[Null]  } }
-        )
-    ][ret],
 
-    ray = XRay,
-    XRay = (source as any) as text => [
-        // see also: Xray, ToJson, Csv
-        bytes = Json.FromValue( source, TextEncoding.Utf8 ),
-        json = Text.FromBinary( bytes, TextEncoding.Utf8 )
-    ][json],
 
     ToJson = (source as any, optional options as nullable record ) as text => [
 

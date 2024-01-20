@@ -5,7 +5,7 @@
             { "Distinct", each Table.RowCount( Table.Distinct( _, columnNames ) ), Int64.Type },
             { "Count",    each Table.RowCount(_), Int64.Type }
         }),
-        ret = grouped
+        finalResult = grouped
     ][ret],
 
     /* if columns are valid, return them
