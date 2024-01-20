@@ -1,4 +1,4 @@
-[
+let r = [
     About = "ninlib 2024.01 | helper functions",
     ToCollect = {
         [ What = "Assert.ColumnsExist" ],
@@ -70,7 +70,7 @@
     Text.FormatCsv = (source as list) as text => [
         segments = List.Transform( source, each Text.From(_) ),
         return = Text.Combine( segments, ", " )
-    ][return],
+    ][return] meta [ MetaNote = "AfterFuncReturn" ],
 
     Uni = [
         CrLf = "#(cr,lf)",
@@ -85,7 +85,7 @@
         in:  { "a", 2, #date(2023,1,4) },
         out: "{ a, 2, 2023-01-04 }"
     */
-    FmtList = Text.FormatList,
+    FmtList = Text.FormatList meta [ AliasTo = "Text.FormatList", NinLibType = "Alias" ],
     Text.FormatList = (source as list) as text => [
         Config = [
             BracePrefix = "{ ",
@@ -135,6 +135,13 @@
         ret = Text.Combine( As.TextList( source ), Uni[CrLf] )
     ][ret],
 
+    Format.JoinDocNewline = Format.JoinBR,
+    Format.JoinBR = (source as list) as text => [
+        ret = Text.Combine( As.TextList( source ), "#(cr,lf)<br>" )
+    ][ret],
+
+
+
     // Input : list of all values.
     // Output: true emptyString, and nulls are replaced with control char symbols
     // roughly the first 0x1b codepoints, just add 0x2400 for safe to print
@@ -166,14 +173,108 @@
 
 
 
+    // values like "10s" or "3m"
+    Splitter.SplitDigitWithSuffix = // Splitter.SplitTextByDigitWithSuffixTransition =
+        Splitter.SplitTextByCharacterTransition(
+        {"0".."9"}, (c) => not List.Contains({"0".."9"}, c) ),
+
+    Doc.Expand = Format.DocExpand,
+    /*
+     sugar to make it easier to embed powerquery as a string literal
+
+        It replaces '␞' with double quotes '"'
+
+        input : List.SelectBySuffix( { {␞2␞, ␞d␞}, {␞3␞, ␞h␞} }, ␞h␞)
+        output: List.SelectBySuffix( { {"2", "d"}, {"3", "h"} }, "h")
+    */
+    Format.DocExpand = let
+        Format.DocExpand.Type =
+                type function ( source as text ) as text meta [
+                    Documentation.Name = "Format.DocExpand",
+                    Documentation.LongDescription = Format.JoinBR({
+                        "A helper function to generate help strings without crazy escaping.",
+                        "",
+                        "Input:",
+                        "",
+                        "<code> = DocExpand( ""List.SelectBySuffix( { {␞2␞, ␞d␞}, {␞3␞, ␞h␞} }, ␞h␞)"" )</code>",
+                        "",
+                        "Output:",
+                        "",
+                        "<code> = 'List.SelectBySuffix( { {""2"", ""d""}, {""3"", ""h""} }, ""h"")""'</code>",
+                        "",
+                        "returns type <code>text</code>"
+                            })
+                ],
+            Format.DocExpand.Func = (source as text) as text =>
+                Text.Replace( source, "␞", "#(0022)" )
+        in
+            Value.ReplaceType( Format.DocExpand.Func, Format.DocExpand.Type ),
 
 
+    Duration.FromCustom = let
+        Duration.FromCustom.Type = type function (
+            source as duration
+        ) as duration meta [
+            Documentation.Name = "Duration.FromCustom",
+            Documentation.LongDescription = Text.Combine({
+                "Call <code>Splitter.SplitDigitWithSuffix()</code>.","",
+                "Pick out pairs of 'd', 'h', 'm', 's' and 'd' using <code>List.SelectBySuffix()</code>",
+                "returns type <code>duration</code>"
+            }, "<br>")
+        ],
+
+        Duration.FromCustom.Func = (source as text) as duration => [
+            clean = Text.Trim( Text.Lower( source, Culture.Current ) ),
+            s_segs = Text.Split(clean, " "),
+            s_pairs = List.Transform( s_segs, (pair) => Splitter.SplitDigitWithSuffix( pair )),
+
+            Days =
+                Number.From( List.SelectBySuffix( s_pairs, "d" ) ) ?? 0,
+            Hours =
+                Number.From( List.SelectBySuffix( s_pairs, "h" ) ) ?? 0,
+            Minutes =
+                Number.From( List.SelectBySuffix( s_pairs, "m" ) ) ?? 0,
+            Seconds =
+                Number.From( List.SelectBySuffix( s_pairs, "s" ) ) ?? 0,
+
+            inst =
+                #duration( Days, Hours, Minutes, Seconds )
+        ][inst]
+    in
+        Value.ReplaceType( Duration.FromCustom.Func, Duration.FromCustom.Type),
+    // Duration.FromCustom = Value.ReplaceType( Duration.FromCustom.Func, Duration.FromCustom.Type),
 
 
+    // expects a list of pairs of 2 elements, first is the digit, 2nd is the unit
+    List.SelectBySuffix = let
+        List.SelectBySuffix.Func = ( items as list, unit as text ) as any =>
+            List.First(
+                List.Select( items,
+                    (i) => i{1} = unit ), null ){0}?,
 
-
-
-
+        List.SelectBySuffix.Type = type function (
+            items as (type { text }),
+            unit as text
+        ) as text meta [
+            Documentation.Name = "List.SelectBySuffix",
+            Documentation.LongDescription = Text.Combine({
+                "After calling <code>Splitter.SplitDigitWithSuffix()</code>, this function will choose one item from the pair", "", "#(tab)<b>Example</b>:  For the text <code>'2m 3s'</code> find <code>'2'<code> if unit is <code>'m'<code>"
+            }, "<br>"),
+            Documentation.Examples = {
+                [
+                    Description = "Selects the first item in a list that ends with the specified suffix",
+                    Code = Format.DocExpand( "List.SelectBySuffix( { {␞2␞, ␞d␞}, {␞3␞, ␞h␞} }, ␞h␞)" ),
+                    Result = Format.DocExpand("3")
+                ],
+                [
+                    Description = "Selects the first item in a list that ends with the specified suffix",
+                    Code = Format.DocExpand( "List.SelectBySuffix( { {␞2␞, ␞d␞}, {␞3␞, ␞h␞} }, ␞d␞)" ),
+                    Result = Format.DocExpand("2")
+                ]
+            }
+        ]
+    in
+        Value.ReplaceType( List.SelectBySuffix.Func, List.SelectBySuffix.Type ),
 
    /* new error message */
     Err.InvalidColumns = Err.InvalidColumnNames, // this alias will probably be too general that it will collide or change
@@ -449,4 +550,4 @@
         allFiles = Folder.Contents( root ),
         ret = if options[PathOnly]? ?? false then root else allFiles
     ][ret]
-]
+] in r
