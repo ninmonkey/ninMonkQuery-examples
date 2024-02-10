@@ -3,7 +3,8 @@ let r = [
     ToCollect = {
         [ What = "Assert.ColumnsExist" ],
         [ What = "AssertConditions" ],
-        [ What = "WebRequest.Wrapper", File = "H:\data\2023\BI\git\ninMonkQuery-examples\forumQuestions\pq\2023-11 - quick gitlogger test.pq" ]
+        [ What = "WebRequest.Wrapper", File = "H:\data\2023\BI\git\ninMonkQuery-examples\forumQuestions\pq\2023-11 - quick gitlogger test.pq" ],
+        [ What = "Inspirations", Url = "https://github.com/acaprojects/m-tools/tree/master/src" ]
         /*
         [1]
         / returns first+last merged, as one number
@@ -430,6 +431,109 @@ let r = [
 
     ][ret],
 
+    // return integer within the bounds of a list
+    Random.IndexOf = (source as list) as number => [
+        maxIndex = List.Count(source) - 1,
+        return = Random.Int64(0, maxIndex)
+    ][return],
+
+    // FieldSectionNamesOnly =
+    //     try List.Sort( Record.FieldNames( lib ) )
+    //     catch (e) => { "Error", "Generating", "Completions" }, // , e[Message] },
+    // InvokeIt = [
+    //     // InvokeIt.Type = type function (
+    //     //     funcName as (type text meta [
+    //     //         Documentation.FieldCaption = "Function Name",
+    //     //         Documentation.FieldDescription = "Name of the function to call",
+    //     //         Documentation.SampleValues = {"Text.Format", "List.Transform"}
+    //     //     ]),
+    //     // ),
+    //     Invoke.Nin.Type = type function (
+    //         source as (type text meta [
+    //             // Documentation.AllowedValues = {"foo", "bar"}
+    //             Documentation.AllowedValues = FieldSectionNamesOnly
+    //         ] )
+    //     ) as any meta [
+    //                 Documentation.Name = "Invoke.Nin",
+    //                 Documentation.LongDescription = Format.JoinBR({
+    //                     "Autocomplete all func names, itself?",
+    //                     "Does stuff, returns type <code>text</code>"
+    //                         })
+    //             ],
+    //     Invoke.Nin.Func = (source as text) as any =>
+    //         source,
+
+    //     return = Value.ReplaceType(Invoke.Nin.Func, Invoke.Nin.Type)
+    // ][return],
+
+    Random.Int = Random.Int64,
+    Random.Int64 = [
+        /*
+            Source: https://github.com/ninmonkey/Ninmonkey.PowerQueryLib
+            About: Randomized Int. [2021-04-22]
+            See Also: Number.Round* family of functions, and <https://docs.microsoft.com/en-us/power-query/handlingdocumentation>
+        */
+        Random.Int.Type = type function (
+            min as (type number meta [
+                Documentation.FieldCaption = "Min",
+                Documentation.FieldDescription = "Minimum number",
+                Documentation.SampleValues = {10, 0.45}
+            ]),
+            b as (type number meta [
+                Documentation.FieldCaption = "Max",
+                Documentation.FieldDescription = "Maximum number",
+                Documentation.SampleValues = {34, 100.45}
+            ]),
+            optional culture as (type nullable text meta [
+                Documentation.FieldCaption = "Culture",
+                Documentation.FieldDescription = "Culture used to convert number"
+            ]),
+            optional roundingMode as (type nullable number meta [
+                Documentation.FieldCaption = "Rounding Mode",
+                Documentation.FieldDescription = "rounding method",
+                Documentation.AllowedValues = {
+                    RoundingMode.AwayFromZero, RoundingMode.Down, RoundingMode.ToEven, RoundingMode.TowardZero, RoundingMode.Up}
+            ])
+        ) as table meta [
+                Documentation.Name = "RandomInt",
+                Documentation.LongDescription = "Generate a random Int64.Type between two values. Min and Max are Inclusive. Optionally set culture and rounding mode.",
+                Documentation.Examples = {[
+                    Description = "Generate one value",
+                    Code = "RandomInt(10, 20)",
+                    Result = "11"
+                ]}
+            ],
+
+            Random.Int.Impl = (
+            min as number,
+            max as number,
+            optional culture as nullable text,
+            optional roundingMode as nullable number
+        ) as number =>
+            Int64.From(
+                Number.RandomBetween( min, max ),
+                culture,
+                roundingMode
+            ),
+        return = Value.ReplaceType( Random.Int.Impl, Random.Int.Type )
+    ][return],
+
+    Random.Color = (optional options as nullable record) as text => [
+        count = options[Count]? ?? 1,
+        // sel = List.Random(0, )
+        ret = "NYI"
+    ][ret],
+    Constant.Colors = [
+        Red     = "#FF0000",
+        Green   = "#00FF00",
+        Blue    = "#0000FF",
+        Yellow  = "#FFFF00",
+        Cyan    = "#00FFFF",
+        Magenta = "#FF00FF",
+        White   = "#FFFFFF",
+        Black   = "#000000"
+    ],
+
     Table.UntypedColumns = (source as table) as any => [ //  table => [
         Source = source,
         ColumnsFromTableSchema = Table.Schema(source),
@@ -517,7 +621,7 @@ let r = [
                 StartColumnNumber = Number.FromText( lineData{2}? ),
                 EndLineNumber     = Number.FromText( lineData{3}? ),
                 EndColumnNumber   = Number.FromText( lineData{4}? ),
-                RemainingMessage  = lineData{5}?,                      // shouldn't be more than 1 index?
+                RemainingMessage  = lineData{5}?, // normally should be blank
                 Reason            = err[Reason],
                 Message           = err[Message],
                 ErrorRecord       = err,
@@ -538,7 +642,7 @@ let r = [
         },
         merged = Text.Combine( prefix & selectedLines, "#(cr,lf)" ),
         ret = Text.Format( merged, [
-            Reason = extent[Reason],
+            Reason  = extent[Reason],
             Message = extent[Message]
         ] )
     ][ret],
