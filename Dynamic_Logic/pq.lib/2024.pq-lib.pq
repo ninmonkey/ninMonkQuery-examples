@@ -431,8 +431,14 @@ let r = [
 
     ][ret],
 
-    // return integer within the bounds of a list
-    Random.IndexOf = (source as list) as number => [
+    // returns a random item from a list
+    Random.List.Item = (source as list) as any => [
+        which = Random.List.Index( source ),
+        return = source{ which }
+    ][return],
+
+    // gets a random index within the bounds of a list
+    Random.List.Index = (source as list) as number => [
         maxIndex = List.Count(source) - 1,
         return = Random.Int64(0, maxIndex)
     ][return],
@@ -534,11 +540,86 @@ let r = [
         Black   = "#000000"
     ],
 
+    List.SequentialDates = List.ContinuousDates,
+    List.ContinuousDates =  [
+        /*
+        Generate all dates for a date table
+            Source: <https://github.com/ninmonkey/Ninmonkey.PowerQueryLib/blob/master/source/List.ContinuousDates.pq>
+        input:
+            a list or table table column of dates
+        output:
+            table of continuous [Date]s., for a Date table
+        future:
+            auto detect if arg is a table or a list
+        related:
+            List.ContinuousDates
+            Table.ContinuousDates
+        */
+        List.ContinuousDates.Type = type function (source as list) as list meta [
+            Documentation.Name = "List.ContinuousDates",
+            Documentation.LongDescription = "Generate a continuous list of dates from a list of dates. Useful for generating a date list.",
+            Documentation.Examples = {[
+                Description = "Generate a continuous list of dates",
+                Code = "List.ContinuousDates( { #date(2021, 1, 1), #date(2021, 1, 3)} )",
+                Result = "Table.FromRecords({ [ Date = #date(2021, 1, 1)], [ Date = #date(2021, 1, 2)], [ Date = #date(2021, 1, 3)])"
+            ]}
+        ],
+        List.ContinuousDates.Impl = (source as list) as list => let
+            first = List.Min(source),
+            last =  List.Max(source),
+            days =  { Number.From(first)..Number.From(last) },
+
+            baseDates = List.Transform(
+                days, each Date.From(_) )
+
+            // FinalTable = Table.FromList(
+            //     baseDates, Splitter.SplitByNothing(),
+            //     type table[Date = date], null, ExtraValues.Error
+            // )
+        in
+            baseDates,
+        return = Value.ReplaceType( List.ContinuousDates.Impl, List.ContinuousDates.Type )
+    ][return],
+    Table.ContinuousDates =  [
+        /*
+        Generate all dates for a date table
+            Source: <https://github.com/ninmonkey/Ninmonkey.PowerQueryLib/blob/master/source/List.ContinuousDates.pq>
+        input:
+            a list or table table column of dates
+        output:
+            table of continuous [Date]s., for a Date table
+        related:
+            List.ContinuousDates
+            Table.ContinuousDates
+        */
+        Table.ContinuousDates.Type = type function (source as list) as table meta [
+            Documentation.Name = "Table.ContinuousDates",
+            Documentation.LongDescription = "Generate a continuous list of dates from a list of dates. Useful for generating a date table.",
+            Documentation.Examples = {[
+                Description = "Generate a continuous list of dates as a table",
+                Code = "Table.ContinuousDates( { #date(2021, 1, 1), #date(2021, 1, 3)} )",
+                Result = "Table.FromRecords({ [ Date = #date(2021, 1, 1)], [ Date = #date(2021, 1, 2)], [ Date = #date(2021, 1, 3)])"
+            ]}
+        ],
+        Table.ContinuousDates.Impl = (source as list) as table => let
+            baseDates = List.ContinuousDates( source ),
+            FinalTable = Table.FromList(
+                baseDates, Splitter.SplitByNothing(),
+                type table [ Date = date ], null, ExtraValues.Error
+            )
+        in
+            FinalTable,
+        return = Value.ReplaceType( Table.ContinuousDates.Impl, Table.ContinuousDates.Type )
+    ][return],
+
+
+
     Table.UntypedColumns = (source as table) as any => [ //  table => [
         Source = source,
         ColumnsFromTableSchema = Table.Schema(source),
         ret = error "NYI"
     ][ret],
+
 
 
     Assert.ColumnsExist = (source as table, requiredNames as list) as any => [ // as logical => [
