@@ -82,6 +82,51 @@ let r = [
         Monkey = "#(0001F412)",
         SpaceSymbol = "#(2420)"
     ],
+
+    /*
+    Converts from hex encoded, plain-text values into numbers
+
+        in: "2432"  out: 9266 (which is 0x2432)
+
+    see also: Number.ToHexString, Number.FromHexString
+    future improvement, I think I can make it stricter by wrapping it as a constant first
+    psuedo code:
+
+        Expression.Evaluate( Expression.Constant('0x' + "2400") ),
+
+    */
+    Number.FromHexString = (source as text) as number => [
+        hasPrefix = Text.StartsWith( source, "0x", Comparer.OrdinalIgnoreCase ),
+        withPrefix =
+            if hasPrefix then source
+            else "0x" & source,
+        ret = Expression.Evaluate( withPrefix, [] )
+            // Number.FromText( source, "16" )
+        // ret = Number.FromText( source, "16" )
+    ][ret],
+    /*
+        in: 0x2400  out: 2400
+        in: 203     out: cb
+        in: 203, [Prefix = true]
+            out: 0xcb
+
+        see also: Number.ToHexString, Number.FromHexString
+    */
+    Number.ToHexString = Number.FormatHexString,
+    Number.FormatHexString = (
+        source as number, optional options as nullable record) as text => [
+        config = Record.Combine({ [
+                Prefix = false
+            ],
+            (options ?? [])
+        }),
+        hex = Number.ToText( source, "x" ),
+        return =
+            if config[Prefix] then  // options[Prefix]? then
+                "0x" & hex
+            else
+                hex
+    ][return],
     /*
         in:  { "a", 2, #date(2023,1,4) },
         out: "{ a, 2, 2023-01-04 }"
