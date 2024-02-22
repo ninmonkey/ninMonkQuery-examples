@@ -4,7 +4,8 @@ let r = [
         [ What = "Assert.ColumnsExist" ],
         [ What = "AssertConditions" ],
         [ What = "WebRequest.Wrapper", File = "H:\data\2023\BI\git\ninMonkQuery-examples\forumQuestions\pq\2023-11 - quick gitlogger test.pq" ],
-        [ What = "Inspirations", Url = "https://github.com/acaprojects/m-tools/tree/master/src" ]
+        [ What = "Inspirations", Url = "https://github.com/acaprojects/m-tools/tree/master/src" ],
+        [ What = "Format.TextBits", Url = "https://www.biinsight.com/quick-tips-a-power-query-function-to-convert-hex-values-to-dec/" ]
         /*
         [1]
         / returns first+last merged, as one number
@@ -151,10 +152,7 @@ let r = [
         withPrefix =
             if hasPrefix then source else "0x" & source,
         asConstant = Expression.Constant( withPrefix ),
-        // ret = Expression.Evaluate( asConstant, [] )
         ret = Expression.Evaluate( withPrefix, [] )
-
-        // ret = Number.FromText( source, "16" )
     ][ret],
     /*
         in: 0x2400  out: 2400
@@ -636,6 +634,27 @@ let r = [
         White   = "#FFFFFF",
         Black   = "#000000"
     ],
+
+     /*
+        convert image binaries into base64 text in a format expected by browsers (and pbi)
+    */
+    Image.ToBase64Text = (imageUrl as text) as any => [
+            bytes = Web.Contents( imageUrl ),
+            bytesAsText = Binary.ToText( bytes, BinaryEncoding.Base64 ),
+            mime_prefix =
+                if Text.EndsWith( imageUrl, ".png", Comparer.OrdinalIgnoreCase ) then
+                    "data:image/png;base64, "
+                else if (
+                    Text.EndsWith( imageUrl, ".jpeg", Comparer.OrdinalIgnoreCase ) or
+                    Text.EndsWith( imageUrl, ".jpg",  Comparer.OrdinalIgnoreCase ) )
+                then
+                        "data:image/jpg;base64, "
+                else
+                    error [ Message.Format = "Unhandled Image type: {0}", Message.Parameters = { imageUrl } ],
+
+            return = mime_prefix & bytesAsText
+        ][return],
+
 
     List.SequentialDates = List.ContinuousDates,
     List.ContinuousDates =  [
