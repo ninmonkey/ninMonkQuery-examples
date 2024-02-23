@@ -1,11 +1,14 @@
 let r = [
-    About = "ninlib 2024.01 | helper functions",
-    ToCollect = {
+    About = "ninlib, re-started 2024.01 | helper functions",
+    Links = {
         [ What = "Assert.ColumnsExist" ],
         [ What = "AssertConditions" ],
-        [ What = "WebRequest.Wrapper", File = "H:\data\2023\BI\git\ninMonkQuery-examples\forumQuestions\pq\2023-11 - quick gitlogger test.pq" ],
-        [ What = "Inspirations", Url = "https://github.com/acaprojects/m-tools/tree/master/src" ],
-        [ What = "Format.TextBits", Url = "https://www.biinsight.com/quick-tips-a-power-query-function-to-convert-hex-values-to-dec/" ]
+        [ What = "This library", Url = "https://github.com/ninmonkey/ninMonkQuery-examples/blob/main/Dynamic_Logic/pq.lib/2024.pq-lib.pq" ],
+        [ What = "Inspirations", Url = "https://bengribaudo.com/blog/tag/power-query-m" ],
+        [ What = "Inspirations", Url = "https://github.com/acaprojects/m-tools/blob/master/M.pq" ],
+        [ What = "Inspirations", Url = "https://github.com/Hugoberry/PowerQueryFunctional" ],
+        [ What = "Format.TextBits", Url = "https://www.biinsight.com/quick-tips-a-power-query-function-to-convert-hex-values-to-dec/" ],
+        [ What = "Example", Title = "I made a Template for Calling Web APIs using data-driven Lists",  Url = "https://www.reddit.com/r/PowerBI/comments/17tynw5/comment/k90bzln/?utm_source=share&utm_medium=web2x&context=3" ]
         /*
         [1]
         / returns first+last merged, as one number
@@ -605,7 +608,7 @@ let r = [
                 ]}
             ],
 
-            Random.Int.Impl = (
+    Random.Int.Impl = (
             min as number,
             max as number,
             optional culture as nullable text,
@@ -613,8 +616,7 @@ let r = [
         ) as number =>
             Int64.From(
                 Number.RandomBetween( min, max ),
-                culture,
-                roundingMode
+                culture, roundingMode
             ),
         return = Value.ReplaceType( Random.Int.Impl, Random.Int.Type )
     ][return],
@@ -843,8 +845,6 @@ let r = [
             Message = extent[Message]
         ] )
     ][ret],
-
-
     Template.Nin = ( optional basePath as nullable text, optional options as nullable record) as any => [
         // links to files as an easy import
         root = basePath ?? "H:\datasource\nin.🐒.template",
