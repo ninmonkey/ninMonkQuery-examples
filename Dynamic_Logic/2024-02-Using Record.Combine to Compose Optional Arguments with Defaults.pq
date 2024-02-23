@@ -6,8 +6,8 @@ let
             items  = List.Transform( items, each Text.From(_) ),
             defaultOptions = [
                 Separator = ", ",
-                Prefix = "",
-                Suffix = ""
+                Prefix    = "",
+                Suffix    = ""
             ],
             config = Record.Combine( {
                 defaultOptions,
@@ -44,7 +44,7 @@ let
 
         tryBullets = Text.Join( alpha, [
             Separator = "#(cr,lf) • ",
-            Prefix = "#(cr,lf) • "
+            Prefix    = "#(cr,lf) • "
         ])
     ]
 in
