@@ -20,7 +20,10 @@
             },
         */
         lib = [
-            Csv = (source as list, optional options as nullable record) as text => Text.Combine(source, ","),
+            // comment before
+            Csv = (source as list, optional options as nullable record) as text =>
+                // comment inline
+                Text.Combine(source, ","),
             invoke = ...
         ],
 
@@ -35,6 +38,7 @@
            VSCode: No
            PBI   : Works
         */
+        qqq = ToCsv(123,43),
         baseDepthTest = lib[Csv]( {"a".."z"} ),
 
         ToCsv = lib[Csv],
@@ -43,6 +47,7 @@
            VSCode: Works
            PBI   : No
         */
+        q = ToCsv(213),
         aliasTest = ToCsv( {"a".."b"} )
     in
         aliasTest

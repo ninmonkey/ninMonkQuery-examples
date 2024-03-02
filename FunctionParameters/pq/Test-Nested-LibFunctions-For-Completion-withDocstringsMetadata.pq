@@ -19,8 +19,12 @@
                 // "*suggest*": ...
             },
         */
+
         lib = [
-            Csv.Impl = (source as list, optional options as nullable record) as text => Text.Combine(source, ","),
+            // comment before
+            Csv.Impl = (source as list, optional options as nullable record) as text =>
+                // comment inline
+                Text.Combine(source, ","),
             Csv.Type = type function (source as list, optional options as nullable record) as text meta [
                 Documentation.Name = "Csv",
                 Documentation.Description = "Converts a list to a csv string",
