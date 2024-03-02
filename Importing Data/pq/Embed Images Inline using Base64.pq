@@ -24,7 +24,7 @@ let
     */
 
     Fetch.xkcd = () as record => [
-        root_url = "https://xkcd",
+        root_url = "https://xkcd.com",
         CssSelector = "div#comic > img",
         response = Web.Contents("https://xkcd.com/", []),
         navigateDom =  Html.Table(response, {
