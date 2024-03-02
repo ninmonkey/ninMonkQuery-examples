@@ -39,6 +39,9 @@ I prepared two files that that try a few variations for a controlled test. They 
 - typing `,` **shows** the signature for `lib[Stuff]( a, b )`
 - typing `(` **does not** show signatures for function aliases like `ToCsv` for `ToCsv = lib[Stuff]`
 
+I think completions were limited to Static analysis of the document. 
+Ironically this means you get more completions when you don't use `Value.ReplaceType` to add documentation metadata.
+
 ### Test Cases
 
 #### Part 1 : Nested lib record
@@ -119,6 +122,7 @@ To keep things simple for this first test, I kept things simple
 - Sometimes a test didn't seem to be 100% reproducible. 
   - Future tests with invalidated caches
   - New tests using saved files, *after* fully running `apply`. Not just refreshing / saving.
+- Investigate whether both are limited to purely parsing the AST, or, whether the PBI version has some state info that it reads from. 
 - Experiment with VsCode Settings:
 
 ```json
