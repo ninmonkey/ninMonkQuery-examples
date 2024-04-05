@@ -87,6 +87,50 @@ let r = [
         SpaceSymbol = "#(2420)"
     ],
 
+
+    Text.RemoveDiacritics = (Text as text) as text =>
+        let
+            TextEncoding.Cyrillic = 28595,
+            bytes     = Text.ToBinary( Text, TextEncoding.Cyrillic ),
+            cleanText = Text.FromBinary( bytes )
+        in cleanText,
+    /*
+    newer web request wrapper */
+    WebRequest = (
+        urlBase,
+        config as record,
+        optional options as nullable record
+    ) as record =>
+        let return = [
+            defaults = [ Buffer = false ],
+            options = Record.Combine({ defaults, options ?? [] }),
+
+            bytes   =
+                // this can be simplified if using a shadowed parameter
+                if   options[Buffer]? ?? false
+                then Binary.Buffer( Web.Contents( urlBase, config ) )
+                else                Web.Contents( urlBase, config ),
+
+            Data   = if not IsJson then null else Json{0}?[Data]?,
+            AsText = Text.FromBinary(bytes, TextEncoding.Utf8),
+            Json   = Json.Document( bytes, TextEncoding.Utf8),
+            IsJson = not (try Json)[HasError]?,
+            Meta   = Value.Metadata( bytes ),
+
+            Response.Status   = Meta[Response.Status],
+            Infer.ContentType = Binary.InferContentType( bytes ),
+            TotalBytes        = Binary.ApproximateLength(bytes ),
+            Url               = Meta[Content.Uri]()
+
+        ],  returnFields = {
+            "Response.Status",
+            "Url", "Infer.ContentType", "TotalBytes",
+            "Meta", "Data", "AsText", "Json", "IsJson",
+            "bytes"  }
+        in
+            Record.SelectFields(return, returnFields, MissingField.Error),
+
+
     /*
     converts string to a bunch of formats
         - components as [int]
@@ -583,7 +627,7 @@ let r = [
                 Documentation.FieldDescription = "Minimum number",
                 Documentation.SampleValues = {10, 0.45}
             ]),
-            b as (type number meta [
+            max as (type number meta [
                 Documentation.FieldCaption = "Max",
                 Documentation.FieldDescription = "Maximum number",
                 Documentation.SampleValues = {34, 100.45}
@@ -778,7 +822,13 @@ let r = [
                     ExtraCols = extraCols
                 ] ],
         // return = FinalAssertStatement,
-        return = error "WIP"
+        return = [
+                WipNotes = error "NYI",
+                FinalAssertStatement = FinalAssertStatement,
+                MissingCols          = missingCols,
+                ExtraCols            = extraCols,
+                ActualCols           = actualCols
+            ]
             // if config[DetailedOutput] then details
             // else FinalAssertStatement
             // error "NYI, successfull stand alone bool"
@@ -786,6 +836,7 @@ let r = [
         // finalCondCondition =
         //     try a catch (e) =>
         //     error e
+        // ][return],
         ][return],
 
     Assert.ColumnsHaveTypes = (source as table) as any => [
