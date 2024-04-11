@@ -1,0 +1,41 @@
+table Bools
+	lineageTag: ab289aac-bf17-4d37-a067-6a46ab16ab97
+
+	column Bool
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d623364e-b2c4-479b-a2f5-1f9e687a6c90
+		summarizeBy: none
+		sourceColumn: Bool
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rune
+		dataType: string
+		lineageTag: 34c2047c-3200-43a7-9152-29df75e30218
+		summarizeBy: none
+		sourceColumn: Rune
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Bools = m
+		mode: import
+		source = ```
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WKikqTVWK1YlWSkvMKUZnYZGECMUCAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Text = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Text", type logical}}),
+				    str = [
+				        Yes = "#(2705)",
+				        No = "#(0001f44e)"
+				    ],
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "Rune", 
+				        (_) as text => if [Text] = true then str[Yes] else str[No], Text.Type ),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"Text", "Bool"}})
+				in
+				    #"Renamed Columns"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

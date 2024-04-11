@@ -1,0 +1,51 @@
+table User
+	lineageTag: f34b8531-8516-4a31-a704-6123b2183e25
+
+	column Name
+		dataType: string
+		lineageTag: 98719805-a81b-48fd-bbd0-4683b0cf5a60
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: string
+		lineageTag: a7625b04-d6db-451c-aaa1-9f04aa932814
+		summarizeBy: none
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition User = m
+		mode: import
+		source = ```
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCkrMPbw5Tyk2FgA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Name = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Name", type text}}),    
+				
+				
+				    Text.RemoveDiacritics = (Text as text) as text => 
+				        let 
+				            TextEncoding.Cyrillic = 28595,
+				            bytes = Text.ToBinary( Text, TextEncoding.Cyrillic ),
+				            cleanText = Text.FromBinary( bytes )
+				        in cleanText,
+				
+				
+				    Name = [
+				        fin = #"Changed Type"{0}[Name],
+				        a = Text.ToBinary( fin, TextEncoding.Ascii ),
+				        a_  = Text.FromBinary( a, TextEncoding.Ascii ),
+				        b = Text.ToBinary( fin, 28595 ),
+				        b_  = Text.FromBinary( b, TextEncoding.Ascii ),
+				        c = Text.RemoveDiacritics( fin )
+				    ]
+				in
+				    Name
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Record
+

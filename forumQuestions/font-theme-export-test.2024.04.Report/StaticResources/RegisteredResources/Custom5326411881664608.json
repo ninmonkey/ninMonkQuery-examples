@@ -1,0 +1,54 @@
+{
+  "name": "Custom",
+  "textClasses": {
+    "label": {
+      "color": "#991797",
+      "fontFace": "Consolas",
+      "fontSize": 14
+    },
+    "callout": {
+      "color": "#9F1FD6"
+    },
+    "header": {
+      "color": "#E35791"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#FF8CF7"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 100
+          }
+        ],
+        "outspace": [
+          {
+            "color": {
+              "solid": {
+                "color": "#C6B9B9"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
