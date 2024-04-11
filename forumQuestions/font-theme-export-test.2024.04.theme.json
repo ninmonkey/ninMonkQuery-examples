@@ -1,10 +1,10 @@
-{
+﻿{
     "name": "Custom",
     "textClasses": {
         "label": {
             "color": "#991797",
             "fontFace": "cascadia code pl",
-            "fontSize": 14
+            "fontSize": 44
         },
         "callout": {
             "color": "#9F1FD6"
