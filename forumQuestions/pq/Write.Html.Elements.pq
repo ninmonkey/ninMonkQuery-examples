@@ -72,18 +72,23 @@ let
         // "<" & elementName & ">" & content & "</",
     // Write.Html.Li = (content as text) as text => "dsf",
     Write.Html.UnorderedList = (items as list) as text => [
-        itemsList2 = List.Transform( items, (cur) => Write.Html.Element( "li", cur ) ),
+        // itemsList2 = List.Transform( items, (cur) => Write.Html.Element( "li", cur ) ),
         itemsList = StringBuilder.JoinFormat(
             List.Transform( items,
                 (cur) => Write.Html.Element ( "li", cur  ) ),
             [
-                Prefix = "#(tab)",
-                Suffix = "", // Str[LineEnding],
-                Separator = Str[LineEnding]
+                Prefix = "#(cr,lf,tab)",
+                Suffix = "", // #(cr,lf)", // Str[LineEnding],
+                Separator = "" // Str[LineEnding]
             ]
         ),
         // return    = Write.Html.Element( "ul", Text.Combine( itemsList, Str[LineEnding] ) )
-        return    = Write.Html.Element( "ul", itemsList )
+        return    = String.Write.Format(
+            Write.Html.Element( "ul", itemsList ),
+            [
+                Prefix = Str[LineEnding],
+                Suffix = Str[LineEnding] ] )
+
         //     return    =
             // StringBuilder.JoinFormat(
             //     Write.Html.Element( "ul", itemsList ),
