@@ -4,7 +4,7 @@ let
     Str = [
         LineEnding = "#(cr,lf)",
         NullStr    = "#(2400)",
-        SpaceStr   = "#(2420)"
+        SpaceStr   = "#(2420)",
         Tab        = "#(tab)"
     ],
 
@@ -21,12 +21,48 @@ let
                 value = value
             ]
         ),
-        // Write.Html.Bold( key ) & ": " & value,
-        // "<b>" & key & "</b>: " & value,
 
     StringBuilder.Join          = (items as list, optional options as nullable record) as text => [
         return = Text.Combine( items, Str[LineEnding] )
     ][return],
+
+    /*
+        like StringBuilder.JoinFormat, but for a single value. not a list.
+    */
+    String.Write.Format = (content as text, optional options as nullable record) as text => [
+        return = StringBuilder.JoinFormat( {content}, options )
+        // renderLines = List.Transform( items,
+        //     (line) => Text.Format( formatStr, line )
+        // ),
+        // return = Text.Combine(
+        //     renderLines,
+        //     options[Separator]? ?? Str[LineEnding]
+        // )
+    ][return],
+
+    /*
+        Valid options are any combination of these:
+        - Prefix,
+        - Suffix
+        - Separator
+    */
+    StringBuilder.JoinFormat          = (items as list, optional options as nullable record) as text => [
+        formatStr = "#[prefix]#[content]#[suffix]",
+        renderLines = List.Transform( items,
+            (line) => Text.Format( formatStr, [
+                prefix = options[Prefix]? ?? "",
+                content = line,
+                suffix = options[Suffix]? ?? ""
+            ])
+        ),
+            // (line) => Text.Format( formatStr, [ prefix = options[prefix], content = line, suffix = options[suffix] ] ) ),
+        return = Text.Combine(
+            renderLines,
+            options[Separator]? ?? Str[LineEnding]
+        )
+    ][return],
+
+
     StringBuilder.JoinParagraph  = (items as list, optional options as nullable record) as text => [
         paraList = List.Transform( items, (para) => Write.Html.Paragraph( para ) ),
         return =   StringBuilder.Join( paraList )
@@ -36,11 +72,26 @@ let
         // "<" & elementName & ">" & content & "</",
     // Write.Html.Li = (content as text) as text => "dsf",
     Write.Html.UnorderedList = (items as list) as text => [
-        itemsList = List.Transform( items, (cur) => Write.Html.Element( "li", cur ) ),
-        return    = Write.Html.Element( "ul", Text.Combine( itemsList, Str[LineEnding] ) )
+        itemsList2 = List.Transform( items, (cur) => Write.Html.Element( "li", cur ) ),
+        itemsList = StringBuilder.JoinFormat(
+            List.Transform( items,
+                (cur) => Write.Html.Element ( "li", cur  ) ),
+            [
+                Prefix = "#(tab)",
+                Suffix = "", // Str[LineEnding],
+                Separator = Str[LineEnding]
+            ]
+        ),
+        // return    = Write.Html.Element( "ul", Text.Combine( itemsList, Str[LineEnding] ) )
+        return    = Write.Html.Element( "ul", itemsList )
+        //     return    =
+            // StringBuilder.JoinFormat(
+            //     Write.Html.Element( "ul", itemsList ),
+            //     [ Prefix = Str[LineEnding], Suffix = Str[LineEnding] ]
+            // )
     ][return],
 
-    ManualWritePara = StringBuilder.JoinParagraph({
+    NewVersion = StringBuilder.JoinParagraph({
         "MCopilot",
         UL({
             Write.Key( "Creator", "Oscar Martinez." ),
@@ -52,8 +103,8 @@ let
         UL({
             Write.Key( "apiKey", "This is the Open API Key required for authentication." ),
             Write.Key( "model", "This is the GPT chosen model." ),
-            Write.Key( "prompt", "This is the prompt provided to the function, requesting information or code related to Power Query." ),
-        })
+            Write.Key( "prompt", "This is the prompt provided to the function, requesting information or code related to Power Query." )
+        }),
         "The function,  constructs a request to the OpenAI API endpoint https://api.openai.com/v1/chat/completions.",
         "The request body includes a system message indicating the role of the responder, as well as the user's prompt. The API key is included in the request headers for authentication.",
         "Upon receiving the response from the API, the function extracts the content of the response message and returns it as the output."
@@ -111,6 +162,7 @@ let
     }),
 
     // optional aliases
+    Write.Format  = String.Write.Format,
     Write.Element = Write.Html.Element,
     Write.Key     = Write.Html.KeyValue,
     Tag           = Write.Html.Element,
@@ -118,12 +170,16 @@ let
     B             = Write.Html.Bold,
     UL            = Write.Html.UnorderedList,
     Summary       = [
-        a = 1230,
         ManualWrite1 = ManualWrite,
-        ManualWritePara = ManualWritePara,
-
-        bold = Write.Element( "b", "BigText" ),
+        NewVersion = NewVersion,
         Original = Original,
-        first_pass_from_copilot_to_my_lib = first_pass_from_copilot_to_my_lib
+        first_pass_from_copilot_to_my_lib = first_pass_from_copilot_to_my_lib,
+        aTryit = StringBuilder.JoinFormat(
+            {"a".."h"},
+            [
+                Prefix = "#(tab,tab)=> ",
+                Separator = Str[LineEnding]
+            ]
+        )
     ]
 in Summary
