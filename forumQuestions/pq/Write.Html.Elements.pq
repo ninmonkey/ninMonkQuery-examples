@@ -5,6 +5,7 @@ let
         LineEnding = "#(cr,lf)",
         NullStr    = "#(2400)",
         SpaceStr   = "#(2420)"
+        Tab        = "#(tab)"
     ],
 
     Write.Html.Element = ( elementName as text, content as text) as text =>
@@ -23,8 +24,12 @@ let
         // Write.Html.Bold( key ) & ": " & value,
         // "<b>" & key & "</b>: " & value,
 
-    StringBuilder.Join        = (items as list, optional options as nullable record) as text => [
+    StringBuilder.Join          = (items as list, optional options as nullable record) as text => [
         return = Text.Combine( items, Str[LineEnding] )
+    ][return],
+    StringBuilder.JoinParagraph  = (items as list, optional options as nullable record) as text => [
+        paraList = List.Transform( items, (para) => Write.Html.Paragraph( para ) ),
+        return =   StringBuilder.Join( paraList )
     ][return],
 
 
@@ -34,6 +39,37 @@ let
         itemsList = List.Transform( items, (cur) => Write.Html.Element( "li", cur ) ),
         return    = Write.Html.Element( "ul", Text.Combine( itemsList, Str[LineEnding] ) )
     ][return],
+
+    ManualWritePara = StringBuilder.JoinParagraph({
+        "MCopilot",
+        UL({
+            Write.Key( "Creator", "Oscar Martinez." ),
+            Write.Key( "LinkedIn", "https://www.linkedin.com/in/oscarmartinezv/." ),
+            Write.Key( "Web", "bibb.pro" )
+        }),
+        "This function, interacts with the OpenAI API to provide responses based on given prompts. It serves as a tool for generating meaningful explanations and full code related to Power Query.",
+        "The function takes three parameters:",
+        UL({
+            Write.Key( "apiKey", "This is the Open API Key required for authentication." ),
+            Write.Key( "model", "This is the GPT chosen model." ),
+            Write.Key( "prompt", "This is the prompt provided to the function, requesting information or code related to Power Query." ),
+        })
+        "The function,  constructs a request to the OpenAI API endpoint https://api.openai.com/v1/chat/completions.",
+        "The request body includes a system message indicating the role of the responder, as well as the user's prompt. The API key is included in the request headers for authentication.",
+        "Upon receiving the response from the API, the function extracts the content of the response message and returns it as the output."
+    }),
+
+    ManualWrite = StringBuilder.Join({
+        P( B( "MCopilot") ),
+        UL({
+            Write.Key( "Creator", "Oscar Martinez." ),
+            Write.Key( "LinkedIn", "https://www.linkedin.com/in/oscarmartinezv/." ),
+            Write.Key( "Web", "bibb.pro" )
+        }),
+        P("This function, interacts with the OpenAI API to provide responses based on given prompts. It serves as a tool for generating meaningful explanations and full code related to Power Query."),
+        P("The function takes three parameters:")
+
+    }),
 
     Original = "
             <p><b>MCopilot</b></p>
@@ -52,11 +88,7 @@ let
             <p>The request body includes a system message indicating the role of the responder, as well as the user's prompt. The API key is included in the request headers for authentication.</p>
             <p>Upon receiving the response from the API, the function extracts the content of the response message and returns it as the output.</p>
         ",
-    Write.Element = Write.Html.Element,
-    Tag = Write.Html.Element,
-    P = Write.Html.Paragraph,
-    B = Write.Html.Bold,
-    UL = Write.Html.UnorderedList,
+
 
     first_pass_from_copilot_to_my_lib = StringBuilder.Join({
         P( B("MCopilot") ),
@@ -77,8 +109,19 @@ let
         P("Upon receiving the response from the API, the function extracts the content of the response message and returns it as the output.")
 
     }),
-    Summary = [
+
+    // optional aliases
+    Write.Element = Write.Html.Element,
+    Write.Key     = Write.Html.KeyValue,
+    Tag           = Write.Html.Element,
+    P             = Write.Html.Paragraph,
+    B             = Write.Html.Bold,
+    UL            = Write.Html.UnorderedList,
+    Summary       = [
         a = 1230,
+        ManualWrite1 = ManualWrite,
+        ManualWritePara = ManualWritePara,
+
         bold = Write.Element( "b", "BigText" ),
         Original = Original,
         first_pass_from_copilot_to_my_lib = first_pass_from_copilot_to_my_lib
