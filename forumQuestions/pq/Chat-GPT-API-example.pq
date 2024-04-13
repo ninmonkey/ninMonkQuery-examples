@@ -1,5 +1,4 @@
 let
-    Source = "",
     Summary = [
         baseUrl = "https://api.openai.com",
         ApiKey = File.Contents( "H:\data\data_notgit\2024\Secrets\OpenAI-BasicChatCompletions.env"),
@@ -41,17 +40,14 @@ let
         ],
         withInfo = Value.Metadata( response ),
         Response = [
-            Bytes = response,
-            Meta = Value.Metadata( Bytes ),
-            Json = Json.Document( Bytes ),
-            IsJson = try Json
-                catch (e) =>
-                    false meta [ OriginalError = e ],
+            Bytes        = response,
+            Meta         = Value.Metadata( Bytes ),
+            Json         = Json.Document( Bytes ),
+            IsJson       = not ( try Json )[HasError],
             RawText      = Text.FromBinary( response, TextEncoding.Utf8 ),
             StatusCode   = Meta[Response.Status],
             RequestUrl   = Meta[Content.Uri](),
             Content.Type = Meta[Content.Type]
-
         ]
     ],
     Response = Summary[Response]
