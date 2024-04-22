@@ -32,6 +32,7 @@ table Animals
 				let
 				    Rows = {
 				        [ Name = "Alice", Id = 42,  Species = "Bat" ],
+				        [ Name = "Jane", Id = 1024,  Species = "Bat" ],
 				        [ Name = "Bob",   Id = 512, Species = "Lizard" ]
 				    },
 				    schema = type table [ Name = text, Id = Int64.Type, Species = text ],
