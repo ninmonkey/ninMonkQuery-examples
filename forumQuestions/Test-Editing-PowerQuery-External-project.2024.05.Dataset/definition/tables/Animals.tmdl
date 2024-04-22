@@ -1,0 +1,45 @@
+table Animals
+	lineageTag: d15d1e3c-6a7b-41d7-9720-ae2f77631963
+
+	column Name
+		dataType: string
+		lineageTag: 58ce8288-6c6f-4b57-b313-a180f1e3e52d
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Id
+		dataType: int64
+		formatString: 0
+		lineageTag: a05c2107-c85d-40f7-9475-93b34ecb0dc4
+		summarizeBy: count
+		sourceColumn: Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Species
+		dataType: string
+		lineageTag: 5206398a-3578-46b3-a574-8ddf812e35a7
+		summarizeBy: none
+		sourceColumn: Species
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Animals = m
+		mode: import
+		source =
+				let
+				    Rows = {
+				        [ Name = "Alice", Id = 42,  Species = "Bat" ],
+				        [ Name = "Bob",   Id = 512, Species = "Lizard" ]
+				    },
+				    schema = type table [ Name = text, Id = Int64.Type, Species = text ],
+				    Source = Table.FromRecords( Rows, schema, MissingField.Error )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

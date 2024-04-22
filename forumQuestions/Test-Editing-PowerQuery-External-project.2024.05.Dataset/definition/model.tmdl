@@ -1,0 +1,19 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBIDesktopVersion = 2.126.1261.0 (24.02)
+
+annotation PBI_QueryOrder = ["Animals"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+ref table Animals
+ref table DateTableTemplate_83c4ba5b-e93f-456b-8911-abb33f93d447
+

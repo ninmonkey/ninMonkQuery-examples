@@ -12,3 +12,8 @@ WebRequests/OData/sketch.OData ⁞ Test a list of Queries.pbix
 *.old
 Unicode/Safely Render UniChar in DAX - PQ Inspect Unicode Byte Strings from different Encodings⁞2022-04.pbix
 *.lnk
+## Section: Power BI Reports ( pbip, pbit, pbir? )
+# PBPI: Is the content of PBIR/.pbi/localSettings.json sensitive? I ignored ti to be safe
+**/.pbi/localSettings.json
+# PBIP: if it's a cache, drop it
+**/.pbi/cache.abf

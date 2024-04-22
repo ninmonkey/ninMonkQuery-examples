@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "datasetReference": {
+    "byPath": {
+      "path": "../Test-Editing-PowerQuery-External-project.2024.05.Dataset"
+    },
+    "byConnection": null
+  }
+}
