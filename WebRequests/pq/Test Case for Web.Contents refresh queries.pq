@@ -20,6 +20,8 @@ let
     #"Converted to Table" = Table.FromList(TreeTble, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
     #"Expanded Column1" = Table.ExpandRecordColumn(#"Converted to Table", "Column1",
         { "path", "mode", "type", "sha", "url", "size" },
-        { "path", "mode", "type", "sha", "url", "size" } )
+        { "path", "mode", "type", "sha", "url", "size" } ),
+
+    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Column1",{{"path", type text}, {"mode", type text}, {"type", type text}, {"size", Int64.Type}, {"url", type text}, {"sha", type text}})
 in
-    #"Expanded Column1"
+    #"Changed Type"

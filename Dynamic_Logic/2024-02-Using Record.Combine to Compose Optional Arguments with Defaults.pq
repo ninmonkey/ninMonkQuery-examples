@@ -1,5 +1,12 @@
 
 let
+    MultiplyIt = (x as number, optional y as nullable number) as number =>
+        let
+            // if y is null, it will null coalesce as 2 for the default value
+            y = y ?? 2,
+            return = x * y
+        in  return,
+
     // you may override one or more options, individually or all at once
     Text.Join = ( items as list, optional options as nullable record) as text =>
         let

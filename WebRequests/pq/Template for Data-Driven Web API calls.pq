@@ -1,7 +1,7 @@
 let
     BaseQueriesList = let
     /*
-
+H:\data\2023\BI\git\ninMonkQuery-examples\forumQuestions\pq\WebRequest.DebugInfo - Returning Info to Debug Web.Contents.query.pq
     */
     // Previews nested data by rendering it as json (text)
     xray = (source as any, optional options as nullable record) as text => [
