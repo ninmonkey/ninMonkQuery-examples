@@ -51,7 +51,7 @@ let
     ][return],
     Rows = #"Changed Type",
 
-    // get the crumbs, else throw when it's valid
+    // Try the more specific type first. if it fails, try the second
     Col_Step1 = Table.AddColumn(
         Rows, "Step1",
         (row) =>
@@ -68,10 +68,8 @@ let
             Id      = Text.Trim( Crumbs{0} ),
             Name    = Text.Trim( Crumbs{1} ),
             YearEnd = Text.Trim( Crumbs{2} ),
-            // Name2 = SplitBy_TwoWhitespace( Crumbs{1} ),
-            // CrumbsWhite = SplitBy_TwoWhitespace( row[Name] ),
             NameWithoutYear = Text.BeforeDelimiter( Name, " ", Occurrence.Last ),
-            YearStart       = Text.AfterDelimiter(  Name, " ", Occurrence.Last ),
+            YearStart       = Text.AfterDelimiter(  Name, " ", {0, RelativePosition.FromEnd } ),
             return          = [
                 Id        = Id,
                 Name      = NameWithoutYear,
@@ -79,12 +77,15 @@ let
                 YearEnd   = YearEnd
             ]
         ][return],
-        Record.Type
+        schema_ParsedRecord
+        // Record.Type
     ),
+    schema_ParsedRecord = type table [ Id = Int64.Type, Name = text, YearStart = Int64.Type, YearEnd = Int64.Type ],
+
     // error if fields are ever missing:
     Step2             = Col_LineAsRecord{0}[Step2],
     Custom1           = Col_LineAsRecord,
     #"Expanded Step2" = Table.ExpandRecordColumn(Custom1, "Step2", {"Id", "Name", "YearStart", "YearEnd"}, {"Id", "Name", "YearStart", "YearEnd"}),
-    #"Changed Type1"  = Table.TransformColumnTypes(#"Expanded Step2",{{"Id", Int64.Type}, {"Name", type text}})
+    #"Final Table"  = Table.TransformColumnTypes(#"Expanded Step2",{{"Id", Int64.Type}, {"Name", type text}, {"YearStart", Int64.Type}, {"YearEnd", Int64.Type}})
 in
-    #"Changed Type1"
+    #"Final Table"
