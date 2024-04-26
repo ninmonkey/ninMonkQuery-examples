@@ -19,6 +19,7 @@ let
 
 
     // stricter split
+    // will error if the number of strings is not exactly ExpectedLength
     SplitBy_Dash3 = (string as text) as any => [
         ExpectedLength = 3,
         SplitFunc = Splitter.SplitTextByEachDelimiter(
