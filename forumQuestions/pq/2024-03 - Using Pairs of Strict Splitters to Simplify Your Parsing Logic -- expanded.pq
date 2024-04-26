@@ -18,19 +18,7 @@ let
     #"Changed Type" = Table.TransformColumnTypes(Source,{{"Text", type text}}),
 
 
-    // ProcessRows = ( source as table ) => [
-    //     schema_info = Record.Type,
-    //     Col_Info    = Table.AddColumn(
-    //         source, "Split.Dash3",
-    //         (row) as record =>
-    //             SplitBy_Dash3( row[RawText] ),
-    //         schema_info
-    //     ),
-    //     Result          = SplitBy_Dash3( Col_Info ),
-    //     Result_Text     = _( Result ),
-    //     return = Result_Text
-    // ],
-
+    // stricter split
     SplitBy_Dash3 = (string as text) as any => [
         ExpectedLength = 3,
         SplitFunc = Splitter.SplitTextByEachDelimiter(
@@ -46,7 +34,7 @@ let
             ]
     ][return],
 
-    // basically duplcate except the parameter
+    // basically the same as SplitBy_Dash3, duplcate except the parameter
     SplitBy_MixedDash3 = (string as text) as any => [
         ExpectedLength = 3,
         SplitFunc = Splitter.SplitTextByEachDelimiter(
@@ -62,19 +50,17 @@ let
             ]
     ][return],
 
-
-
-    Summary =  [
-        // Was = ProcessRows( Rows ),
-        Rows = #"Changed Type",
-        OneRow = Rows{0}?,
-        OneText = OneRow[Text]?,
-        Try1_Dash3_t =  OneText,
-        z__ = _( [ name = "bob", id = 999 ]),
-        Try1_Dash3 =  SplitBy_Dash3( OneText ),
-        Try1_Dash3_ =  _( OneText )
-    ],
-    Rows = Summary[Rows],
+    // Summary =  [
+    //     // Was = ProcessRows( Rows ),
+    //     Rows         = #"Changed Type",
+    //     OneRow       = Rows{0}?,
+    //     OneText      = OneRow[Text]?,
+    //     Try1_Dash3_t = OneText,
+    //     z__          = _( [ name = "bob", id = 999 ]),
+    //     Try1_Dash3   = SplitBy_Dash3( OneText ),
+    //     Try1_Dash3_  = _( OneText )
+    // ],
+    Rows = #"Changed Type",// Summary[Rows],
 
 
     // get the crumbs, else throw when it's valid
@@ -86,23 +72,26 @@ let
         (type { text } )
     ),
 
-    // error if fields are ever missing:
+    // You can add the {0}? operator if you want to coerce missing items as null values
     Col_LineAsRecord = Table.AddColumn(
         Col_Step1, "Step2",
         (row) => [
             Crumbs = row[Step1],
-            SplitBy_TwoWhitespace = Splitter.SplitTextByWhitespace(
-                QuoteStyle.None
-            ),
-            Id = Crumbs{0},
-            Name = Crumbs{1},
-            YearEnd = Crumbs{2},
+            // SplitBy_TwoWhitespace = Splitter.SplitTextByWhitespace(
+            //     QuoteStyle.None
+            // ),
+            Id      = Text.Trim( Crumbs{0} ),
+            Name    = Text.Trim( Crumbs{1} ),
+            YearEnd = Text.Trim( Crumbs{2} ),
             // Name2 = SplitBy_TwoWhitespace( Crumbs{1} ),
             // CrumbsWhite = SplitBy_TwoWhitespace( row[Name] ),
             NameWithoutYear = Text.BeforeDelimiter( Name, " ", Occurrence.Last ),
-            YearStart = Text.AfterDelimiter( Name, " ", Occurrence.Last ),
-            return = [
-                Id = Id, Name = NameWithoutYear, YearStart = YearStart, YearEnd = YearEnd
+            YearStart       = Text.AfterDelimiter(  Name, " ", Occurrence.Last ),
+            return          = [
+                Id        = Id,
+                Name      = NameWithoutYear,
+                YearStart = YearStart,
+                YearEnd   = YearEnd
             ]
         ][return],
         Record.Type
