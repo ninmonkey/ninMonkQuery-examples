@@ -29,3 +29,15 @@ in
 
 ]
 ```
+###
+
+```powerquery
+let
+    SomeConfig = [ user = "bob", region = "north" ],
+    CopyRecord = SomeConfig   /*            stuff             */                                 [ region ]
+    ,Name = CopyRecord[user]?
+in
+    Name
+```
+
+
