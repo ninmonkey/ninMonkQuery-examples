@@ -28,12 +28,15 @@ let
         (row) => [            
             // I threw in extra record fields to make errors easier to read
             // you only need the field "Table"
-            JsonList    = Json.Document( row[Content] ),
+            JsonList    = Json.Document( row[Content] ), 
             Table       = Table.FromRecords( JsonList ),
             HasError    = (try Table)[HasError]
         ],
         type [ JsonList = list, Table = Table.Type, HasError = logical ]
     ),
+    // if you want json to be a table, it expects it to be an array (aka list) at
+    // the top level. if yours is not, you'll need to either shape it, or drill down into an array.
+
     #"Expanded Json" = Table.ExpandRecordColumn(Column_ConvertJson, 
         "Json", 
         {"Table", "HasError" }, 
