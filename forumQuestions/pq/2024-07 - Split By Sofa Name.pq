@@ -1,17 +1,15 @@
 let
     /*
-    the original question: <https://www.reddit.com/r/PowerBI/comments/1eay2qp/make_changescorrections_to_previously_made_column/>
-    */
-    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("bY5BCsIwEEWvMnQdd17AKrhRK0RwUboY6aQZTDOSJpvi4R0t3bn58If3H9O21UVS9mDFIWxhIsyUYAOJB5/hDWeJMxqwGHttd8+Z4MXDSDFTDw0HTcGnEhL4i9zsfld1ZvU6ET2eOJJa6lBI27Jq/q5+cUz4gKsUp4/YEUNQokaeycChTHn1LKPuAw==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Full Name" = _t]),
-    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Full Name", type text}}),
-    #"Split Column by Delimiter - old" = Table.SplitColumn(#"Changed Type", "Full Name",
-        Splitter.SplitTextByDelimiter("|", QuoteStyle.Csv), {"Full Name.1", "Full Name.2", "Full Name.3", "Full Name.4"}
-    ),
-    #"Split Column by Delimiter" = Table.SplitColumn(#"Changed Type", "Full Name",
-        Splitter.Sofa
-        // Splitter.SplitTextByDelimiter("|", QuoteStyle.Csv), {"Full Name.1", "Full Name.2", "Full Name.3", "Full Name.4"}
-    ),
+    the original question is from 2024-07-25: <https://www.reddit.com/r/PowerBI/comments/1eay2qp/make_changescorrections_to_previously_made_column/>
 
+    You can get the pbix and this query here: <https://github.com/ninmonkey/ninMonkQuery-examples/tree/main/forumQuestions>
+
+        They are named:
+            "2024-07 - Split By Sofa Name.pbix"
+            "pq/2024-07 - Split By Sofa Name.pq"
+    */
+    Json = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("TY7LDoJADEV/pWGNK/0BwegKJRkTF4RFlQITZ6jOYyHh4y0mEDc3vcnpaasqObMLPShuEXbgCQM52IDTXR9ggoKHEVNQODTSbr0OBC/dWRoCNXDRRpLxKQQbPSNXle+TOq2SUjuE7WL0s38SSpvVVpBl94Ejo5WWs2mWOTP4eILEO5KTCz4QmX/5L04O71BybOVfZdHMRIZ6pBQO0QexRFqX6i8=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Full Name" = _t]),
+    Source = Table.TransformColumnTypes( Json ,{{"Full Name", type text}}),
     /*
     about: custom splitting by delimiter "|"
 
@@ -34,17 +32,28 @@ let
             Size                   = crumb{0}?,
             #"Fabric Option"       = crumb{1}?,
             #"Leg Option"          =
-                if shouldSwap then crumb{3}?
-                else crumb{3}?,
+                if shouldSwap
+                then crumb{3}?
+                else crumb{2}?,
 
             #"Mattress Foam Option" =
-                if shouldSwap then crumb{2}?
+                if shouldSwap
+                then crumb{2}?
                 else crumb{3}?
         ]
     ][return],
-    a =  Table.SplitColumn ,
-    b = Splitter.Sofa( #"Changed Type"{0}[Full Name] ),
-    fin = #"Split Column by Delimiter"
-    // #"Changed Type1" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"Full Name.1", type text}, {"Full Name.2", type text}, {"Full Name.3", type text}, {"Full Name.4", type text}})
+
+    SplitByPipe = Table.AddColumn( Source, "SplitCols", each Splitter.Sofa( [Full Name] ), type record ),
+    #"Expanded SplitCols" = Table.ExpandRecordColumn(
+        SplitByPipe, "SplitCols",
+        { "Size", "Fabric Option", "Leg Option", "Mattress Foam Option"} ),
+
+    #"Changed Type" = Table.TransformColumnTypes(
+        #"Expanded SplitCols", {
+            {"Size", type text},
+            {"Fabric Option", type text},
+            {"Leg Option", type text},
+            {"Mattress Foam Option", type text} } )
+
 in
-    fin
+    #"Changed Type"
