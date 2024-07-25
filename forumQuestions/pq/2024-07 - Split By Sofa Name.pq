@@ -8,7 +8,7 @@ let
             "2024-07 - Split By Sofa Name.pbix"
             "pq/2024-07 - Split By Sofa Name.pq"
     */
-    Json = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("TY7LDoJADEV/pWGNK/0BwegKJRkTF4RFlQITZ6jOYyHh4y0mEDc3vcnpaasqObMLPShuEXbgCQM52IDTXR9ggoKHEVNQODTSbr0OBC/dWRoCNXDRRpLxKQQbPSNXle+TOq2SUjuE7WL0s38SSpvVVpBl94Ejo5WWs2mWOTP4eILEO5KTCz4QmX/5L04O71BybOVfZdHMRIZ6pBQO0QexRFqX6i8=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Full Name" = _t]),
+    Json = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("TY7NCoJQEEZfZXBtq3qBLGplCQYtxMVUow7e69T9WSQ+fGOQtDnwwZnDVFVyEhc6KKVB2IAnDORgBY7bLsAEuQwjplDi8NB17TgQPLm1NAR6wJmNUrBXQwzPyqXcbZM6rZKCHcL6V/Rzf1KLzVLLyYp7w0HQ6soM3ntQvCI5rfpAZP6DXxwd3qCQ2OiPpUUzGxnySCnsow9aibQc1R8=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Full Name" = _t]),
     Source = Table.TransformColumnTypes( Json ,{{"Full Name", type text}}),
     /*
     about: custom splitting by delimiter "|"
