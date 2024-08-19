@@ -22,7 +22,10 @@ let
 
     Pairs = DrillPairs( Drill4 ),
 
-    #"Renamed Columns1" = Table.RenameColumns( Pairs,{{"Name", "Element"}}),
+    // add an index per each employee.item" record
+    #"Added Index" = Table.AddIndexColumn(Pairs, "Employee Index", 0, 1, Int64.Type),
+
+    #"Renamed Columns1" = Table.RenameColumns( #"Added Index", { { "Name", "Element" } }),
 
     Pairs2 = DrillPairs( #"Renamed Columns1" ),
 
