@@ -10,10 +10,11 @@ let
     InspectInvisibleText = ( columnNames as list ) =>
         let return =
             List.Transform( columnNames, ( curName ) =>  [
-                HasWhitespace = RawName <> Text.Trim( curName ),
+                HasOuterWhitespace = RawName <> Text.Trim( Text.Clean( curName ) ),
                 RawName = curName,
+
                 Symbols = Text.FormatControlSymbols( curName ),
-                HexSummary    = "Hex: " & Text.Combine( AsHexStr, ", " ),
+                HexSummary = "Hex: " & Text.Combine( AsHexStr, ", " ),
                 DecSummary = "Dec: " & Text.Combine( List.Transform( Codepoints, each Text.From(_)), ", " ),
 
                 CharList   = Text.ToList( RawName ),
@@ -34,19 +35,13 @@ let
                 is 0-127 in decimal
                 or 0x0-0x7f in hexadecimal
     */
+
     /*
-    input:  text with whitespace
-    output: text with whitespace, visualized. Non-whitespace characters are preserved.
+    input: text with whitespace
+    output: text with whitespace visualized
     Techincally this isn't codepoints, so it's not perfect, but works for all of ascii
 
     probably poor performance
-
-    example:
-        in:  "  User#(cr,lf) Names"
-        out: "␠␠User␍␊␠Names"
-
-        in:  "#(0020) Zero-Width #(200d) Joiner Inside",
-        out: "␠␠Zero-Width␠<ZWJ>␠Joiner␠Inside"
     */
     Text.FormatControlSymbols = (string as text) as text =>
         let
