@@ -11,12 +11,10 @@ let
         let return =
             List.Transform( columnNames, ( curName ) =>  [
                 HasWhitespace = RawName <> Text.Trim( curName ),
-                RawName    = curName,
-                Symbols    = Text.FormatControlSymbols( curName ),
-                HexSummary = "Hex: " & Text.Combine( AsHexStr, ", " ),
-                DecSummary = "Dec: " & Text.Combine(
-                    List.Transform( Codepoints, each Text.From(_) ),
-                    ", " ),
+                RawName = curName,
+                Symbols = Text.FormatControlSymbols( curName ),
+                HexSummary    = "Hex: " & Text.Combine( AsHexStr, ", " ),
+                DecSummary = "Dec: " & Text.Combine( List.Transform( Codepoints, each Text.From(_)), ", " ),
 
                 CharList   = Text.ToList( RawName ),
                 Codepoints = List.Transform( CharList, each Character.ToNumber( _ ) ),
@@ -54,6 +52,7 @@ let
                     newChar =
                         if codepoint <= 0x20
                         then Character.FromNumber( codepoint + 0x2400 )
+                        else if codepoint = 0x200d then "<ZWJ>"
                         else char
                 ][newChar]
             ),
@@ -64,20 +63,22 @@ let
 
 
     raw_names = Table.ColumnNames( Source ),
-    inspected = InspectInvisibleText( raw_names ),
+    raw_names_extra =  {
+        "  User(cr,lf) Names",
+        "  Has#(tab) tabs   ",
+        "#(0020) Zero-Width #(200d) Joiner Inside",
+        Character.FromNumber(0x1b),
+        "Escape #(001b) Sequence"
+    },
 
-    /* bonus section:
-        you can use codepoints in powerquery strings, as literals
-        It uses hex notation.
+    inspected_columns = InspectInvisibleText( raw_names ),      // from enter-data
+    inspected         = InspectInvisibleText( raw_names_extra ),// inline strings for even more special chars
 
-        Note: It requires either 4-digits or 8-digits. So "20" has to be "0020" or "00000020"
-    */
-
-
+    // You can use codepoints in strings using the hex notation
     ExampleCodepointsInPQ = [
-        RawStr             = " ",
-        AsInline           = "#(0020)",
-        AsCodepoint        = Character.FromNumber( 32 ),
+        RawStr   = " ",
+        AsInline = "#(0020)",
+        AsCodepoint = Character.FromNumber( 32 ),
         AsCodepointFromHex = Character.FromNumber( 0x20 ),
 
         // test that shows they builds the exactly identical string:
