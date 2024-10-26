@@ -34,13 +34,19 @@ let
                 is 0-127 in decimal
                 or 0x0-0x7f in hexadecimal
     */
-
     /*
-    input: text with whitespace
-    output: text with whitespace visualized
+    input:  text with whitespace
+    output: text with whitespace, visualized. Non-whitespace characters are preserved.
     Techincally this isn't codepoints, so it's not perfect, but works for all of ascii
 
     probably poor performance
+
+    example:
+        in:  "  User#(cr,lf) Names"
+        out: "␠␠User␍␊␠Names"
+
+        in:  "#(0020) Zero-Width #(200d) Joiner Inside",
+        out: "␠␠Zero-Width␠<ZWJ>␠Joiner␠Inside"
     */
     Text.FormatControlSymbols = (string as text) as text =>
         let
@@ -64,7 +70,7 @@ let
 
     raw_names = Table.ColumnNames( Source ),
     raw_names_extra =  {
-        "  User(cr,lf) Names",
+        "  User#(cr,lf) Names",
         "  Has#(tab) tabs   ",
         "#(0020) Zero-Width #(200d) Joiner Inside",
         Character.FromNumber(0x1b),
