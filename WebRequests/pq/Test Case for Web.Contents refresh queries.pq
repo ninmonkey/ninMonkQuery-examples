@@ -14,9 +14,10 @@ let
     rawText  = Text.FromBinary( response, TextEncoding.Utf8 ),
     response = Web.Contents( BaseURL, params ),
     Json     = Json.Document( response, TextEncoding.Utf8 ),
-    TreeTble = Json[tree],
 
-    #"Converted to Table" = Table.FromList(TreeTble,
+    TreeTable = Json[tree],
+
+    #"Converted to Table" = Table.FromList(TreeTable,
         Splitter.SplitByNothing(), null, null, ExtraValues.Error),
 
     #"Expanded Column1" = Table.ExpandRecordColumn(
