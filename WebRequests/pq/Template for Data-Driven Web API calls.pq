@@ -1,4 +1,5 @@
 let
+    UrlRoot = "https://mods.factorio.com",
     BaseQueriesList = let
     /*
 H:\data\2023\BI\git\ninMonkQuery-examples\forumQuestions\pq\WebRequest.DebugInfo - Returning Info to Debug Web.Contents.query.pq
